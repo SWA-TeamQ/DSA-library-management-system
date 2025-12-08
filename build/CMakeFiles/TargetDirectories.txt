@@ -1,0 +1,3 @@
+C:/Users/ms/Desktop/2018/DSA/Project/DSA-library-management-system/build/CMakeFiles/lms.dir
+C:/Users/ms/Desktop/2018/DSA/Project/DSA-library-management-system/build/CMakeFiles/edit_cache.dir
+C:/Users/ms/Desktop/2018/DSA/Project/DSA-library-management-system/build/CMakeFiles/rebuild_cache.dir
