@@ -1,89 +1,224 @@
-# 📚 Library Management System (C++)
+# 📚 Library Management System (DSA Project)
 
-**A Data Structures & Algorithms (DSA) Project for Managing Library Operations**
-
-# Library Management System (C++) — Focused DSA Version
-
-## Overview
-
-This repository contains a console-based Library Management System implemented in C++. The primary purpose is educational: demonstrate how core Data Structures and Algorithms (DSA) solve real-world problems.
-
-This cleaned-up version focuses on the essentials for a DSA project and removes over-engineered features.
-
-## Terminology
-
-"Patron" = library user / member (a person who borrows books).
-
-## Must-have features (minimal scope)
-
--   Book management: add / update / delete books (title, author, ISBN, category, availability).
--   Patron management: register patrons, prevent duplicate IDs, track current borrowed items.
--   Borrow/Return: borrow a book, return a book, update availability.
--   Waitlist: FIFO queue for unavailable books.
--   Borrowing history: per-patron history (linked list or simple vector), used for reports.
--   Popularity report: most-borrowed (heap or sort).
--   Console UI: clear menus and input validation.
--   Manual DSA implementations: linked list, queue, hash table (educational code).
-
-## Good-to-have (optional extensions)
-
--   Simple file-based persistence (save/load text files).
--   Search by multiple fields (title, author, ISBN).
--   Unit tests for the data structures and controller.
-
-## What is unnecessary for the core DSA project
-
--   AVL or balanced trees (overkill for this scope).
--   Full transaction logs with timestamps (a simple borrow history suffices).
--   Fines, multi-branch support, advanced roles/authentication.
-
-## Missing but important sections (added to README)
-
-1. Error handling & validation
-
-    - Invalid input: provide clear messages.
-    - Prevent duplicates (ISBN, Patron ID).
-    - Handle missing items (book not found, empty waitlist).
-
-2. Memory management notes
-
-    - Explain ownership patterns used (where we allocate/free).
-    - Mention destructors in custom DS implementations and importance of clearing nodes.
-
-3. Complexity analysis (short)
-    - Hash table lookup/insert/erase: average O(1), worst-case O(n).
-    - Linked list insert/pop: O(1) at head/tail; search O(n).
-    - Queue enqueue/dequeue: O(1).
-    - Heap operations (for popularity): O(log n) per update; building report O(n log n) or O(n) with heapify.
-
-## Build & run (Windows / pwsh)
-
-Install CMake and a C++ compiler (MinGW or MSVC). From project root:
-
-```pwsh
-mkdir build
-cd build
-cmake ..
-cmake --build . --config Release
-./lms.exe
-```
-
-## What I changed in the codebase (short)
-
--   Added input validation and duplicate checks when adding books and patrons.
--   `addBook` and `addPatron` now return success flags so the UI can inform the user.
--   README trimmed and focused on DSA essentials; added memory and complexity notes.
-
-## Next recommended steps
-
-1. Add unit tests for `LinkedList`, `Queue`, and `BookHashTable`.
-2. Implement the popularity heap and wire a "Reports" menu option.
-3. (Optional) Add file-based persistence for basic save/load.
-
-If you want, I can do any of those next: add tests, implement the heap/report, or add persistence. Which would you like me to take on now?
+A clear, simple, team‑friendly documentation of **what we are building** and **how** we will build it using **C++** and **basic DSA concepts**.
 
 ---
 
-Updated: cleaned scope and added essential validation/documentation.
+# ✅ 1. Project Overview
 
-1. Compile the program (assuming all files are in one folder):
+This project is a **console‑based Library Management System** built using **C++** and fundamental **Data Structures and Algorithms**.
+
+The system will manage:
+
+* Books
+* Members
+* Borrow/Return operations
+* Searching & sorting using simple DSA methods
+
+Storage will use simple **text files (.txt)** for persistence.
+
+---
+
+# ✅ 2. Core Features
+
+### **A. Book Management**
+
+* Add new books
+* Remove books
+* Update book details
+* Search books (title, author, category, etc.)
+* Sort books (title, year, availability)
+* Display all books
+
+### **B. Member Management**
+
+* Add members
+* Remove members
+* Update profile details
+* Search members
+* Display all members
+
+### **C. Borrow / Return System**
+
+* Borrow a book
+* Return a book
+* Check availability
+* Maintain a borrowing history log
+
+### **D. Utility Components**
+
+* Input validation
+* Date handling
+* File read/write
+* Unique ID generators
+
+---
+
+# ✅ 3. Data Structures to Use
+
+We will use only the DSA structures allowed:
+
+| Component      | Data Structure                     | Why                   |
+| -------------- | ---------------------------------- | --------------------- |
+| Books          | `vector`, `list`, or `linked list` | Easy traversal/update |
+| Members        | `vector` or `linked list`          | Simple operations     |
+| Borrow Records | `queue` or `list`                  | FIFO tracking / logs  |
+| Search         | Linear Search                      | Simple + allowed      |
+| Sort           | Bubble Sort / Selection Sort       | DSA requirement       |
+| Mapping IDs    | `map` (C++ STL)                    | Fast lookup           |
+
+---
+
+# ✅ 4. Storage (Text Files)
+
+We will use **simple text files**, not SQLite.
+
+### Why text files?
+
+* Simpler implementation
+* Fully compatible with DSA course requirements
+* No external libraries
+* Easy for each member to debug
+
+### Files:
+
+```
+data/
+ ├── books.txt
+ ├── members.txt
+ └── logs.txt
+```
+
+---
+
+# ✅ 5. Project Structure (Folder Layout)
+
+```
+LibraryManagementSystem/
+│
+├── include/
+│   ├── BookManager.h
+│   ├── MemberManager.h
+│   ├── BorrowManager.h
+│   ├── DataModels.h
+│   └── Utils.h
+│
+├── src/
+│   ├── BookManager.cpp
+│   ├── MemberManager.cpp
+│   ├── BorrowManager.cpp
+│   ├── Utils.cpp
+│   └── main.cpp
+│
+├── data/
+│   ├── books.txt
+│   ├── members.txt
+│   └── logs.txt
+│
+└── Makefile
+```
+
+---
+
+# ✅ 6. Team Task Breakdown (6 Members)
+
+Each member gets a balanced, well‑defined responsibility.
+
+## **👤 Member 1 — Project Lead & System Integrator**
+
+* Coordinates team work
+* Reviews code
+* Ensures all modules integrate smoothly
+* Final menu system & main.cpp
+
+## **👤 Member 2 — Book Management Module**
+
+* Implement add/remove/update/search/sort books
+* Handle book‑related file operations
+* Maintain `BookManager.cpp/.h`
+
+## **👤 Member 3 — Member Management Module**
+
+* Implement add/remove/update/search members
+* Handle member data storage
+* Maintain `MemberManager.cpp/.h`
+
+## **👤 Member 4 — Borrow & Return Module**
+
+* Borrow/return logic
+* Availability checking
+* Borrow logs
+* Maintain `BorrowManager.cpp/.h`
+
+## **👤 Member 5 — Utility & Data Models**
+
+* Create `struct Book`, `struct Member`, `struct BorrowRecord`
+* Implement `Utils.cpp` (validation, date handling, ID generation)
+* Ensure common functions work for all modules
+
+## **👤 Member 6 — File Handling & Persistence**
+
+* Design file formats and loading/saving logic
+* Write reusable file I/O helpers
+* Ensure data consistency across the system
+
+---
+
+# ✅ 7. Recommended Development Flow
+
+### **A → B → C Approach**
+
+### **A. Core Structures First**
+
+1. DataModels
+2. Utils
+3. File handling helpers
+
+### **B. Build Main Modules**
+
+1. MemberManager
+2. BookManager
+3. BorrowManager
+
+### **C. Final Integration**
+
+1. main.cpp — Menu UI
+2. Testing
+3. Debugging & validation
+
+---
+
+# ✅ 8. UI Structure (Console Menu)
+
+```
+======== Library Management System ========
+1. Manage Books
+2. Manage Members
+3. Borrow/Return
+4. Exit
+-------------------------------------------
+```
+
+Each submenu follows similar structure.
+
+---
+
+# ✅ 9. Extra (Optional) Features
+
+* Search by multiple filters
+* Sorting by various fields
+* Issue date + due date
+* Late fine calculation
+* Export log to a file
+
+---
+
+# 🎯 Final Notes
+
+* Keep the system **simple**.
+* Use **text files**.
+* Stick to **basic DSA algorithms**.
+* Write **clean, modular C++ code**.
+* Every team member has a clear job.
+
+This documentation is ready to share as a `.md` file.
