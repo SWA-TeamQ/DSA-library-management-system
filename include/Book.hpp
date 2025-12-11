@@ -11,6 +11,7 @@ private:
     string category;
     bool available{true};
     int borrowCount{0};
+    
 public:
     Book() = default;
     Book(string t, string a, string i, string c)
