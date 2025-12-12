@@ -1,181 +1,224 @@
-# 📚 Library Management System (C++)
+# 📚 Library Management System (DSA Project)
 
-**A Data Structures & Algorithms (DSA) Project for Managing Library Operations**
-
----
-
-## 📌 Overview
-
-This **Library Management System** is a C++ console application designed to demonstrate the practical application of key Data Structures and Algorithms (DSA) concepts in a real-world scenario. Built entirely using core C++ and standard libraries, this system simulates the essential functions of a small library — managing books, tracking borrowers, and organizing data efficiently.
-
-This project was developed by 3rd-year Software Engineering students at Addis Ababa Science and Technology University as part of their DSA coursework. It serves as both a learning tool and a practical demonstration of how abstract data structures solve concrete problems.
-
-> ✅ Perfect for students learning DSA — see how linked lists, heaps, hashing, and queues power everyday systems!
+A clear, simple, team‑friendly documentation of **what we are building** and **how** we will build it using **C++** and **basic DSA concepts**.
 
 ---
 
-## 🎯 Purpose & Goals
+# ✅ 1. Project Overview
 
-Libraries need to manage large volumes of data — books, users, loans, and waitlists — efficiently. This project aims to:
+This project is a **console‑based Library Management System** built using **C++** and fundamental **Data Structures and Algorithms**.
 
-- Model library operations using fundamental DSA techniques.
-- Provide hands-on experience with **linked lists**, **heaps**, **hashing**, and **queues**.
-- Reinforce algorithmic thinking through practical implementation.
-- Build a functional system that demonstrates **time and space complexity trade-offs**.
+The system will manage:
 
-### Key Objectives:
-- Implement book management (insert, delete, update) using appropriate data structures.
-- Enable fast book search via **binary search** or **hashing**.
-- Manage borrower history using a **linked list**.
-- Handle waitlists using a **queue**.
-- Sort books by popularity using a **max-heap** or sorting algorithm.
+* Books
+* Members
+* Borrow/Return operations
+* Searching & sorting using simple DSA methods
+
+Storage will use simple **text files (.txt)** for persistence.
 
 ---
 
-## 🔧 Features
+# ✅ 2. Core Features
 
-The system supports the following core functionalities, each powered by a specific DSA concept:
+### **A. Book Management**
 
-| Feature | DSA Concept Used | Description |
-|--------|------------------|-------------|
-| **Book Insertion, Deletion, Update** | Dynamic Arrays / Linked Lists | Add, remove, or modify book records. |
-| **Book Search (by Title/Author)** | Binary Search / Hashing | Quickly find books using optimized search algorithms. |
-| **Waitlist Management** | Queue (FIFO) | Track users waiting for a borrowed book. |
-| **Borrowing History** | Linked List | Store and display a user’s borrowing record. |
-| **Book Sorting by Popularity** | Max-Heap / Sorting Algorithm | Rank books based on how often they are borrowed. |
+* Add new books
+* Remove books
+* Update book details
+* Search books (title, author, category, etc.)
+* Sort books (title, year, availability)
+* Display all books
 
----
+### **B. Member Management**
 
-## 🛠️ System Architecture
+* Add members
+* Remove members
+* Update profile details
+* Search members
+* Display all members
 
-The system follows a simple, modular structure to emphasize clarity and focus on DSA:
+### **C. Borrow / Return System**
 
-1. **Main Menu Layer** – Console-based interface for user interaction.
-2. **Data Structure Layer** – Core logic implemented using:
-   - `Book` class for storing book attributes.
-   - `LinkedList` for borrower history.
-   - `Queue` for waitlists.
-   - `Hash Table` or sorted array for fast searching.
-   - `Max-Heap` or `std::sort` for popularity ranking.
-3. **Utility Layer** – Helper functions for input validation, file I/O (optional), and output formatting.
+* Borrow a book
+* Return a book
+* Check availability
+* Maintain a borrowing history log
 
-> 💡 Designed for educational purposes — easy to extend or modify for deeper exploration.
+### **D. Utility Components**
 
----
-
-## 🧱 Key DSA Concepts Demonstrated
-
-This project highlights foundational DSA topics suitable for intermediate learners:
-
-| Concept | How It's Used |
-|-------|---------------|
-| **Linked List** | Stores borrower history — allows dynamic insertion/deletion without fixed size limits. |
-| **Queue (FIFO)** | Manages waitlists — ensures fairness by serving users in order of request. |
-| **Hashing / Binary Search** | Enables O(1) or O(log n) book searches — critical for performance in large datasets. |
-| **Max-Heap / Sorting** | Ranks books by popularity — demonstrates priority-based data organization. |
-| **Dynamic Memory Management** | Uses pointers and manual memory allocation/deallocation (where applicable). |
-
-These make it easier to understand how choosing the right data structure impacts efficiency and scalability.
+* Input validation
+* Date handling
+* File read/write
+* Unique ID generators
 
 ---
 
-## 🖥️ How to Use
+# ✅ 3. Data Structures to Use
 
-### Running the System
-1. Compile the program (assuming all files are in one folder):
-   ```bash
-   g++ -o library main.cpp Book.cpp LinkedList.cpp Queue.cpp Heap.cpp
-   ```
-2. Run the executable:
-   ```bash
-   ./library
-   ```
-3. Follow the menu prompts to:
-   - Add, delete, or update books.
-   - Search for books by title or author.
-   - View borrowing history.
-   - Check waitlists.
-   - Sort books by popularity.
+We will use only the DSA structures allowed:
 
-> 📝 All interactions happen through a text-based console — no GUI needed!
+| Component      | Data Structure                     | Why                   |
+| -------------- | ---------------------------------- | --------------------- |
+| Books          | `vector`, `list`, or `linked list` | Easy traversal/update |
+| Members        | `vector` or `linked list`          | Simple operations     |
+| Borrow Records | `queue` or `list`                  | FIFO tracking / logs  |
+| Search         | Linear Search                      | Simple + allowed      |
+| Sort           | Bubble Sort / Selection Sort       | DSA requirement       |
+| Mapping IDs    | `map` (C++ STL)                    | Fast lookup           |
 
 ---
 
-## 📁 Project Structure
+# ✅ 4. Storage (Text Files)
+
+We will use **simple text files**, not SQLite.
+
+### Why text files?
+
+* Simpler implementation
+* Fully compatible with DSA course requirements
+* No external libraries
+* Easy for each member to debug
+
+### Files:
 
 ```
-src/
-├── Book.h / Book.cpp        // Book class definition and methods
-├── LinkedList.h / LinkedList.cpp  // Borrower history management
-├── Queue.h / Queue.cpp      // Waitlist management (FIFO)
-├── Heap.h / Heap.cpp        // For sorting books by popularity
-├── main.cpp                 // Entry point with menu system
-└── utils.h / utils.cpp      // Helper functions (input, display, etc.)
+data/
+ ├── books.txt
+ ├── members.txt
+ └── logs.txt
 ```
 
 ---
 
-## 📚 Learning Value
+# ✅ 5. Project Structure (Folder Layout)
 
-This project is ideal for 3rd-year computer science or software engineering students because it:
-
-- Applies classroom DSA theory to a tangible problem.
-- Encourages thoughtful selection of data structures based on use case.
-- Highlights trade-offs between time complexity (search speed) and space complexity (memory usage).
-- Reinforces best practices in C++ programming (pointers, classes, memory management).
-
-It’s not just code — it’s a complete system built on solid algorithmic foundations.
-
----
-
-## ⚠️ Limitations
-
-Please note:
-- This is a **console-based simulation** — no graphical interface or database.
-- No persistent storage (data is lost on exit unless extended).
-- Simplified user roles (no admin vs. patron distinction).
-- Focus is on DSA — advanced features like multi-threading or networking are out of scope.
-
----
-
-## 📂 Future Improvements
-
-Potential enhancements include:
-- Adding **file persistence** (save/load library data).
-- Implementing a **GUI** using SFML or Qt.
-- Supporting **multiple user accounts**.
-- Integrating **multi-key search** (title + author + genre).
-- Visualizing data structures during operation (for debugging/learning).
+```
+LibraryManagementSystem/
+│
+├── include/
+│   ├── BookManager.h
+│   ├── MemberManager.h
+│   ├── BorrowManager.h
+│   ├── DataModels.h
+│   └── Utils.h
+│
+├── src/
+│   ├── BookManager.cpp
+│   ├── MemberManager.cpp
+│   ├── BorrowManager.cpp
+│   ├── Utils.cpp
+│   └── main.cpp
+│
+├── data/
+│   ├── books.txt
+│   ├── members.txt
+│   └── logs.txt
+│
+└── Makefile
+```
 
 ---
 
-## 🙌 Acknowledgments
+# ✅ 6. Team Task Breakdown (6 Members)
 
-Developed by:  
-Abel Mekonnen, Barok Yeshiber, Betelhem Kassaye, Bemigbar Yehuwalawork, Bekam Yoseph, Amira Abdurahman  
-Department of Software Engineering, Section A  
-Addis Ababa Science and Technology University
+Each member gets a balanced, well‑defined responsibility.
 
-Supervised by: **Abdi Muleta**
+## **👤 Member 1 — Project Lead & System Integrator**
 
-Submission Date: November 18, 2025
+* Coordinates team work
+* Reviews code
+* Ensures all modules integrate smoothly
+* Final menu system & main.cpp
+
+## **👤 Member 2 — Book Management Module**
+
+* Implement add/remove/update/search/sort books
+* Handle book‑related file operations
+* Maintain `BookManager.cpp/.h`
+
+## **👤 Member 3 — Member Management Module**
+
+* Implement add/remove/update/search members
+* Handle member data storage
+* Maintain `MemberManager.cpp/.h`
+
+## **👤 Member 4 — Borrow & Return Module**
+
+* Borrow/return logic
+* Availability checking
+* Borrow logs
+* Maintain `BorrowManager.cpp/.h`
+
+## **👤 Member 5 — Utility & Data Models**
+
+* Create `struct Book`, `struct Member`, `struct BorrowRecord`
+* Implement `Utils.cpp` (validation, date handling, ID generation)
+* Ensure common functions work for all modules
+
+## **👤 Member 6 — File Handling & Persistence**
+
+* Design file formats and loading/saving logic
+* Write reusable file I/O helpers
+* Ensure data consistency across the system
 
 ---
 
-## 📚 References
+# ✅ 7. Recommended Development Flow
 
-- Cormen, T.H., Leiserson, C.E., Rivest, R.L., Stein, C. *Introduction to Algorithms* (4th Ed.)
-- Goodrich, M.T., Tamassia, R. *Data Structures and Algorithms in C++*
-- Stroustrup, B. *The C++ Programming Language* (4th Ed.)
-- GeeksforGeeks, “Data Structures” & “Algorithms” sections
+### **A → B → C Approach**
+
+### **A. Core Structures First**
+
+1. DataModels
+2. Utils
+3. File handling helpers
+
+### **B. Build Main Modules**
+
+1. MemberManager
+2. BookManager
+3. BorrowManager
+
+### **C. Final Integration**
+
+1. main.cpp — Menu UI
+2. Testing
+3. Debugging & validation
 
 ---
 
-> 🔗 For more details, check out the full project documentation and diagrams:
-> - [System Flow Diagram](https://lucid.app/lucidchart/.../edit) *(replace with actual link)*
-> - [Class & Data Structure Relationships](https://www.mermaidchart.com/app/projects/.../diagrams/.../version/v0.1/edit) *(replace with actual link)*
+# ✅ 8. UI Structure (Console Menu)
+
+```
+======== Library Management System ========
+1. Manage Books
+2. Manage Members
+3. Borrow/Return
+4. Exit
+-------------------------------------------
+```
+
+Each submenu follows similar structure.
 
 ---
 
-🎓 **Think. Design. Optimize.**  
-This project proves that powerful systems don’t need complex frameworks — just smart data structures and clean algorithms.
+# ✅ 9. Extra (Optional) Features
+
+* Search by multiple filters
+* Sorting by various fields
+* Issue date + due date
+* Late fine calculation
+* Export log to a file
+
+---
+
+# 🎯 Final Notes
+
+* Keep the system **simple**.
+* Use **text files**.
+* Stick to **basic DSA algorithms**.
+* Write **clean, modular C++ code**.
+* Every team member has a clear job.
+
+This documentation is ready to share as a `.md` file.
