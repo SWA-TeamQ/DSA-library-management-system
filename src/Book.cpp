@@ -4,8 +4,9 @@
 
 using namespace std;
 
-void Book::displayDetails(std::ostream &os) const {
-    os << "Title: " << title
+void Book::displayDetails()
+{
+    cout << "Title: " << title
        << " | Author: " << author
        << " | ISBN: " << isbn
        << " | Edition: " << edition
@@ -15,35 +16,30 @@ void Book::displayDetails(std::ostream &os) const {
        << " | Borrows: " << borrowCount << '\n';
 }
 
-
-void Book::serialize(ostream &ofs) const
+string Book::serialize() const
 {
-    ofs << title << "|"
-        << author << "|"
-        << isbn << "|"
-        << edition << "|"
-        << publicationYear << "|"
-        << category << "|"
-        << (available ? "1" : "0") << "|"
-        << borrowCount << "\n";
+    return title + "," + author + "," + isbn + "," + edition + "," +
+           publicationYear + "," + category + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Book::deserialize(const string &line)
 {
     std::stringstream ss(line);
+    string field;
 
-    getline(ss, title, '|');
-    getline(ss, author, '|');
-    getline(ss, isbn, '|');
-    getline(ss, edition, '|');
-    getline(ss, publicationYear, '|');
-    getline(ss, category, '|');
-
-    string avail;
-    getline(ss, avail, '|');
-    available = (avail == "1");
-
-    string bc;
-    getline(ss, bc); // borrowCount at end
-    borrowCount = stoi(bc);
+    getline(ss, title, ',');
+    getline(ss, author, ',');
+    getline(ss, isbn, ',');
+    getline(ss, edition, ',');
+    getline(ss, publicationYear, ',');
+    getline(ss, category, ',');
+    getline(ss, field, ',');
+    available = (field == "1");
+    getline(ss, field);
+    if(!field.empty()){
+        borrowCount = stoi(field);
+    }
+    else{
+        borrowCount = 0;
+    }
 }

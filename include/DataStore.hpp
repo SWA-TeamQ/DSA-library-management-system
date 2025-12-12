@@ -15,50 +15,51 @@ private:
     string filename;
 
 public:
-    DataStore(const string &filename)
-        : filename(filename) {}
+    DataStore(string filename)
+    {
+        this->filename = filename;
+    }
 
     void saveData(const vector<T> &dataList)
     {
-        fstream dataFile(filename, ios::out | ios::trunc);
+        ofstream file(filename);
 
-        if (!dataFile.is_open())
+        if (!file.is_open())
         {
-            cerr << "Error: Unable to open file for appending: " << filename << endl;
+            cerr << "Error: Unable to open file for overwriting: " << filename << endl;
             return;
         }
 
         // Write each item, one per line
-        for (const auto &item : dataList)
+        for (const T &item : dataList)
         {
-            item.serialize(dataFile); // write to stream (file) (virtual)
-            
+            file << item.serialize() << '\n';
         }
 
-        dataFile.close();
+        file.close();
     }
-    
 
     void loadData(vector<T> &dataList)
     {
-       fstream dataFile(filename, ios::in);
+        dataList.clear();
+        ifstream file(filename);
 
-        if (!dataFile.is_open())
+        if (!file.is_open())
         {
             cerr << "Error: Unable to open file for reading: " << filename << endl;
             return;
         }
-          
-        string line;
-        while (getline(dataFile, line))
-        {
-            if (line.empty()) continue; // skip blank lines
 
-            // create a temporary object
+        string line;
+        while (getline(file, line))
+        {
+            if (line.empty())
+                continue; // skip blank lines
+
             T item;
-            item.deserialize(line);  // parse using a deserialize(line) overload (virtual)
+            item.deserialize(line);
             dataList.push_back(item);
         }
-        dataFile.close();
+        file.close();
     }
 };
