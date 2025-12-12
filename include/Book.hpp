@@ -16,8 +16,8 @@ private:
     
 public:
     Book() = default;
-    Book(string t, string a, string i, string e, string py, string c)
-        : title(move(t)), author(move(a)), isbn(move(i)), edition(move(e)), publicationYear(move(py)), category(move(c)) {}
+    Book(string t, string a, string i, string e, string py, string c, bool av, int bc)
+        : title(move(t)), author(move(a)), isbn(move(i)), edition(move(e)), publicationYear(move(py)), category(move(c)), available(av), borrowCount(bc) {}
 
     
 
@@ -38,8 +38,10 @@ public:
     void setCategory(const string& c) { category = c; }
     void setAvailable(bool v) { available = v; }
     void incrementBorrowCount() { ++borrowCount; }
+    void decrementBorrowCount() { if (borrowCount > 0) --borrowCount; }
+    void setBorrowCount(int bc) { borrowCount = bc; }
 
     void displayDetails(ostream& os = cout) const;
-    void serialize(ofstream &ofs) const;
-    void deserialize(ifstream &ifs);
+    void serialize(ostream &ofs) const; // write to stream (file)
+    void deserialize(const string &line); // parse a line from file
 };

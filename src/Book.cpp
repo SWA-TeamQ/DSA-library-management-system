@@ -1,48 +1,49 @@
 #include "Book.hpp"
 #include <fstream>
+#include <sstream>
+
 using namespace std;
 
-void Book::displayDetails(ostream& os) const {
-    os << "Title: " << title << " | Author: " << author
-       << " | ISBN: " << isbn << " | Edition: " << edition
-       << " | PubYear: " << publicationYear << " | Cat: " << category
-       << " | Avail: " << (available ? "Yes" : "No")
+void Book::displayDetails(std::ostream &os) const {
+    os << "Title: " << title
+       << " | Author: " << author
+       << " | ISBN: " << isbn
+       << " | Edition: " << edition
+       << " | PubYear: " << publicationYear
+       << " | Category: " << category
+       << " | Available: " << (available ? "Yes" : "No")
        << " | Borrows: " << borrowCount << '\n';
 }
 
-void Book::serialize(ofstream &ofs) const {
-    auto writeString = [&](const string &s) {
-        size_t len = s.size();
-        ofs.write(reinterpret_cast<const char*>(&len), sizeof(len));
-        ofs.write(s.c_str(), len);
-    };
 
-    writeString(title);
-    writeString(author);
-    writeString(isbn);
-    writeString(edition);
-    writeString(publicationYear);
-    writeString(category);
-
-    ofs.write(reinterpret_cast<const char*>(&available), sizeof(available));
-    ofs.write(reinterpret_cast<const char*>(&borrowCount), sizeof(borrowCount));
+void Book::serialize(ostream &ofs) const
+{
+    ofs << title << "|"
+        << author << "|"
+        << isbn << "|"
+        << edition << "|"
+        << publicationYear << "|"
+        << category << "|"
+        << (available ? "1" : "0") << "|"
+        << borrowCount << "\n";
 }
 
-void Book::deserialize(ifstream &ifs) {
-    auto readString = [&](string &s) {
-        size_t len;
-        ifs.read(reinterpret_cast<char*>(&len), sizeof(len));
-        s.resize(len);
-        ifs.read(&s[0], len);
-    };
+void Book::deserialize(const string &line)
+{
+    std::stringstream ss(line);
 
-    readString(title);
-    readString(author);
-    readString(isbn);
-    readString(edition);
-    readString(publicationYear);
-    readString(category);
+    getline(ss, title, '|');
+    getline(ss, author, '|');
+    getline(ss, isbn, '|');
+    getline(ss, edition, '|');
+    getline(ss, publicationYear, '|');
+    getline(ss, category, '|');
 
-    ifs.read(reinterpret_cast<char*>(&available), sizeof(available));
-    ifs.read(reinterpret_cast<char*>(&borrowCount), sizeof(borrowCount));
+    string avail;
+    getline(ss, avail, '|');
+    available = (avail == "1");
+
+    string bc;
+    getline(ss, bc); // borrowCount at end
+    borrowCount = stoi(bc);
 }

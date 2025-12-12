@@ -241,7 +241,11 @@ void ConsoleInterface::handleAddBook()
     string title = getInput(" Enter Title: ");
     string author = getInput(" Enter Author: ");
     string isbn = getInput(" Enter ISBN: ");
+    string edition = getInput(" Enter Edition: ");
+    string publicationYear = getInput(" Enter Publication Year: ");
     string category = getInput(" Enter Category: ");
+    bool available = true;
+    int borrowCount = 0;
 
     if (title.empty() || author.empty() || isbn.empty())
     {
@@ -249,7 +253,7 @@ void ConsoleInterface::handleAddBook()
     }
     else
     {
-        bool ok = controller.addBook(Book(title, author, isbn, category));
+        bool ok = controller.addBook(Book(isbn,title, author, edition, publicationYear, category, available, borrowCount));
         if (ok)
             cout << "\n ✅ Book added successfully!\n";
         else
