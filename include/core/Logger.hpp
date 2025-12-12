@@ -6,9 +6,9 @@
 
 using namespace std;
 
-class Logger{
+static class Logger{
 private:
-    static const string filename;
+    static const string filename{"library_log.txt"};
 
 public:
     static void logInfo(const string &message) {
@@ -27,5 +27,3 @@ public:
         }
     }
 };
-
-const string Logger::filename = "library_log.txt";
