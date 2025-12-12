@@ -1,11 +1,38 @@
 #include "Patron.hpp"
-#include <iomanip>
-#include <ctime>
+#include <sstream>
+
 using namespace std;
 
-void Patron::displayProfile(ostream& os) const {
-    time_t tt = chrono::system_clock::to_time_t(membershipDate);
-    os << "PatronID: " << patronID << " | Name: " << name
-       << " | Contact: " << contact << " | Since: " << put_time(localtime(&tt), "%Y-%m-%d")
-       << '\n';
+void Patron::displayDetails()
+{
+    cout << "ID: " << patronID
+         << " | Name: " << name
+         << " | Contact: " << contact
+         << " | Membership Date: " << membershipDate
+         << " | Borrow Count: " << borrowCount << '\n';
+}
+
+string Patron::serialize() const
+{
+    return patronID + "," + name + "," + contact + "," + membershipDate + "," + to_string(borrowCount);
+}
+
+void Patron::deserialize(const string &line)
+{
+    stringstream ss(line);
+    string field;
+
+    getline(ss, patronID, ',');
+    getline(ss, name, ',');
+    getline(ss, contact, ',');
+    getline(ss, membershipDate, ',');
+    getline(ss, field);
+    if (!field.empty())
+    {
+        borrowCount = stoi(field);
+    }
+    else
+    {
+        borrowCount = 0;
+    }
 }
