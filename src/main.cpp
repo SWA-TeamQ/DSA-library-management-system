@@ -1,5 +1,5 @@
-#include "LibraryController.hpp"
-#include "ConsoleInterface.hpp"
+#include "core/LibraryController.hpp"
+#include "ui/ConsoleInterface.hpp"
 using namespace std;
 
 int main() {

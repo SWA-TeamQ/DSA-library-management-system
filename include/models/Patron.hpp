@@ -47,7 +47,7 @@ public:
             --borrowCount;
     }
 
-    void displayDetails();
+    void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
 };

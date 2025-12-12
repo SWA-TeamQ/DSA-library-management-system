@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Book.hpp"
-#include "Patron.hpp"
-#include "Transaction.hpp"
-#include "HashTable.hpp"
+#include "models/Book.hpp"
+#include "models/Patron.hpp"
+#include "models/Transaction.hpp"
+#include "structures/HashTable.hpp"
 using namespace std;
 
 class LibraryController {

@@ -1,4 +1,4 @@
-#include "ConsoleInterface.hpp"
+#include "ui/ConsoleInterface.hpp"
 #include <iostream>
 #include <cstdlib> // for system()
 using namespace std;
@@ -21,7 +21,7 @@ void ConsoleInterface::printHeader(const string &title) const
 {
     clearScreen();
     printDivider();
-    cout << "      📚  LIBRARY MANAGEMENT SYSTEM  📚\n";
+    cout << "         LIBRARY MANAGEMENT SYSTEM  \n";
     printDivider();
     cout << " :: " << title << " ::\n";
     printDivider();
@@ -51,11 +51,11 @@ string ConsoleInterface::getInput(const string &prompt) const
 void ConsoleInterface::printMainMenu() const
 {
     printHeader("Main Menu");
-    cout << " 1. 📖 Book Management\n";
-    cout << " 2. 👤 Member Management\n";
-    cout << " 3. 🔄 Transactions (Borrow/Return)\n";
-    cout << " 4. 💾 Data Persistence (Save/Load)\n";
-    cout << " 0. 🚪 Exit\n";
+    cout << " 1. Book Management\n";
+    cout << " 2. Member Management\n";
+    cout << " 3. Transactions (Borrow/Return)\n";
+    cout << " 4. Data Persistence (Save/Load)\n";
+    cout << " 0. Exit\n";
     printDivider();
     cout << " Select an option: ";
 }
@@ -79,7 +79,7 @@ void ConsoleInterface::run()
         else if (choice == "0")
         {
             running = false;
-            cout << "\nGoodbye! 👋\n";
+            cout << "\nGoodbye!\n";
         }
         else
         {
@@ -245,15 +245,15 @@ void ConsoleInterface::handleAddBook()
 
     if (title.empty() || author.empty() || isbn.empty())
     {
-        cout << "\n ❌ Error: Title, Author and ISBN are required.\n";
+        cout << "\n Error: Title, Author and ISBN are required.\n";
     }
     else
     {
         bool ok = controller.addBook(Book(title, author, isbn, category));
         if (ok)
-            cout << "\n ✅ Book added successfully!\n";
+            cout << "\n Book added successfully!\n";
         else
-            cout << "\n ❌ Error: Book with this ISBN already exists.\n";
+            cout << "\n Error: Book with this ISBN already exists.\n";
     }
     waitForEnter();
 }
@@ -273,15 +273,15 @@ void ConsoleInterface::handleAddPatron()
 
     if (id.empty() || name.empty())
     {
-        cout << "\n ❌ Error: ID and Name are required.\n";
+        cout << "\n Error: ID and Name are required.\n";
     }
     else
     {
         bool ok = controller.addPatron(Patron(id, name, contact));
         if (ok)
-            cout << "\n ✅ Member registered successfully!\n";
+            cout << "\n Member registered successfully!\n";
         else
-            cout << "\n ❌ Error: Member with this ID already exists.\n";
+            cout << "\n Error: Member with this ID already exists.\n";
     }
     waitForEnter();
 }
@@ -300,11 +300,11 @@ void ConsoleInterface::handleBorrow()
 
     if (controller.borrowBook(pid, isbn))
     {
-        cout << "\n ✅ Borrow successful! Due date is in 14 days.\n";
+        cout << "\n Borrow successful! Due date is in 14 days.\n";
     }
     else
     {
-        cout << "\n ❌ Borrow failed. Check if book exists, is available, or member ID is valid.\n";
+        cout << "\n Borrow failed. Check if book exists, is available, or member ID is valid.\n";
     }
 }
 
@@ -316,11 +316,11 @@ void ConsoleInterface::handleReturn()
 
     if (controller.returnBook(pid, isbn))
     {
-        cout << "\n ✅ Return processed successfully.\n";
+        cout << "\n Return processed successfully.\n";
     }
     else
     {
-        cout << "\n ❌ Return failed. Check details.\n";
+        cout << "\n Return failed. Check details.\n";
     }
 }
 
@@ -328,48 +328,48 @@ void ConsoleInterface::handleReturn()
 
 void ConsoleInterface::handleSearchBooks()
 {
-    cout << "\n 🚧 Feature [Search Books] is assigned to Member 2.\n";
+    cout << "\n Feature [Search Books] is assigned to Member 2.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleSortBooks()
 {
-    cout << "\n 🚧 Feature [Sort Books] is assigned to Member 2.\n";
+    cout << "\n Feature [Sort Books] is assigned to Member 2.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleRemoveBook()
 {
-    cout << "\n 🚧 Feature [Remove Book] is assigned to Member 2.\n";
+    cout << "\n Feature [Remove Book] is assigned to Member 2.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleSearchPatrons()
 {
-    cout << "\n 🚧 Feature [Search Member] is assigned to Member 3.\n";
+    cout << "\n Feature [Search Member] is assigned to Member 3.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleRemovePatron()
 {
-    cout << "\n 🚧 Feature [Remove Member] is assigned to Member 3.\n";
+    cout << "\n Feature [Remove Member] is assigned to Member 3.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleViewHistory()
 {
-    cout << "\n 🚧 Feature [View History] is assigned to Member 4.\n";
+    cout << "\n Feature [View History] is assigned to Member 4.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleSaveData()
 {
-    cout << "\n 🚧 Feature [Save Data] is assigned to Member 6.\n";
+    cout << "\n Feature [Save Data] is assigned to Member 6.\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleLoadData()
 {
-    cout << "\n 🚧 Feature [Load Data] is assigned to Member 6.\n";
+    cout << "\n Feature [Load Data] is assigned to Member 6.\n";
     waitForEnter();
 }

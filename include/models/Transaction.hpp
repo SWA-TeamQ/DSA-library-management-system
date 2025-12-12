@@ -54,7 +54,7 @@ public:
     void markReturned();
     double calculateFine(double dailyRate = 0.50) const;
 
-    void displayDetails();
+    void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
 };

@@ -16,11 +16,11 @@ include_directories(include)
 
 add_executable(lms
     src/main.cpp
-    src/Book.cpp
-    src/Patron.cpp
-    src/Transaction.cpp
-    src/LibraryController.cpp
-    src/ConsoleInterface.cpp
+    src/models/Book.cpp
+    src/models/Patron.cpp
+    src/models/Transaction.cpp
+    src/core/LibraryController.cpp
+    src/ui/ConsoleInterface.cpp
 )
 
 # Future: tests target

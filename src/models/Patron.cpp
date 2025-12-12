@@ -1,9 +1,9 @@
-#include "Patron.hpp"
+#include "models/Patron.hpp"
 #include <sstream>
 
 using namespace std;
 
-void Patron::displayDetails()
+void Patron::displayDetails() const
 {
     cout << "ID: " << patronID
          << " | Name: " << name
