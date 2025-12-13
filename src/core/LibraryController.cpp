@@ -2,77 +2,94 @@
 #include <iostream>
 using namespace std;
 
-bool LibraryController::addBook(const Book &b) { return books.insert(b); }
+void LibraryController::loadBooks() { booksManager.loadBooks(); }
 
-bool LibraryController::removeBookByISBN(const string &isbn) { return books.erase(isbn); }
+void LibraryController::saveBooks() { booksManager.saveBooks(); }
 
-Book *LibraryController::findBookByISBN(const string &isbn) { return books.find(isbn); }
+bool LibraryController::addBook(const Book &b) { return booksManager.addBook(b); }
 
-bool LibraryController::addPatron(const Patron &p)
-{
-    // prevent duplicate patron IDs
-    if (findPatronByID(p.getID()))
-        return false;
-    patrons.push_back(p);
-    return true;
-}
+bool LibraryController::removeBookByISBN(const string &isbn) { return booksManager.removeBookByISBN(isbn); }
 
-Patron *LibraryController::findPatronByID(const string &id)
-{
-    for (auto &p : patrons)
-        if (p.getID() == id)
-            return &p;
-    return nullptr;
-}
+Book *LibraryController::findBookByISBN(const string &isbn) { return booksManager.findBookByISBN(isbn); }
 
-void LibraryController::createTransaction(const string &patronID, const string &isbn)
-{
-    string txID = patronID + ":" + isbn + ":" + to_string(transactions.size() + 1);
-    transactions.emplace_back(txID, isbn, patronID);
-}
+vector<Book *> LibraryController::findBooksByTitle(const string &title) const { return booksManager.findBooksByTitle(title); }
 
-void LibraryController::markLatestReturned(const string &patronID, const string &isbn)
-{
-    for (auto it = transactions.rbegin(); it != transactions.rend(); ++it)
-        if (it->getBookID() == isbn && it->getPatronID() == patronID && !it->isReturned())
-        {
-            it->markReturned();
-            break;
-        }
-}
+vector<Book *> LibraryController::findBooksByAuthor(const string &author) const { return booksManager.findBooksByAuthor(author); }
 
-bool LibraryController::borrowBook(const string &patronID, const string &isbn)
-{
-    auto *patron = findPatronByID(patronID);
-    auto *book = findBookByISBN(isbn);
-    if (!patron || !book || !book->isAvailable())
-        return false;
-    book->setAvailable(false);
-    book->incrementBorrowCount();
-    createTransaction(patronID, isbn);
-    return true;
-}
+void LibraryController::sortBooksByTitleAsc() { booksManager.sortBooksByTitleAsc(); }
 
-bool LibraryController::returnBook(const string &patronID, const string &isbn)
-{
-    auto *book = findBookByISBN(isbn);
-    if (!book || book->isAvailable())
-        return false;
-    book->setAvailable(true);
-    markLatestReturned(patronID, isbn);
-    return true;
-}
+void LibraryController::sortBooksByTitleDesc() { booksManager.sortBooksByTitleDesc(); }
 
-void LibraryController::listAllBooks() const
-{
-    cout << "--- Books ---\n";
-    for (auto *b : books.all())
-        b->displayDetails();
-}
+void LibraryController::sortBooksByYearAsc() { booksManager.sortBooksByYearAsc(); }
 
-void LibraryController::listAllPatrons() const
-{
-    cout << "--- Patrons ---\n";
-    for (const auto &p : patrons)
-        p.displayDetails();
-}
+void LibraryController::sortBooksByYearDesc() { booksManager.sortBooksByYearDesc(); }
+
+Book *LibraryController::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount)
+{ return booksManager.updateBookDetails(isbn, title, author, edition, publicationYear, category, available, borrowCount); }
+
+void LibraryController::listAllBooks() const { booksManager.listAllBooks(); }
+
+
+// bool LibraryController::addPatron(const Patron &p)
+// {
+//     // prevent duplicate patron IDs
+//     if (findPatronByID(p.getID()))
+//         return false;
+//     patrons.push_back(p);
+//     return true;
+// }
+
+// Patron *LibraryController::findPatronByID(const string &id)
+// {
+//     for (auto &p : patrons)
+//         if (p.getID() == id)
+//             return &p;
+//     return nullptr;
+// }
+
+// void LibraryController::createTransaction(const string &patronID, const string &isbn)
+// {
+//     string txID = patronID + ":" + isbn + ":" + to_string(transactions.size() + 1);
+//     transactions.emplace_back(txID, isbn, patronID);
+// }
+
+// void LibraryController::markLatestReturned(const string &patronID, const string &isbn)
+// {
+//     for (auto it = transactions.rbegin(); it != transactions.rend(); ++it)
+//         if (it->getBookID() == isbn && it->getPatronID() == patronID && !it->isReturned())
+//         {
+//             it->markReturned();
+//             break;
+//         }
+// }
+
+// bool LibraryController::borrowBook(const string &patronID, const string &isbn)
+// {
+//     auto *patron = findPatronByID(patronID);
+//     auto *book = findBookByISBN(isbn);
+//     if (!patron || !book || !book->isAvailable())
+//         return false;
+//     book->setAvailable(false);
+//     book->incrementBorrowCount();
+//     createTransaction(patronID, isbn);
+//     return true;
+// }
+
+// bool LibraryController::returnBook(const string &patronID, const string &isbn)
+// {
+//     auto *book = findBookByISBN(isbn);
+//     if (!book || book->isAvailable())
+//         return false;
+//     book->setAvailable(true);
+//     markLatestReturned(patronID, isbn);
+//     return true;
+// }
+
+
+
+// void LibraryController::listAllPatrons() const
+// {
+//     cout << "--- Patrons ---\n";
+//     for (const auto &p : patrons)
+//         p.displayDetails();
+// }

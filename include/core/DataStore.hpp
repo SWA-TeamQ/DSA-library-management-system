@@ -22,7 +22,7 @@ public:
 
     void saveData(const vector<T> &dataList)
     {
-        ofstream file(filename);
+        ofstream file(filename, ios::out|ios::trunc);
 
         if (!file.is_open())
         {
@@ -42,7 +42,7 @@ public:
     void loadData(vector<T> &dataList)
     {
         dataList.clear();
-        ifstream file(filename);
+        ifstream file(filename,ios::in);
 
         if (!file.is_open())
         {

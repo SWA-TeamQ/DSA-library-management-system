@@ -6,6 +6,7 @@
 #include <functional>
 #include <utility>
 #include "models/Book.hpp"
+#include <unordered_map>
 using namespace std;
 
 class BookHashTable
@@ -78,6 +79,8 @@ public:
         }
         return false;
     }
+
+    
 
     void clear()
     {

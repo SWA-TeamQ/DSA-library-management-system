@@ -1,21 +1,19 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "MinGW",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/include/models"
+                "${workspaceFolder}/include"
             ],
             "defines": [
-                "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.22621.0",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
-            "compilerPath": "C:/mingw64/bin/g++.exe"
+            "intelliSenseMode": "gcc-x86",
+            "compilerPath": "D:/MinGW/bin/g++.exe"
         }
     ],
     "version": 4
