@@ -62,3 +62,25 @@ void PatronManager::displayAll() const
     for (auto *p : patrons.all())
         p->displayDetails();
 }
+// findpatronbyname
+Patron* PatronManager::findPatronByName(const string& name)
+{
+    for (auto& p : patronList)
+    {
+        if (p.getName() == name)
+            return &p;
+    }
+    return nullptr;
+}
+bool PatronManager::updatePatronContact(
+    const string& patronID,
+    const string& newContact)
+{
+    Patron* p = patrons.find(patronID);
+    if (!p)
+        return false;
+
+    p->setContact(newContact);
+    savePatrons();
+    return true;
+}
