@@ -1,106 +1,62 @@
 #pragma once
-// Simple separate chaining hash table specialized for Book keyed by ISBN.
-// Educational implementation: no rehash yet (could be added later).
-#include <vector>
+#include <iostream>
 #include <string>
-#include <functional>
-#include <utility>
-#include "models/Book.hpp"
-using namespace std;
+#include <vector>
+#include <unordered_map>
 
-class BookHashTable
+template <typename T>
+class HashTable
 {
-    struct Node
-    {
-        Book value;
-        Node *next;
-        Node(const Book &b, Node *n = nullptr) : value(b), next(n) {}
-    };
-    vector<Node *> buckets;
-    size_t sz{0};
-
-    size_t index(const string &key) const { return std::hash<string>{}(key) % buckets.size(); }
+private:
+    std::unordered_map<std::string, T *> table;
 
 public:
-    explicit BookHashTable(size_t capacity = 101) : buckets(capacity, nullptr) {}
-    ~BookHashTable() { clear(); }
+    HashTable() = default;
+    ~HashTable() = default;
 
-    BookHashTable(const BookHashTable &) = delete; // keep simple
-    BookHashTable &operator=(const BookHashTable &) = delete;
-
-    bool empty() const { return sz == 0; }
-    size_t size() const { return sz; }
-
-    bool insert(const Book &b)
+    bool empty() const
     {
-        const string &key = b.getISBN();
-        size_t idx = index(key);
-        Node *cur = buckets[idx];
-        while (cur)
-        {
-            if (cur->value.getISBN() == key)
-                return false;
-            cur = cur->next;
-        }
-        buckets[idx] = new Node(b, buckets[idx]);
-        ++sz;
-        return true;
+        return table.empty();
+    }
+    size_t size() const
+    {
+        return table.size();
     }
 
-    Book *find(const string &isbn)
+    bool insert(T *item)
     {
-        size_t idx = index(isbn);
-        for (Node *cur = buckets[idx]; cur; cur = cur->next)
-            if (cur->value.getISBN() == isbn)
-                return &cur->value;
+        if (!item)
+            return false;
+        std::string key = item->getKey();
+        auto [it, inserted] = table.emplace(key, item);
+        return inserted;
+    }
+
+    T *find(const std::string &key)
+    {
+        auto it = table.find(key);
+        if (it != table.end())
+            return it->second;
         return nullptr;
     }
 
-    bool erase(const string &isbn)
+    bool erase(const std::string &key)
     {
-        size_t idx = index(isbn);
-        Node *cur = buckets[idx];
-        Node *prev = nullptr;
-        while (cur)
-        {
-            if (cur->value.getISBN() == isbn)
-            {
-                if (prev)
-                    prev->next = cur->next;
-                else
-                    buckets[idx] = cur->next;
-                delete cur;
-                --sz;
-                return true;
-            }
-            prev = cur;
-            cur = cur->next;
-        }
-        return false;
+        auto removed = table.erase(key);
+        return removed > 0;
     }
 
     void clear()
     {
-        for (auto &head : buckets)
-        {
-            while (head)
-            {
-                Node *tmp = head;
-                head = head->next;
-                delete tmp;
-            }
-        }
-        sz = 0;
+        table.clear();
     }
 
-    // Simple iteration (collect pointers)
-    vector<Book *> all() const
+    std::vector<T *> all() const
     {
-        vector<Book *> out;
-        out.reserve(sz);
-        for (auto head : buckets)
-            for (Node *cur = head; cur; cur = cur->next)
-                out.push_back(&cur->value);
+        std::vector<T *> out;
+        out.reserve(table.size());
+        for (auto &[key, value] : table)
+            out.push_back(value);
         return out;
     }
 };

@@ -22,7 +22,7 @@ private:
 
     // --- Sub-Menus / Categories ---
     void handleBookMenu();
-    void handleMemberMenu();
+    void handlePatronMenu();
     void handleTransactionMenu();
     void handleDataMenu();
 

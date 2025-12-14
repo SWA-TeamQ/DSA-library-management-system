@@ -17,12 +17,12 @@ private:
 public:
     Transaction() = default;
 
-    Transaction(string transactionID = "",
-                string bookID = "",
-                string patronID = "",
-                string borrowDate = "",
-                string dueDate = "",
-                string returnDate = "",
+    Transaction(string transactionID,
+                string bookID,
+                string patronID,
+                string borrowDate,
+                string dueDate,
+                string returnDate,
                 bool returned = false)
     {
         this->transactionID = transactionID;
@@ -35,6 +35,7 @@ public:
     }
 
     const string &getTransactionID() const { return transactionID; }
+    const string &getKey() const { return transactionID; }
     const string &getBookID() const { return bookID; }
     const string &getPatronID() const { return patronID; }
     const string &getBorrowDate() const { return borrowDate; }

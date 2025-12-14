@@ -18,11 +18,11 @@ private:
 public:
     Book() = default;
 
-    Book(string title = "",
-         string author = "",
-         string isbn = "",
-         string edition = "",
-         string publicationYear = "",
+    Book(string title,
+         string author,
+         string isbn,
+         string edition,
+         string publicationYear,
          string category = "General",
          bool available = true,
          int borrowCount = 0);
@@ -30,6 +30,7 @@ public:
     const string &getTitle() const { return title; }
     const string &getAuthor() const { return author; }
     const string &getISBN() const { return isbn; }
+    const string &getKey() const { return isbn; }
     const string &getEdition() const { return edition; }
     const string &getPublicationYear() const { return publicationYear; }
     const string &getCategory() const { return category; }

@@ -1,32 +1,85 @@
 #pragma once
-// Simple educational FIFO queue using singly linked nodes.
 #include <stdexcept>
-#include <utility>
 using namespace std;
 
 template <typename T>
-class Queue {
-    struct Node { T data; Node* next; Node(T d): data(std::move(d)), next(nullptr) {} };
-    Node* head{nullptr};
-    Node* tail{nullptr};
-    size_t sz{0};
+struct Node
+{
+    T data;
+    Node *next;
+    Node *prev;
+
+    Node(const T &data)
+    {
+        this->data = data;
+        next = nullptr;
+        prev = nullptr;
+    }
+};
+
+template <typename T>
+class Queue
+{
+private:
+    Node<T> *head{nullptr};
+    Node<T> *tail{nullptr};
+    size_t size{0};
+
 public:
     Queue() = default;
     ~Queue() { clear(); }
 
-    Queue(const Queue& other) { for (Node* cur=other.head; cur; cur=cur->next) enqueue(cur->data); }
-    Queue& operator=(const Queue& other) { if (this!=&other){ clear(); for (Node* cur=other.head; cur; cur=cur->next) enqueue(cur->data);} return *this; }
+    bool empty() const
+    {
+        return size == 0;
+    }
+    size_t size() const
+    {
+        return size;
+    }
 
-    Queue(Queue&& other) noexcept : head(other.head), tail(other.tail), sz(other.sz) { other.head=other.tail=nullptr; other.sz=0; }
-    Queue& operator=(Queue&& other) noexcept { if (this!=&other){ clear(); head=other.head; tail=other.tail; sz=other.sz; other.head=other.tail=nullptr; other.sz=0; } return *this; }
+    void enqueue(const T &value)
+    {
+        Node<T> *temp = new Node<T>(value);
+        if (!tail)
+        {
+            head = tail = temp;
+        }
+        else
+        {
+            tail->next = temp;
+            tail = temp;
+        }
+        ++size;
+    }
 
-    bool empty() const { return sz==0; }
-    size_t size() const { return sz; }
+    T dequeue()
+    {
+        if (!head)
+            throw runtime_error("empty queue");
 
-    void enqueue(T value) { Node* n = new Node(std::move(value)); if (!tail) { head=tail=n; } else { tail->next = n; tail = n; } ++sz; }
-    void dequeue() { if (!head) return; Node* old=head; head=head->next; delete old; --sz; if (!head) tail=nullptr; }
-    T& front() { if (!head) throw runtime_error("empty queue"); return head->data; }
-    const T& front() const { if (!head) throw runtime_error("empty queue"); return head->data; }
+        T value = head->data;
+        Node<T? *temp = head;
+        head = head->next;
+        delete temp;
+        --size;
+        if (!head)
+        {
+            tail = nullptr;
+        }
+        return value;
+    }
 
-    void clear() { while(head) dequeue(); }
+    T peek() const
+    {
+        if (!head)
+            throw runtime_error("empty queue");
+        return head->data;
+    }
+
+    void clear()
+    {
+        while (head)
+            dequeue();
+    }
 };

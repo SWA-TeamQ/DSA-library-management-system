@@ -15,10 +15,10 @@ private:
 public:
     Patron() = default;
 
-    Patron(string patronID = "",
-           string name = "",
-           string contact = "",
-           string membershipDate = "",
+    Patron(string patronID,
+           string name,
+           string contact,
+           string membershipDate,
            int borrowCount = 0)
     {
         this->patronID = patronID;
@@ -29,6 +29,7 @@ public:
     }
 
     const string &getID() const { return patronID; }
+    const string &getKey() const { return patronID; }
     const string &getName() const { return name; }
     const string &getContact() const { return contact; }
     const string &getMembershipDate() const { return membershipDate; }

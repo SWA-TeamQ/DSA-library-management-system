@@ -21,6 +21,9 @@ add_executable(lms
     src/models/Transaction.cpp
     src/core/LibraryController.cpp
     src/ui/ConsoleInterface.cpp
+    src/managers/BookManager.cpp
+    src/managers/PatronManager.cpp
+    src/managers/TransactionManager.cpp
 )
 
 # Future: tests target
