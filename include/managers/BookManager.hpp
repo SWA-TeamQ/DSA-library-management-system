@@ -4,8 +4,10 @@
 #include "models/Book.hpp"
 #include "structures/HashTable.hpp"
 #include "structures/MergeSort.hpp"
-#include "DataStore.hpp"
+#include "core/DataStore.hpp"
 #include "BookSearch.hpp"
+
+using BookHashTable = HashTable<Book>;
 
 using namespace std;
 
@@ -18,7 +20,10 @@ private:
     vector<Book> bookList;
 
 public:
-    BookManager() = default;
+    BookManager(const string &filename) : bookStore(filename)
+    {
+        loadBooks();
+    }
 
     // Data operations
     void loadBooks();

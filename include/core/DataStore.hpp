@@ -15,19 +15,18 @@ private:
     string filename;
 
 public:
-    DataStore(const string& filename)
+    DataStore(const string &filename)
     {
         this->filename = filename;
     }
 
-    void saveData(const vector<T> &dataList) const
+    bool saveData(const vector<T> &dataList) const
     {
-        ofstream file(filename, ios::out|ios::trunc);
+        ofstream file(filename, ios::out | ios::trunc);
 
         if (!file.is_open())
         {
-            cerr << "Error: Unable to open file for overwriting: " << filename << endl;
-            return;
+            return false;
         }
 
         // Write each item, one per line
@@ -37,31 +36,31 @@ public:
         }
 
         file.close();
+        return true;
     }
 
-    void addData(const T &item) const
+    bool addData(const T &item) const
     {
         ofstream file(filename, ios::app); // append mode
 
         if (!file.is_open())
         {
-            cerr << "Error: Unable to open file for appending: " << filename << endl;
-            return;
+            return false;
         }
 
         file << item.serialize() << '\n';
         file.close();
+        return true;
     }
 
-    void loadData(vector<T> &dataList)
+    bool loadData(vector<T> &dataList)
     {
         dataList.clear();
-        ifstream file(filename,ios::in);
+        ifstream file(filename, ios::in);
 
         if (!file.is_open())
         {
-            cerr << "Error: Unable to open file for reading: " << filename << endl;
-            return;
+            return false;
         }
 
         string line;
@@ -70,10 +69,11 @@ public:
             if (line.empty())
                 continue; // skip blank lines
 
-            T item;
+            T item{};
             item.deserialize(line);
             dataList.push_back(item);
         }
         file.close();
+        return true;
     }
 };

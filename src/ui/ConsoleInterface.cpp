@@ -241,6 +241,7 @@ void ConsoleInterface::handleAddBook()
     string title = getInput(" Enter Title: ");
     string author = getInput(" Enter Author: ");
     string isbn = getInput(" Enter ISBN: ");
+    string edition = getInput(" Enter Edition: ");
     string category = getInput(" Enter Category: ");
 
     if (title.empty() || author.empty() || isbn.empty())
@@ -249,7 +250,7 @@ void ConsoleInterface::handleAddBook()
     }
     else
     {
-        bool ok = controller.addBook(Book(title, author, isbn, category));
+        bool ok = controller.addBook(Book(title, author, isbn, edition, "2023", category));
         if (ok)
             cout << "\n Book added successfully!\n";
         else
@@ -277,7 +278,7 @@ void ConsoleInterface::handleAddPatron()
     }
     else
     {
-        bool ok = controller.addPatron(Patron(id, name, contact));
+        bool ok = controller.addPatron(Patron(id, name, contact, "Regular", 0));
         if (ok)
             cout << "\n Patron registered successfully!\n";
         else
@@ -323,55 +324,6 @@ void ConsoleInterface::handleReturn()
         cout << "\n Return failed. Check details.\n";
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // --- Placeholders for Future Features ---
 

@@ -3,36 +3,62 @@
 
 void PatronManager::loadPatrons()
 {
-    store.loadData(patrons);
-}
-
-void PatronManager::savePatrons() const
-{
-    store.saveData(patrons);
-}
-
-void PatronManager::add(const Patron &p)
-{
-    patrons.push_back(p);
-    store.addData(p);
-}
-
-void PatronManager::remove(const string &patronID)
-{
-    for (auto it = patrons.begin(); it != patrons.end(); ++it)
+    if (!store.loadData(patronList))
     {
-        if (it != patrons.end())
-        {
-            patrons.erase(it);
-            savePatrons(); // Save after removal
-        }
+        cout << "Warning: Failed to load patrons from file\n";
+        return;
     }
+    for (auto &p : patronList)
+        patrons.insert(&p); // insert into hash table
+}
+
+void PatronManager::savePatrons()
+{
+    if (!store.saveData(patronList))
+    {
+        cout << "Warning: Failed to save patrons to file\n";
+    }
+}
+
+bool PatronManager::addPatron(const Patron &p)
+{
+    patronList.push_back(p);
+    if (patrons.insert(&patronList.back()))
+    {
+        if (!store.addData(patronList.back()))
+        {
+            patrons.erase(patronList.back().getID());
+            patronList.pop_back();
+            return false;
+        }
+        return true;
+    }
+    else
+    {
+        patronList.pop_back();
+        return false;
+    }
+}
+
+bool PatronManager::removePatron(const string &patronID)
+{
+    patrons.erase(patronID);
+    auto it = std::find_if(patronList.begin(), patronList.end(), [&](const Patron &pat)
+                           { return pat.getID() == patronID; });
+    if (it != patronList.end())
+        patronList.erase(it);
+    savePatrons(); // persist after removal
+    return true;
+}
+
+Patron *PatronManager::findPatron(const string &patronID)
+{
+    return patrons.find(patronID);
 }
 
 void PatronManager::displayAll() const
 {
-    for (const auto &patron : patrons)
-    {
-        patron.displayDetails();
-    }
+    cout << "--- Patrons ---\n";
+    for (auto *p : patrons.all())
+        p->displayDetails();
 }

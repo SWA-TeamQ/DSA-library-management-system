@@ -8,12 +8,13 @@ void BookManager::loadBooks()
 {
     bookStore.loadData(bookList); // load from books.txt
     for (auto &b : bookList)
-        books.insert(b); // insert into hash table
+        books.insert(&b); // insert into hash table
     buildSearchIndex();
 }
 
 void BookManager::saveBooks()
 {
+    bookList.clear();
     for (auto *b : books.all())
         bookList.push_back(*b);
     bookStore.saveData(bookList); // save to books.txt
@@ -21,13 +22,18 @@ void BookManager::saveBooks()
 
 bool BookManager::addBook(const Book &b)
 {
-    if (books.insert(b))
+    bookList.push_back(b);
+    if (books.insert(&bookList.back()))
     {
         saveBooks(); // persist after addition
         buildSearchIndex();
         return true;
     }
-    return false;
+    else
+    {
+        bookList.pop_back();
+        return false;
+    }
 }
 
 bool BookManager::removeBookByISBN(const string &isbn)
@@ -48,10 +54,10 @@ Book *BookManager::findBookByISBN(const string &isbn)
 
 void BookManager::sortBooksByTitle(bool reverse)
 {
-    mergeSort(bookList, [](const Book &a, const Book &b)
-              { 
+    mergeSort(bookList, [reverse](const Book &a, const Book &b)
+              {
         if(reverse){
-            return a.getTitle() > b.getTitle(); 
+            return a.getTitle() > b.getTitle();
         }
         return a.getTitle() < b.getTitle(); });
 
@@ -62,21 +68,12 @@ void BookManager::sortBooksByTitle(bool reverse)
 // Sort a books by its publication year in ascending order
 void BookManager::sortBooksByYear(bool reverse)
 {
-    mergeSort(bookList, [](const Book &a, const Book &b){ 
+    mergeSort(bookList, [reverse](const Book &a, const Book &b)
+              {
         if(reverse){
-            return a.getPublicationYear() > b.getPublicationYear(); 
+            return a.getPublicationYear() > b.getPublicationYear();
         }
-        return a.getTitle() < b.getTitle(); });
-
-    // Update the book store file with the sorted list
-    bookStore.saveData(bookList);
-}
-
-// Sort a books by its publication year in descending order
-void BookManager::sortBooksByYearDesc()
-{
-    mergeSort(bookList, [](const Book &a, const Book &b)
-              { return a.getPublicationYear() > b.getPublicationYear(); });
+        return a.getPublicationYear() < b.getPublicationYear(); });
 
     // Update the book store file with the sorted list
     bookStore.saveData(bookList);
@@ -109,7 +106,9 @@ Book *BookManager::updateBookDetails(const string &isbn, const string &title, co
 {
     Book *b = findBookByISBN(isbn);
     if (!b)
+    {
         return nullptr;
+    }
 
     bool changed = false;
 

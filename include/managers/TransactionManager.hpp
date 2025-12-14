@@ -1,12 +1,14 @@
 #pragma once
 #include <vector>
 #include "models/Transaction.hpp"
+#include "structures/HashTable.hpp"
 #include "core/DataStore.hpp"
 
 class TransactionManager
 {
 private:
-    vector<Transaction> transactions;
+    HashTable<Transaction> transactions; // Hash table keyed by transactionID
+    vector<Transaction> transactionList;
     DataStore<Transaction> store;
 
 public:
@@ -16,10 +18,12 @@ public:
     }
 
     void loadTransactions();
-    void saveTransactions() const;
+    void saveTransactions();
 
-    void add(const Transaction &t);
-    void remove(const string &transactionID);
+    bool addTransaction(const Transaction &t);
+    bool removeTransaction(const string &transactionID);
+    Transaction *findTransaction(const string &transactionID);
 
     void displayAll() const;
+    vector<Transaction *> getAllTransactions() const;
 };

@@ -19,7 +19,7 @@ private:
     TransactionManager transactionsManager;
 
 public:
-    LibraryController() = default;
+    LibraryController() : patronsManager("patrons.txt"), booksManager("books.txt"), transactionsManager("transactions.txt") {}
 
     void load(){
         patronsManager.loadPatrons();
@@ -52,7 +52,7 @@ public:
     bool borrowBook(const string& patronID, const string& isbn);
     bool returnBook(const string& patronID, const string& isbn);
 
-    // Reporting stubs
-    // void listAllBooks() const;
-    // void listAllPatrons() const;
+    // Reporting
+    void listAllPatrons() const;
+    void listAllTransactions() const;
 };

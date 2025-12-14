@@ -1,62 +1,62 @@
 #pragma once
-#include <unordered_map>
-#include <vector>
+#include <iostream>
 #include <string>
-#include "models/Book.hpp"
+#include <vector>
+#include <unordered_map>
 
-class BookHashTable
+template <typename T>
+class HashTable
 {
 private:
-    std::unordered_map<std::string, Book> table;
+    std::unordered_map<std::string, T *> table;
 
 public:
-    BookHashTable() = default;
-    ~BookHashTable() = default;
+    HashTable() = default;
+    ~HashTable() = default;
 
-    BookHashTable(const BookHashTable &) = delete;
-    BookHashTable &operator=(const BookHashTable &) = delete;
-
-    bool empty() const { return table.empty(); }
-    size_t size() const { return table.size(); }
-
-    // Insert book if ISBN does not exist yet
-    bool insert(const Book &b)
+    bool empty() const
     {
-        auto [it, inserted] = table.emplace(b.getISBN(), b);
-        if(!inserted){
-            cout << "Duplicated isbn" << endl;
-        }
+        return table.empty();
+    }
+    size_t size() const
+    {
+        return table.size();
+    }
+
+    bool insert(T *item)
+    {
+        if (!item)
+            return false;
+        std::string key = item->getKey();
+        auto [it, inserted] = table.emplace(key, item);
         return inserted;
     }
 
-    // Find book by ISBN
-    Book* find(const std::string &isbn)
+    T *find(const std::string &key)
     {
-        auto it = table.find(isbn);
+        auto it = table.find(key);
         if (it != table.end())
-            return &(it->second);
+            return it->second;
         return nullptr;
     }
 
-    // Remove book by ISBN
-    bool erase(const std::string &isbn)
+    bool erase(const std::string &key)
     {
-        return table.erase(isbn) > 0;
+        auto removed = table.erase(key);
+        return removed > 0;
     }
 
-    // Remove all books
     void clear()
     {
         table.clear();
     }
 
-    // Return all books as pointers for easy iteration
-    std::vector<Book *> all()
+    std::vector<T *> all() const
     {
-        std::vector<Book *> out;
+        std::vector<T *> out;
         out.reserve(table.size());
-        for (auto &pair : table)
-            out.push_back(&pair.second);
+        for (auto &[key, value] : table)
+            out.push_back(value);
         return out;
     }
 };
