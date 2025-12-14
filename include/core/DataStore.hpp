@@ -15,12 +15,12 @@ private:
     string filename;
 
 public:
-    DataStore(string filename)
+    DataStore(const string& filename)
     {
         this->filename = filename;
     }
 
-    void saveData(const vector<T> &dataList)
+    void saveData(const vector<T> &dataList) const
     {
         ofstream file(filename);
 
@@ -36,6 +36,20 @@ public:
             file << item.serialize() << '\n';
         }
 
+        file.close();
+    }
+
+    void addData(const T &item) const
+    {
+        ofstream file(filename, ios::app); // append mode
+
+        if (!file.is_open())
+        {
+            cerr << "Error: Unable to open file for appending: " << filename << endl;
+            return;
+        }
+
+        file << item.serialize() << '\n';
         file.close();
     }
 
