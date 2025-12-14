@@ -1,21 +1,14 @@
 #pragma once
-
 #include <vector>
-#include <string>
-#include "models/Book.hpp"
-
-using namespace std;
-
-#pragma once
-#include <vector>
+#include <functional>
 
 template <typename T, typename Compare>
-void mergeSort(std::vector<T>& arr, Compare compare)
+void mergeSort(std::vector<T> &arr, Compare compare)
 {
     if (arr.size() <= 1)
         return;
 
-    int mid = arr.size() / 2;
+    size_t mid = arr.size() / 2;
 
     std::vector<T> left(arr.begin(), arr.begin() + mid);
     std::vector<T> right(arr.begin() + mid, arr.end());
@@ -23,7 +16,7 @@ void mergeSort(std::vector<T>& arr, Compare compare)
     mergeSort(left, compare);
     mergeSort(right, compare);
 
-    int i = 0, j = 0, k = 0;
+    size_t i = 0, j = 0, k = 0;
 
     while (i < left.size() && j < right.size())
     {
