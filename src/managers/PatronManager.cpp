@@ -62,7 +62,8 @@ void PatronManager::displayAll() const
     for (auto *p : patrons.all())
         p->displayDetails();
 }
-// findpatronbyname
+
+// searching and accessing the patrons using their names
 Patron* PatronManager::findPatronByName(const string& name)
 {
     for (auto& p : patronList)
