@@ -51,7 +51,7 @@ bool PatronManager::removePatron(const string &patronID)
     return true;
 }
 
-Patron *PatronManager::findPatron(const string &patronID)
+Patron *PatronManager::findPatron(const string &patronID) const
 {
     return patrons.find(patronID);
 }

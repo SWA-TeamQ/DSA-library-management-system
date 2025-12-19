@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "models/Patron.hpp"
-#include "structures/HashTable.hpp"
+#include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
 
 class PatronManager
@@ -22,7 +22,7 @@ public:
 
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
-    Patron *findPatron(const string &patronID);
+    Patron *findPatron(const string &patronID) const;
 
     void displayAll() const;
 };

@@ -28,8 +28,11 @@ public:
         this->borrowCount = borrowCount;
     }
 
-    const string &getID() const { return patronID; }
+
+    // for generic lookup
     const string &getKey() const { return patronID; }
+
+    const string &getID() const { return patronID; }
     const string &getName() const { return name; }
     const string &getContact() const { return contact; }
     const string &getMembershipDate() const { return membershipDate; }

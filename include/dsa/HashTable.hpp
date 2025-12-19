@@ -4,11 +4,13 @@
 #include <vector>
 #include <unordered_map>
 
+using namespace std;
+
 template <typename T>
 class HashTable
 {
 private:
-    std::unordered_map<std::string, T *> table;
+    unordered_map<string, T> table;
 
 public:
     HashTable() = default;
@@ -18,29 +20,28 @@ public:
     {
         return table.empty();
     }
+
     size_t size() const
     {
         return table.size();
     }
 
-    bool insert(T *item)
+    bool insert(const T &item)
     {
-        if (!item)
-            return false;
-        std::string key = item->getKey();
+        string key = item.getKey();
         auto [it, inserted] = table.emplace(key, item);
         return inserted;
     }
 
-    T *find(const std::string &key)
+    T *find(const string &key) const
     {
         auto it = table.find(key);
         if (it != table.end())
-            return it->second;
+            return &it->second;
         return nullptr;
     }
 
-    bool erase(const std::string &key)
+    bool erase(const string &key)
     {
         auto removed = table.erase(key);
         return removed > 0;
@@ -51,12 +52,12 @@ public:
         table.clear();
     }
 
-    std::vector<T *> all() const
+    vector<T *> all() const
     {
-        std::vector<T *> out;
+        vector<T *> out;
         out.reserve(table.size());
         for (auto &[key, value] : table)
-            out.push_back(value);
+            out.push_back(&value);
         return out;
     }
 };

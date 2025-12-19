@@ -10,13 +10,6 @@ private:
     LibraryController &controller;
     bool running{true};
 
-    // --- UI Helpers ---
-    void clearScreen() const;
-    void printHeader(const string &title) const;
-    void waitForEnter() const;
-    string getInput(const string &prompt) const;
-    void printDivider() const;
-
     // --- Menus ---
     void printMainMenu() const;
 
