@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "models/Transaction.hpp"
-#include "structures/HashTable.hpp"
+#include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
 
 class TransactionManager

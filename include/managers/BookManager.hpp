@@ -2,8 +2,8 @@
 #include <vector>
 #include <string>
 #include "models/Book.hpp"
-#include "structures/HashTable.hpp"
-#include "structures/MergeSort.hpp"
+#include "dsa/HashTable.hpp"
+#include "dsa/MergeSort.hpp"
 #include "core/DataStore.hpp"
 #include "BookSearch.hpp"
 
