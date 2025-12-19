@@ -34,8 +34,10 @@ public:
         this->returned = returned;
     }
 
-    const string &getID() const { return transactionID; }
+    // for generic lookup
     const string &getKey() const { return transactionID; }
+
+    const string &getID() const { return transactionID; }
     const string &getBookID() const { return bookID; }
     const string &getPatronID() const { return patronID; }
     const string &getBorrowDate() const { return borrowDate; }

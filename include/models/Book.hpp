@@ -27,10 +27,12 @@ public:
          bool available = true,
          int borrowCount = 0);
 
+    // for generic lookup
+    const string &getKey() const { return isbn; }
+
     const string &getTitle() const { return title; }
     const string &getAuthor() const { return author; }
     const string &getISBN() const { return isbn; }
-    const string &getKey() const { return isbn; }
     const string &getEdition() const { return edition; }
     const string &getPublicationYear() const { return publicationYear; }
     const string &getCategory() const { return category; }
