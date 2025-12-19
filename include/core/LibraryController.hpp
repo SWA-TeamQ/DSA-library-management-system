@@ -8,6 +8,7 @@
 #include "managers/BookManager.hpp"
 #include "managers/TransactionManager.hpp"
 #include "managers/PatronManager.hpp"
+#include "core/LoanService.hpp"
 
 using namespace std;
 
@@ -17,9 +18,15 @@ private:
     PatronManager patronsManager;
     BookManager booksManager;
     TransactionManager transactionsManager;
+    LoanService loanService;
 
 public:
-    LibraryController() : patronsManager("patrons.txt"), booksManager("books.txt"), transactionsManager("transactions.txt") {}
+    LibraryController()
+        : patronsManager("patrons.txt"),
+          booksManager("books.txt"),
+          transactionsManager("transactions.txt"),
+          loanService(booksManager, patronsManager, transactionsManager)
+    {}
 
     void load(){
         patronsManager.loadPatrons();

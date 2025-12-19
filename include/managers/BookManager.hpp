@@ -32,7 +32,7 @@ public:
     // Book operations
     bool addBook(const Book &b);
     bool removeBookByISBN(const string &isbn);
-    Book *findBookByISBN(const string &isbn);
+    Book *findBookByISBN(const string &isbn) const;
     void buildSearchIndex();
     vector<Book *> findBooksByTitle(const string &title) const;
     vector<Book *> findBooksByAuthor(const string &author) const;

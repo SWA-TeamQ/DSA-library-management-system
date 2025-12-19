@@ -22,7 +22,7 @@ public:
 
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
-    Patron *findPatron(const string &patronID);
+    Patron *findPatron(const string &patronID) const;
 
     void displayAll() const;
 };

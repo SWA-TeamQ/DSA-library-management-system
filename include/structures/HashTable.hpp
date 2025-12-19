@@ -32,10 +32,10 @@ public:
         return inserted;
     }
 
-    T *find(const std::string &key)
+    T* find(const std::string &key) const
     {
         auto it = table.find(key);
-        if (it != table.end())
+        if(it != table.end())
             return it->second;
         return nullptr;
     }

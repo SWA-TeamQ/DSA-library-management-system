@@ -47,7 +47,7 @@ bool BookManager::removeBookByISBN(const string &isbn)
     return false;
 }
 // Search a Book by its Id
-Book *BookManager::findBookByISBN(const string &isbn)
+Book *BookManager::findBookByISBN(const string &isbn) const
 {
     return books.find(isbn);
 }

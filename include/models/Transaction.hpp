@@ -34,7 +34,7 @@ public:
         this->returned = returned;
     }
 
-    const string &getTransactionID() const { return transactionID; }
+    const string &getID() const { return transactionID; }
     const string &getKey() const { return transactionID; }
     const string &getBookID() const { return bookID; }
     const string &getPatronID() const { return patronID; }
@@ -43,7 +43,7 @@ public:
     const string &getReturnDate() const { return returnDate; }
     bool isReturned() const { return returned; }
 
-    void setTransactionID(const string &id) { transactionID = id; }
+    void setId(const string &id) { transactionID = id; }
     void setBookID(const string &id) { bookID = id; }
     void setPatronID(const string &id) { patronID = id; }
     void setBorrowDate(const string &date) { borrowDate = date; }
