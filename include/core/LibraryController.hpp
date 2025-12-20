@@ -52,7 +52,7 @@ public:
     vector<Book *> findBooksByAuthor(const string &author) const;
     void sortBooksByTitle(bool reverse = false);
     void sortBooksByYear(bool reverse = false);
-    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
+    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const int &publicationYear, const string &category, bool available, int borrowCount);
     void listAllBooks() const;
 
     // Patron operations

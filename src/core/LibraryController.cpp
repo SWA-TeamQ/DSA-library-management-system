@@ -18,7 +18,7 @@ void LibraryController::sortBooksByTitle(bool reverse) { booksManager.sortBooksB
 
 void LibraryController::sortBooksByYear(bool reverse) { booksManager.sortBooksByYear(reverse); }
 
-Book *LibraryController::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount) { return booksManager.updateBookDetails(isbn, title, author, edition, publicationYear, category, available, borrowCount); }
+Book *LibraryController::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const int &publicationYear, const string &category, bool available, int borrowCount) { return booksManager.updateBookDetails(isbn, title, author, edition, publicationYear, category, available, borrowCount); }
 
 void LibraryController::listAllBooks() const { booksManager.listAllBooks(); }
 

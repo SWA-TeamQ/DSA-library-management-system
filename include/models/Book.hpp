@@ -10,20 +10,24 @@ private:
     string author;
     string isbn;
     string edition;
-    string publicationYear;
+    int publicationYear;
     string category;
+    
+
+public:
+    int quantity{1};
     bool available{true};
     int borrowCount{0};
 
-public:
     Book() = default;
 
     Book(string title,
          string author,
          string isbn,
          string edition,
-         string publicationYear,
+         int publicationYear,
          string category = "General",
+         int quantity = 1,
          bool available = true,
          int borrowCount = 0);
 
@@ -34,8 +38,9 @@ public:
     const string &getAuthor() const { return author; }
     const string &getISBN() const { return isbn; }
     const string &getEdition() const { return edition; }
-    const string &getPublicationYear() const { return publicationYear; }
+    const int &getPublicationYear() const { return publicationYear; }
     const string &getCategory() const { return category; }
+    const int &getQuantity() const { return quantity; }
     bool isAvailable() const { return available; }
     int getBorrowCount() const { return borrowCount; }
 
@@ -43,8 +48,9 @@ public:
     void setAuthor(const string &author) { this->author = author; }
     void setISBN(const string &isbn) { this->isbn = isbn; }
     void setEdition(const string &edition) { this->edition = edition; }
-    void setPublicationYear(const string &publicationYear) { this->publicationYear = publicationYear; }
+    void setPublicationYear(const int &publicationYear) { this->publicationYear = publicationYear; }
     void setCategory(const string &category) { this->category = category; }
+    void setQuantity(const int &quantity) { this->quantity = quantity; }
     void setAvailable(bool available) { this->available = available; }
     void setBorrowCount(int bc) { borrowCount = bc; }
 
