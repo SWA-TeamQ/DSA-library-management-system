@@ -1,5 +1,6 @@
 #include "managers/PatronManager.hpp"
 #include <algorithm>
+#include <iomanip>
 
 void PatronManager::loadPatrons()
 {
@@ -75,12 +76,34 @@ Patron *PatronManager::findPatron(const string &patronID)
     return patrons.find(patronID);
 }
 
+//formatted table with borrow counts and contact info
+
 void PatronManager::displayAll() const
 {
-    cout << "--- Patrons ---\n";
-    for (auto *p : patrons.all())
-        p->displayDetails();
+    cout << "\n Patron List \n";
+
+    cout << left
+         << setw(15) << "Patron ID"
+         << setw(20) << "Name"
+         << setw(25) << "Contact"
+         << setw(10) << "Borrowed"
+         << "\n";
+
+    cout << string(70, '-') << "\n";
+
+    for (auto* p : patrons.all())
+    {
+        cout << left
+             << setw(15) << p->getID()
+             << setw(20) << p->getName()
+             << setw(25) << p->getContact()
+             << setw(10) << p->getBorrowCount()
+             << "\n";
+    }
+
+    cout << "\n";
 }
+
 
 // searching and accessing the patrons using their names
 Patron* PatronManager::findPatronByName(const string& name)
