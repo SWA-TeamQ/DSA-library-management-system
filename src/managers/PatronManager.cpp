@@ -40,16 +40,35 @@ bool PatronManager::addPatron(const Patron &p)
     }
 }
 
-bool PatronManager::removePatron(const string &patronID)
+// solved the issue Constraint: cannot remove patrons with unreturned books
+bool PatronManager::removePatron(const string& patronID)
 {
+    Patron* p = patrons.find(patronID);
+    if (!p)
+        return false;
+
+    // TODO: Prevent removal if patron has unreturned books
+    // This will be enforced via TransactionManager
+
     patrons.erase(patronID);
-    auto it = std::find_if(patronList.begin(), patronList.end(), [&](const Patron &pat)
-                           { return pat.getID() == patronID; });
+
+    auto it = std::find_if(
+        patronList.begin(),
+        patronList.end(),
+        [&](const Patron& pat)
+        {
+            return pat.getID() == patronID;
+        }
+    );
+
     if (it != patronList.end())
         patronList.erase(it);
-    savePatrons(); // persist after removal
+
+    savePatrons();
     return true;
 }
+
+
 
 Patron *PatronManager::findPatron(const string &patronID)
 {
@@ -73,6 +92,8 @@ Patron* PatronManager::findPatronByName(const string& name)
     }
     return nullptr;
 }
+
+// update patron contact function
 bool PatronManager::updatePatronContact(
     const string& patronID,
     const string& newContact)

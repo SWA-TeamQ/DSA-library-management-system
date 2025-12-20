@@ -34,10 +34,54 @@ private:
     void handleRemoveBook();  // Placeholder for Member 2
 
     // --- Member Operations ---
+    // Patron Management 
     void handleAddPatron();
-    void handleListPatrons();
-    void handleSearchPatrons(); // Placeholder for Member 3
-    void handleRemovePatron();  // Placeholder for Member 3
+    
+    // handles listing of all the patrons 
+   void ConsoleInterface::handleListPatrons()
+{
+    printHeader("All Patrons");
+    controller.listAllPatrons();
+    waitForEnter();
+}
+
+    // handles patrons search
+  void ConsoleInterface::handleSearchPatrons()
+{
+    printHeader("Search Patron by Name");
+
+    string name = getInput("Enter patron name: ");
+    Patron* p = controller.findPatronByName(name);
+
+    if (!p)
+    {
+        cout << "No patron found.\n";
+    }
+    else
+    {
+        printDivider();
+        p->displayDetails();
+    }
+
+    waitForEnter();
+}
+
+ // handles patrons removal
+ void ConsoleInterface::handleRemovePatron()
+{
+    printHeader("Remove Patron");
+
+    string id = getInput("Enter Patron ID: ");
+
+    if (controller.removePatron(id))
+        cout << "Patron removed successfully.\n";
+    else
+        cout << "Cannot remove patron (active loans or not found).\n";
+
+    waitForEnter();
+}
+
+
 
     // --- Transaction Operations ---
     void handleBorrow();
