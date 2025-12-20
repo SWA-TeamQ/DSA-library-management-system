@@ -25,4 +25,8 @@ public:
     Patron *findPatron(const string &patronID) const;
 
     void displayAll() const;
+    Patron* findPatronByName(const string& name);
+bool updatePatronContact(const string& patronID, const string& newContact);
+
 };
+

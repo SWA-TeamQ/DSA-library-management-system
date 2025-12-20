@@ -66,4 +66,11 @@ public:
     // Reporting
     void listAllPatrons() const;
     void listAllTransactions() const;
+
+    //patron management 
+    Patron* findPatronByName(const string& name);
+void listAllPatrons();
+bool removePatron(const string& id);
+
+
 };

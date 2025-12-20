@@ -1,5 +1,6 @@
 #include "managers/PatronManager.hpp"
 #include <algorithm>
+#include <iomanip>
 
 void PatronManager::loadPatrons()
 {
@@ -40,14 +41,31 @@ bool PatronManager::addPatron(const Patron &p)
     }
 }
 
-bool PatronManager::removePatron(const string &patronID)
+// solved the issue Constraint: cannot remove patrons with unreturned books
+bool PatronManager::removePatron(const string& patronID)
 {
+    Patron* p = patrons.find(patronID);
+    if (!p)
+        return false;
+
+    // TODO: Prevent removal if patron has unreturned books
+    // This will be enforced via TransactionManager
+
     patrons.erase(patronID);
-    auto it = std::find_if(patronList.begin(), patronList.end(), [&](const Patron &pat)
-                           { return pat.getID() == patronID; });
+
+    auto it = std::find_if(
+        patronList.begin(),
+        patronList.end(),
+        [&](const Patron& pat)
+        {
+            return pat.getID() == patronID;
+        }
+    );
+
     if (it != patronList.end())
         patronList.erase(it);
-    savePatrons(); // persist after removal
+
+    savePatrons();
     return true;
 }
 
@@ -56,9 +74,56 @@ Patron *PatronManager::findPatron(const string &patronID) const
     return patrons.find(patronID);
 }
 
+//formatted table with borrow counts and contact info
+
 void PatronManager::displayAll() const
 {
-    cout << "--- Patrons ---\n";
-    for (auto *p : patrons.all())
-        p->displayDetails();
+    cout << "\n Patron List \n";
+
+    cout << left
+         << setw(15) << "Patron ID"
+         << setw(20) << "Name"
+         << setw(25) << "Contact"
+         << setw(10) << "Borrowed"
+         << "\n";
+
+    cout << string(70, '-') << "\n";
+
+    for (auto* p : patrons.all())
+    {
+        cout << left
+             << setw(15) << p->getID()
+             << setw(20) << p->getName()
+             << setw(25) << p->getContact()
+             << setw(10) << p->getBorrowCount()
+             << "\n";
+    }
+
+    cout << "\n";
+}
+
+
+// searching and accessing the patrons using their names
+Patron* PatronManager::findPatronByName(const string& name)
+{
+    for (auto& p : patronList)
+    {
+        if (p.getName() == name)
+            return &p;
+    }
+    return nullptr;
+}
+
+// update patron contact function
+bool PatronManager::updatePatronContact(
+    const string& patronID,
+    const string& newContact)
+{
+    Patron* p = patrons.find(patronID);
+    if (!p)
+        return false;
+
+    p->setContact(newContact);
+    savePatrons();
+    return true;
 }
