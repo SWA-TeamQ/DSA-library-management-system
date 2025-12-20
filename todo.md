@@ -9,7 +9,6 @@
 ## Member 2 — Book Management
 
 -   [ ] Implement book search flows by title/author and display formatted results using [src/core/LibraryController.cpp](src/core/LibraryController.cpp) and [src/managers/BookManager.cpp](src/managers/BookManager.cpp).
--   [ ] Swap current mergeSort usage with required bubble/selection sort in [src/managers/BookManager.cpp](src/managers/BookManager.cpp) for title/year sorting to meet DSA spec.
 -   [ ] Implement book removal (with availability/active-loan guard) and ensure persistence/index rebuilds in [src/managers/BookManager.cpp](src/managers/BookManager.cpp) and [src/ui/ConsoleInterface.cpp](src/ui/ConsoleInterface.cpp).
 -   [ ] Add book update flow (title/author/category/edition/year/availability) surfaced through [src/ui/ConsoleInterface.cpp](src/ui/ConsoleInterface.cpp).
 

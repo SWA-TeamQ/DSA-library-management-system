@@ -15,19 +15,15 @@ using namespace std;
 class LibraryController
 {
 private:
-    BookHashTable books;
-    PatronManager patronsManager;
-    BookManager booksManager;
-    TransactionManager transactionsManager;
+    PatronManager patronsManager("patrons.txt");
+    BookManager booksManager("books.txt");
+    TransactionManager transactionsManager("transactions.txt");
     LoanService loanService;
 
 public:
     LibraryController()
-        : patronsManager("patrons.txt"),
-          booksManager("books.txt"),
-          transactionsManager("transactions.txt"),
-          loanService(booksManager, patronsManager, transactionsManager)
     {
+        loanService(booksManager, patronsManager, transactionsManager)
     }
 
     void load()
@@ -45,19 +41,25 @@ public:
     }
 
     // Book operations
+
     bool addBook(const Book &b);
     bool removeBookByISBN(const string &isbn);
-    Book *findBookByISBN(const string &isbn);
-    vector<Book *> findBooksByTitle(const string &title) const;
-    vector<Book *> findBooksByAuthor(const string &author) const;
-    void sortBooksByTitle(bool reverse = false);
-    void sortBooksByYear(bool reverse = false);
-    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
+    Book *findBook(const string &isbn);
+
+    Book *findBook(const string &searchString) const;
+    vector<Book *> findBooks(const string &searchString) const;
+    void sortBooks(const string &sortString, bool reverse = false);
+    bool updateBook(const string &updateString);
     void listAllBooks() const;
+
 
     // Patron operations
     bool addPatron(const Patron &p);
-    Patron *findPatronByID(const string &id);
+    Patron *findPatron(const string &searchString);
+    vector<Patron *> findPatrons(const string &searchString);
+    void sortPatrons(const string &sortString, bool reverse = false);
+    bool updatePatron(const string &updateString);
+    void listAllPatrons() const;
 
     // Borrow/Return operations
     bool borrowBook(const string &patronID, const string &isbn);

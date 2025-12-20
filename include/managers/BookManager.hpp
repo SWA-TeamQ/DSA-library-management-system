@@ -14,7 +14,7 @@ using namespace std;
 class BookManager
 {
 private:
-    BookHashTable books; // Hash table keyed by ISBN
+    BookHashTable books;
     BookSearchMap searchMap;
     DataStore<Book> bookStore{"books.txt"};
     vector<Book> bookList;
@@ -31,13 +31,17 @@ public:
 
     // Book operations
     bool addBook(const Book &b);
+    bool updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
     bool removeBookByISBN(const string &isbn);
+    
+
     Book *findBookByISBN(const string &isbn) const;
-    void buildSearchIndex();
     vector<Book *> findBooksByTitle(const string &title) const;
     vector<Book *> findBooksByAuthor(const string &author) const;
+    
     void sortBooksByTitle(bool reverse = false);
     void sortBooksByYear(bool reverse = false);
-    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
+    
     void listAllBooks() const;
+    void buildSearchIndex();
 };

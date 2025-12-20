@@ -7,8 +7,16 @@ using namespace std;
 class ConsoleInterface
 {
 private:
-    LibraryController &controller;
+    LibraryController controller;
     bool running{true};
+
+    // --- UI Helpers ---
+    void clearScreen() const;
+    void printDivider() const;
+    void printHeader(const string &title) const;
+    void waitForEnter() const;
+    string getInput(const string &prompt) const;
+    void printWelcomeBanner() const;
 
     // --- Menus ---
     void printMainMenu() const;
@@ -42,6 +50,8 @@ private:
     void handleLoadData(); // Placeholder for Member 6
 
 public:
-    explicit ConsoleInterface(LibraryController &c) : controller(c) {}
+    ConsoleInterface(LibraryController c){
+        controller = c;
+    }
     void run();
 };

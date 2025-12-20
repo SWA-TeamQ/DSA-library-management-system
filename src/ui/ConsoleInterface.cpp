@@ -3,52 +3,68 @@
 #include <cstdlib> // for system()
 using namespace std;
 
+
 // --- UI Helpers ---
 
 void ConsoleInterface::clearScreen() const
 {
-    // Simple clear screen for Windows.
-    // For cross-platform, we might use preprocessor directives.
     system("cls");
 }
 
 void ConsoleInterface::printDivider() const
 {
-    cout << "============================================================\n";
+    cout << "+------------------------------------------------------------+\n";
+}
+
+void ConsoleInterface::printWelcomeBanner() const
+{
+    clearScreen();
+    cout << "  __________________________________________________________  \n";
+    cout << " /                                                          \\ \n";
+    cout << "|    ____________________________________________________    |\n";
+    cout << "|   |                                                    |   |\n";
+    cout << "|   |    WELCOME TO THE LIBRARY MANAGEMENT SYSTEM        |   |\n";
+    cout << "|   |                                                    |   |\n";
+    cout << "|   |    Developed by: Team Q (DSA Course Project)       |   |\n";
+    cout << "|   |____________________________________________________|   |\n";
+    cout << " \\__________________________________________________________/ \n";
+    cout << "\n        [ Press Enter to Start the Application ]           \n";
+    string dummy;
+    getline(cin, dummy);
 }
 
 void ConsoleInterface::printHeader(const string &title) const
 {
     clearScreen();
+    cout << "       .--.                   .---.        \n";
+    cout << "   .---|__|                   |___|---.    \n";
+    cout << "   |---|--|                   |---|---|    \n";
+    cout << "   |---|--|    LMS PROJECT    |---|---|    \n";
+    cout << "   ^---^--^                   ^---^---^    \n";
     printDivider();
-    cout << "         LIBRARY MANAGEMENT SYSTEM  \n";
+    cout << "|             LIBRARY MANAGEMENT SYSTEM (DSA)                |\n";
     printDivider();
-    cout << " :: " << title << " ::\n";
+    cout << "|  CATEGORY: " << title;
+    // Pad with spaces to keep the border aligned
+    int padding = 47 - (int)title.length();
+    for (int i = 0; i < padding; ++i) cout << " ";
+    cout << "|\n";
     printDivider();
 }
 
 void ConsoleInterface::waitForEnter() const
 {
-    cout << "\n[Press Enter to continue...]";
-    cin.ignore(10000, '\n'); // Clear buffer if needed
-    // In some cases, if buffer is empty, this might wait.
-    // If buffer has newline, it skips.
-    // A simple getline is safer for "pause".
+    cout << "\n >>> Press Enter to continue...";
     string dummy;
     getline(cin, dummy);
 }
 
 string ConsoleInterface::getInput(const string &prompt) const
 {
-    cout << prompt;
+    cout << " " << prompt;
     string input;
     getline(cin, input);
     return input;
-}
-
-void clearInput(){
-    cin.ignore('\n');
-    cin.clear();
 }
 
 // --- Menus ---
@@ -56,17 +72,21 @@ void clearInput(){
 void ConsoleInterface::printMainMenu() const
 {
     printHeader("Main Menu");
-    cout << " 1. Book Management\n";
-    cout << " 2. Patron Management\n";
-    cout << " 3. Transactions (Borrow/Return)\n";
-    cout << " 4. Data Persistence (Save/Load)\n";
-    cout << " 0. Exit\n";
+    cout << "|                                                            |\n";
+    cout << "|  1. [ Book Management ]                                    |\n";
+    cout << "|  2. [ Patron Management ]                                  |\n";
+    cout << "|  3. [ Transactions (Borrow/Return) ]                       |\n";
+    cout << "|  4. [ Data Persistence (Save/Load) ]                       |\n";
+    cout << "|                                                            |\n";
+    cout << "|  0. [ Exit System ]                                        |\n";
+    cout << "|                                                            |\n";
     printDivider();
     cout << " Select an option: ";
 }
 
 void ConsoleInterface::run()
 {
+    printWelcomeBanner();
     while (running)
     {
         printMainMenu();
@@ -84,11 +104,11 @@ void ConsoleInterface::run()
         else if (choice == "0")
         {
             running = false;
-            cout << "\nGoodbye!\n";
+            cout << "\n Thank you for using the Library Management System. Goodbye!\n";
         }
         else
         {
-            cout << "Invalid option. Please try again.\n";
+            cout << " [!] Invalid option. Please try again.\n";
             waitForEnter();
         }
     }
@@ -102,12 +122,15 @@ void ConsoleInterface::handleBookMenu()
     while (!back)
     {
         printHeader("Book Management");
-        cout << " 1. Add New Book\n";
-        cout << " 2. List All Books\n";
-        cout << " 3. Search Books (Title/Author) [Coming Soon]\n";
-        cout << " 4. Sort Books [Coming Soon]\n";
-        cout << " 5. Remove Book [Coming Soon]\n";
-        cout << " 0. Back to Main Menu\n";
+        cout << "|                                                            |\n";
+        cout << "|  1. [ Add New Book ]                                       |\n";
+        cout << "|  2. [ List All Books ]                                     |\n";
+        cout << "|  3. [ Search Books (Title/Author) ]                        |\n";
+        cout << "|  4. [ Sort Books ]                                         |\n";
+        cout << "|  5. [ Remove Book ]                                        |\n";
+        cout << "|                                                            |\n";
+        cout << "|  0. [ Back to Main Menu ]                                  |\n";
+        cout << "|                                                            |\n";
         printDivider();
         cout << " Select: ";
 
@@ -130,7 +153,7 @@ void ConsoleInterface::handleBookMenu()
             back = true;
         else
         {
-            cout << "Invalid option.\n";
+            cout << " [!] Invalid option.\n";
             waitForEnter();
         }
     }
@@ -142,11 +165,14 @@ void ConsoleInterface::handlePatronMenu()
     while (!back)
     {
         printHeader("Patron Management");
-        cout << " 1. Register New Patron\n";
-        cout << " 2. List All Members\n";
-        cout << " 3. Search Patron [Coming Soon]\n";
-        cout << " 4. Remove Patron [Coming Soon]\n";
-        cout << " 0. Back to Main Menu\n";
+        cout << "|                                                            |\n";
+        cout << "|  1. [ Register New Patron ]                                |\n";
+        cout << "|  2. [ List All Members ]                                   |\n";
+        cout << "|  3. [ Search Patron ]                                      |\n";
+        cout << "|  4. [ Remove Patron ]                                      |\n";
+        cout << "|                                                            |\n";
+        cout << "|  0. [ Back to Main Menu ]                                  |\n";
+        cout << "|                                                            |\n";
         printDivider();
         cout << " Select: ";
 
@@ -167,7 +193,7 @@ void ConsoleInterface::handlePatronMenu()
             back = true;
         else
         {
-            cout << "Invalid option.\n";
+            cout << " [!] Invalid option.\n";
             waitForEnter();
         }
     }
@@ -179,10 +205,13 @@ void ConsoleInterface::handleTransactionMenu()
     while (!back)
     {
         printHeader("Transactions");
-        cout << " 1. Borrow Book\n";
-        cout << " 2. Return Book\n";
-        cout << " 3. View Borrow History [Coming Soon]\n";
-        cout << " 0. Back to Main Menu\n";
+        cout << "|                                                            |\n";
+        cout << "|  1. [ Borrow Book ]                                        |\n";
+        cout << "|  2. [ Return Book ]                                        |\n";
+        cout << "|  3. [ View Borrow History ]                                |\n";
+        cout << "|                                                            |\n";
+        cout << "|  0. [ Back to Main Menu ]                                  |\n";
+        cout << "|                                                            |\n";
         printDivider();
         cout << " Select: ";
 
@@ -204,7 +233,7 @@ void ConsoleInterface::handleTransactionMenu()
             back = true;
         else
         {
-            cout << "Invalid option.\n";
+            cout << " [!] Invalid option.\n";
             waitForEnter();
         }
     }
@@ -216,9 +245,12 @@ void ConsoleInterface::handleDataMenu()
     while (!back)
     {
         printHeader("Data Persistence");
-        cout << " 1. Save All Data [Coming Soon]\n";
-        cout << " 2. Load All Data [Coming Soon]\n";
-        cout << " 0. Back to Main Menu\n";
+        cout << "|                                                            |\n";
+        cout << "|  1. [ Save All Data ]                                      |\n";
+        cout << "|  2. [ Load All Data ]                                      |\n";
+        cout << "|                                                            |\n";
+        cout << "|  0. [ Back to Main Menu ]                                  |\n";
+        cout << "|                                                            |\n";
         printDivider();
         cout << " Select: ";
 
@@ -232,13 +264,11 @@ void ConsoleInterface::handleDataMenu()
             back = true;
         else
         {
-            cout << "Invalid option.\n";
+            cout << " [!] Invalid option.\n";
             waitForEnter();
         }
     }
 }
-
-// --- Implementation of Operations ---
 
 void ConsoleInterface::handleAddBook()
 {
@@ -267,7 +297,11 @@ void ConsoleInterface::handleAddBook()
 void ConsoleInterface::handleListBooks()
 {
     printHeader("Library Catalog");
+    cout << "\n [ Listing all books in the database ]\n";
+    cout << " ------------------------------------------------------------\n";
     controller.listAllBooks();
+    cout << " ------------------------------------------------------------\n";
+    cout << " [ End of Catalog ]\n";
 }
 
 void ConsoleInterface::handleAddPatron()
@@ -295,7 +329,11 @@ void ConsoleInterface::handleAddPatron()
 void ConsoleInterface::handleListPatrons()
 {
     printHeader("Registered Members");
+    cout << "\n [ Listing all registered patrons ]\n";
+    cout << " ------------------------------------------------------------\n";
     controller.listAllPatrons();
+    cout << " ------------------------------------------------------------\n";
+    cout << " [ End of List ]\n";
 }
 
 void ConsoleInterface::handleBorrow()
@@ -334,48 +372,72 @@ void ConsoleInterface::handleReturn()
 
 void ConsoleInterface::handleSearchBooks()
 {
-    cout << "\n Feature [Search Books] is assigned to Patron 2.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Search Books] feature is currently       |\n";
+    cout << " | being implemented by Member 2.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleSortBooks()
 {
-    cout << "\n Feature [Sort Books] is assigned to Patron 2.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Sort Books] feature is currently         |\n";
+    cout << " | being implemented by Member 2.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleRemoveBook()
 {
-    cout << "\n Feature [Remove Book] is assigned to Patron 2.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Remove Book] feature is currently        |\n";
+    cout << " | being implemented by Member 2.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleSearchPatrons()
 {
-    cout << "\n Feature [Search Patron] is assigned to Patron 3.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Search Patron] feature is currently      |\n";
+    cout << " | being implemented by Member 3.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleRemovePatron()
 {
-    cout << "\n Feature [Remove Patron] is assigned to Patron 3.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Remove Patron] feature is currently      |\n";
+    cout << " | being implemented by Member 3.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleViewHistory()
 {
-    cout << "\n Feature [View History] is assigned to Patron 4.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [View History] feature is currently       |\n";
+    cout << " | being implemented by Member 4.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleSaveData()
 {
-    cout << "\n Feature [Save Data] is assigned to Patron 6.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Save Data] feature is currently         |\n";
+    cout << " | being implemented by Member 6.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleLoadData()
 {
-    cout << "\n Feature [Load Data] is assigned to Patron 6.\n";
+    cout << "\n +-------------------------------------------------------+\n";
+    cout << " | NOTICE: The [Load Data] feature is currently         |\n";
+    cout << " | being implemented by Member 6.                        |\n";
+    cout << " +-------------------------------------------------------+\n";
     waitForEnter();
 }

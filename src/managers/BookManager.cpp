@@ -1,4 +1,3 @@
-#include "core/LibraryController.hpp"
 #include <iostream>
 #include "managers/BookManager.hpp"
 
@@ -46,6 +45,7 @@ bool BookManager::removeBookByISBN(const string &isbn)
     }
     return false;
 }
+
 // Search a Book by its Id
 Book *BookManager::findBookByISBN(const string &isbn) const
 {
