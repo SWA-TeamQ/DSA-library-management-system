@@ -4,22 +4,25 @@
 
 using namespace std;
 
-Book::Book(string title, 
-        string author, 
-        string isbn, 
-        string edition, 
-        string publicationYear, 
-        string category, 
-        bool available, 
-        int borrowCount){
-    this->title = title;
-    this->author = author;
-    this->isbn = isbn;
-    this->edition = edition;
-    this->publicationYear = publicationYear;
-    this->category = category;
-    this->available = available;
-    this->borrowCount = borrowCount;
+Book::Book(string title,
+           string author,
+           string isbn,
+           string edition,
+           int publicationYear,
+           string category,
+           int quantity,
+           bool available,
+           int borrowCount)
+{
+  this->title = title;
+  this->author = author;
+  this->isbn = isbn;
+  this->edition = edition;
+  this->publicationYear = publicationYear;
+  this->category = category;
+  this->quantity = quantity;
+  this->available = available;
+  this->borrowCount = borrowCount;
 }
 
 void Book::displayDetails() const
@@ -30,6 +33,7 @@ void Book::displayDetails() const
        << " | Edition: " << edition
        << " | PubYear: " << publicationYear
        << " | Category: " << category
+       << " | Quantity: " << quantity
        << " | Available: " << (available ? "Yes" : "No")
        << " | Borrows: " << borrowCount << '\n';
 }
@@ -37,7 +41,7 @@ void Book::displayDetails() const
 string Book::serialize() const
 {
   return title + "," + author + "," + isbn + "," + edition + "," +
-         publicationYear + "," + category + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
+         to_string(publicationYear) + "," + category + "," + to_string(quantity) + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Book::deserialize(const string &line)
@@ -49,8 +53,17 @@ void Book::deserialize(const string &line)
   getline(ss, author, ',');
   getline(ss, isbn, ',');
   getline(ss, edition, ',');
-  getline(ss, publicationYear, ',');
+  getline(ss, field, ',');
+  if (!field.empty())
+    publicationYear = stoi(field);
+  else
+    publicationYear = -1;
   getline(ss, category, ',');
+  getline(ss, field, ',');
+  if (!field.empty())
+    quantity = stoi(field);
+  else
+    quantity = 1;
   getline(ss, field, ',');
   available = (field == "1");
   getline(ss, field);

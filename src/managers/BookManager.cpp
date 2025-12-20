@@ -1,14 +1,24 @@
 #include "core/LibraryController.hpp"
 #include <iostream>
+#include <algorithm>
+#include <cctype>
 #include "managers/BookManager.hpp"
 
 using namespace std;
+
+// trim whitespace from a string
+string trim(const string &s)
+{
+    auto start = find_if_not(s.begin(), s.end(), ::isspace);
+    auto end = find_if_not(s.rbegin(), s.rend(), ::isspace).base();
+    return (start < end ? string(start, end) : "");
+}
 
 void BookManager::loadBooks()
 {
     bookStore.loadData(bookList); // load from books.txt
     for (auto &b : bookList)
-        books.insert(&b); // insert into hash table
+        books.insert(b); // insert into hash table
     buildSearchIndex();
 }
 
@@ -23,9 +33,9 @@ void BookManager::saveBooks()
 bool BookManager::addBook(const Book &b)
 {
     bookList.push_back(b);
-    if (books.insert(&bookList.back()))
+    if (books.insert(bookList.back()))
     {
-        saveBooks(); // persist after addition
+        bookStore.addData(bookList.back()); // persist after addition
         buildSearchIndex();
         return true;
     }
@@ -36,18 +46,28 @@ bool BookManager::addBook(const Book &b)
     }
 }
 
+// Remove a book by its ISBN
 bool BookManager::removeBookByISBN(const string &isbn)
 {
-    if (books.erase(isbn))
+    Book *book = books.find(isbn);
+    if (!book)
+        return false;
+
+    if (book->getBorrowCount() > 0)
     {
-        saveBooks(); // persist after removal
-        buildSearchIndex();
-        return true;
+        cout << "Cannot remove: some copies are on loan." << endl;
+        return false;
     }
-    return false;
+
+    books.erase(isbn); // remove the book from the hash table
+
+    saveBooks();
+    buildSearchIndex();
+    return true;
 }
+
 // Search a Book by its Id
-Book *BookManager::findBookByISBN(const string &isbn)
+Book *BookManager::findBookByISBN(const string &isbn) const
 {
     return books.find(isbn);
 }
@@ -71,7 +91,7 @@ void BookManager::sortBooksByYear(bool reverse)
     mergeSort(bookList, [reverse](const Book &a, const Book &b)
               {
         if(reverse){
-            return a.getPublicationYear() > b.getPublicationYear();
+            return a.getPublicationYear()> b.getPublicationYear();
         }
         return a.getPublicationYear() < b.getPublicationYear(); });
 
@@ -102,7 +122,7 @@ vector<Book *> BookManager::findBooksByAuthor(const string &author) const
 }
 
 // Update a book details
-Book *BookManager::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount)
+Book *BookManager::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const int &publicationYear, const string &category, const int &quantity, bool available, int borrowCount)
 {
     Book *b = findBookByISBN(isbn);
     if (!b)
@@ -111,30 +131,39 @@ Book *BookManager::updateBookDetails(const string &isbn, const string &title, co
     }
 
     bool changed = false;
+    int publicationYear = -1; // check if publicationYear is changed
 
-    if (!title.empty())
+    string trimmedTitle = trim(title);
+    if (!trimmedTitle.empty())
     {
-        b->setTitle(title);
+        b->setTitle(trimmedTitle);
         changed = true;
     }
-    if (!author.empty())
+
+    string trimmedAuthor = trim(author);
+    if (!trimmedAuthor.empty())
     {
-        b->setAuthor(author);
+        b->setAuthor(trimmedAuthor);
         changed = true;
     }
-    if (!edition.empty())
+
+    string trimmedEdition = trim(edition);
+    if (!trimmedEdition.empty())
     {
-        b->setEdition(edition);
+        b->setEdition(trimmedEdition);
         changed = true;
     }
-    if (!publicationYear.empty())
-    {
+
+    if (publicationYear != -1)
+    { // sentinel check
         b->setPublicationYear(publicationYear);
         changed = true;
     }
-    if (!category.empty())
+
+    string trimmedCategory = trim(category);
+    if (!trimmedCategory.empty())
     {
-        b->setCategory(category);
+        b->setCategory(trimmedCategory);
         changed = true;
     }
 
@@ -143,6 +172,7 @@ Book *BookManager::updateBookDetails(const string &isbn, const string &title, co
         b->setAvailable(available);
         changed = true;
     }
+
     if (b->getBorrowCount() != borrowCount)
     {
         b->setBorrowCount(borrowCount);

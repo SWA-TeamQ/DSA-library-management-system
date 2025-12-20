@@ -27,7 +27,7 @@ bool TransactionManager::addTransaction(const Transaction &t)
     {
         if (!store.addData(transactionList.back()))
         {
-            transactions.erase(transactionList.back().getTransactionID());
+            transactions.erase(transactionList.back().getID());
             transactionList.pop_back();
             return false;
         }
@@ -44,7 +44,7 @@ bool TransactionManager::removeTransaction(const string &transactionID)
 {
     transactions.erase(transactionID);
     auto it = std::find_if(transactionList.begin(), transactionList.end(), [&](const Transaction &tr)
-                           { return tr.getTransactionID() == transactionID; });
+                           { return tr.getID() == transactionID; });
     if (it != transactionList.end())
         transactionList.erase(it);
     saveTransactions(); // persist after removal
@@ -63,7 +63,7 @@ void TransactionManager::displayAll() const
         t->displayDetails();
 }
 
-vector<Transaction*> TransactionManager::getAllTransactions() const
+vector<Transaction *> TransactionManager::getAllTransactions() const
 {
     return transactions.all();
 }

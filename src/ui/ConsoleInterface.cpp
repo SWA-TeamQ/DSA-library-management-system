@@ -46,6 +46,11 @@ string ConsoleInterface::getInput(const string &prompt) const
     return input;
 }
 
+void clearInput(){
+    cin.ignore('\n');
+    cin.clear();
+}
+
 // --- Menus ---
 
 void ConsoleInterface::printMainMenu() const

@@ -2,8 +2,8 @@
 #include <vector>
 #include <string>
 #include "models/Book.hpp"
-#include "structures/HashTable.hpp"
-#include "structures/MergeSort.hpp"
+#include "dsa/HashTable.hpp"
+#include "dsa/MergeSort.hpp"
 #include "core/DataStore.hpp"
 #include "BookSearch.hpp"
 
@@ -32,12 +32,12 @@ public:
     // Book operations
     bool addBook(const Book &b);
     bool removeBookByISBN(const string &isbn);
-    Book *findBookByISBN(const string &isbn);
+    Book *findBookByISBN(const string &isbn) const;
     void buildSearchIndex();
     vector<Book *> findBooksByTitle(const string &title) const;
     vector<Book *> findBooksByAuthor(const string &author) const;
     void sortBooksByTitle(bool reverse = false);
     void sortBooksByYear(bool reverse = false);
-    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
+    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const int &publicationYear, const string &category, const int &quantity, bool available, int borrowCount);
     void listAllBooks() const;
 };
