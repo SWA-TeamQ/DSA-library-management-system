@@ -12,13 +12,11 @@ private:
     string edition;
     int publicationYear;
     string category;
-    
-
-public:
     int quantity{1};
     bool available{true};
     int borrowCount{0};
 
+public:
     Book() = default;
 
     Book(string title,

@@ -46,13 +46,14 @@ bool BookManager::addBook(const Book &b)
     }
 }
 
+// Remove a book by its ISBN
 bool BookManager::removeBookByISBN(const string &isbn)
 {
     Book *book = books.find(isbn);
     if (!book)
         return false;
 
-    if (book->borrowCount > 0)
+    if (book->getBorrowCount() > 0)
     {
         cout << "Cannot remove: some copies are on loan." << endl;
         return false;
