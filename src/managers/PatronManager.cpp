@@ -1,68 +1,145 @@
 #include "managers/PatronManager.hpp"
-#include <algorithm>
 #include <iostream>
+#include "dsa/MergeSort.hpp"
 
 using namespace std;
 
 bool PatronManager::addPatron(const Patron &p)
 {
-    int index = patronList.size();
-    patronList.push_back(p);
-    patronTable.insert(p.getKey(), index);
+    patronTable[p.getKey()] = p;
     searchMap.insert(p);
     patronStore.addData(p);
     return true;
 }
 
-bool PatronManager::removePatron(const string &patronID)
+bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
 {
-    int *indexPtr = patronTable.find(patronID);
-    if (!indexPtr)
+    vector<string> ids;
+    switch(key){
+        case PatronSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case PatronSearchKey::NAME:
+            ids = searchMap.findByName(value);
+            break;
+    }
+
+    if(ids.empty()){
         return false;
+    }
 
-    int index = *indexPtr;
-    Patron p = patronList[index];
-    
-    searchMap.remove(p);
-    patronList.erase(patronList.begin() + index);
-    
-    savePatrons();
-    buildSearchIndex();
+    bool deleted = false;
+    for(const auto &id : ids){
+        Patron *p = patronTable.find(id);
+        if(!p) continue;
+        
+        // Prevent deletion if patron still has an active borrow
+        if(p->isBorrowed()){
+            cout << "Patron " << p->getKey() << " has active borrows and cannot be removed" << endl;
+            continue;
+        }
 
-    return true;
+        deleted = true;
+        searchMap.remove(*p);
+        patronTable.remove(id);
+    }
+
+    if (deleted) {
+        savePatrons();
+    }
+    return deleted;
 }
 
-Patron *PatronManager::findPatron(const string &patronID) const
+Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value) const
 {
-    int *indexPtr = patronTable.find(patronID);
-    if(!indexPtr){
+    vector<string> ids;
+    switch(key){
+        case PatronSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case PatronSearchKey::NAME:
+            ids = searchMap.findByName(value);
+            break;
+    }
+
+    if(ids.empty()){
         return nullptr;
     }
-    return &patronList[*indexPtr]);
+
+    return patronTable.find(ids[0]);
 }
 
-void PatronManager::sortPatrons(const PatronSortKey &key, bool reverse)
+vector<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) const
 {
-    // Placeholder for sorting logic if needed
+    vector<string> ids;
+    switch(key){
+        case PatronSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case PatronSearchKey::NAME:
+            ids = searchMap.findByName(value);
+            break;
+    }
+
+    vector<Patron *> patrons;
+    for(const auto &id : ids){
+        Patron *p = patronTable.find(id);
+        if (p) {
+            patrons.push_back(p);
+        }
+    }
+    return patrons;
 }
 
 bool PatronManager::updatePatron(const Patron &newPatron)
 {
-    int *indexPtr = patronTable.find(newPatron.getKey());
-    if(!indexPtr){
+    Patron *oldPatron = patronTable.find(newPatron.getKey());
+    if(oldPatron == nullptr){
         return false;
     }
 
-    Patron &oldPatron = patronList[*indexPtr];
-    if(newPatron.getName() != oldPatron.getName() || 
-       newPatron.getContact() != oldPatron.getContact() || 
-       newPatron.getMembershipDate() != oldPatron.getMembershipDate() || 
-       newPatron.getBorrowCount() != oldPatron.getBorrowCount()){
-           searchMap.remove(oldPatron);
-           oldPatron = newPatron;
-           searchMap.insert(oldPatron);
-       }
-    
-    savePatrons();
-    return true;
+    bool changed = false;
+
+    if (newPatron.getName() != oldPatron->getName() || 
+        newPatron.getContact() != oldPatron->getContact() ||
+        newPatron.getMembershipDate() != oldPatron->getMembershipDate())
+    {
+        searchMap.remove(*oldPatron);
+        oldPatron->setName(newPatron.getName());
+        oldPatron->setContact(newPatron.getContact());
+        oldPatron->setMembershipDate(newPatron.getMembershipDate());
+        searchMap.insert(*oldPatron);
+        changed = true;
+    }
+
+    if (changed)
+    {
+        savePatrons();
+    }
+
+    return changed;
+}
+
+vector<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse)
+{
+    vector<Patron *> sortedPatrons = patronTable.all();
+
+    switch(key){
+        case PatronSortKey::NAME:
+            mergeSort(sortedPatrons, [](const Patron *p){
+                return p->getName();
+            }, reverse);
+            break;
+        case PatronSortKey::MEMBERSHIP_DATE:
+            mergeSort(sortedPatrons, [](const Patron *p){
+                return p->getMembershipDate();
+            }, reverse);
+            break;
+        case PatronSortKey::BORROW_COUNT:
+            mergeSort(sortedPatrons, [](const Patron *p){
+                return p->getBorrowCount();
+            }, reverse);
+            break;
+    }
+    return sortedPatrons;
 }

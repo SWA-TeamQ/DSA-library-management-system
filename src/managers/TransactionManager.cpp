@@ -5,13 +5,12 @@
 
 using namespace std;
 
-void TransactionManager::addTransaction(const Transaction &t)
+bool TransactionManager::addTransaction(const Transaction &t)
 {
-    int index = transactionList.size();
-    transactionList.push_back(t);
-    transactionTable.insert(t.getKey(), index);
+    transactionTable[t.getKey()] = t;
     searchMap.insert(t);
     transactionStore.addData(t);
+    return true;
 }
 
 bool TransactionManager::removeTransaction(const TransactionSearchKey key, const string &value)
@@ -35,26 +34,16 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
     bool deleted = false;
     for (const string &id : ids)
     {
-        int *indexPtr = transactionTable.find(id);
-        if (indexPtr)
-        {
-            int index = *indexPtr;
-            Transaction t = transactionList[index]; 
-            
-            searchMap.remove(t);
-            transactionTable.remove(id);
-            
-            transactionList.erase(transactionList.begin() + index);
-            deleted = true;
-            
-            buildSearchIndex();
-        }
+        Transaction *t = transactionTable.find(id);
+        if(!t) continue;
+        searchMap.remove(*t);
+        transactionTable.remove(id);
+        deleted = true;
     }
     
     if (deleted)
     {
         saveTransactions();
-        buildSearchMap();
     }
     return deleted;
 }
@@ -77,11 +66,8 @@ Transaction *TransactionManager::findTransaction(const TransactionSearchKey key,
 
     if (ids.empty()) return nullptr;
 
-    int *indexPtr = transactionTable.find(ids[0]);
-    if (indexPtr) {
-        return const_cast<Transaction*>(&transactionList[*indexPtr]);
-    }
-    return nullptr;
+    Transaction *t = transactionTable.find(ids[0]);
+    return t;
 }
 
 vector<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) const
@@ -103,40 +89,38 @@ vector<Transaction *> TransactionManager::findTransactions(const TransactionSear
     vector<Transaction *> results;
     for (const string &id : ids)
     {
-        int *indexPtr = transactionTable.find(id);
-        if (indexPtr) {
-            results.push_back(const_cast<Transaction*>(&transactionList[*indexPtr]));
-        }
+        Transaction *t = transactionTable.find(id);
+        if (t) results.push_back(t);
     }
     return results;
 }
 
-void TransactionManager::sortTransactions(const TransactionSortKey key, bool reverse)
+vector<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key, bool reverse)
 {
+    vector<Transaction *> sorted = transactionTable.all();
+
     switch (key)
     {
     case TransactionSortKey::BORROW_DATE:
-        mergeSort(transactionList, [](const Transaction &t){
-            return t.getBorrowDate();
+        mergeSort(sorted, [](const Transaction *t){
+            return t->getBorrowDate();
+        }, reverse);
+        break;
+    case TransactionSortKey::DUE_DATE:
+        mergeSort(sorted, [](const Transaction *t){
+            return t->getDueDate();
         }, reverse);
         break;
     case TransactionSortKey::RETURN_DATE:
-        mergeSort(transactionList, [](const Transaction &t){
-            return t.getReturnDate();
+        mergeSort(sorted, [](const Transaction *t){
+            return t->getReturnDate();
         }, reverse);
         break;
     }
-    saveTransactions();
-    buildSearchIndex();
-    buildSearchMap();
+    return sorted;
 }
 
 vector<Transaction *> TransactionManager::getAllTransactions() const
 {
-    vector<Transaction *> results;
-    for (const auto &t : transactionList)
-    {
-        results.push_back(const_cast<Transaction*>(&t));
-    }
-    return results;
+    return transactionTable.all();
 }

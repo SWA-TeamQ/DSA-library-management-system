@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
 #include "models/Patron.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
+#include "PatronSearch.hpp"
 
 using namespace std;
 

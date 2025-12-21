@@ -14,7 +14,7 @@ void Patron::displayDetails() const
 
 string Patron::serialize() const
 {
-    return patronID + "," + name + "," + contact + "," + membershipDate + "," + to_string(borrowCount);
+    return patronID + "," + name + "," + contact + "," + membershipDate + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Patron::deserialize(const string &line)
@@ -26,6 +26,10 @@ void Patron::deserialize(const string &line)
     getline(ss, name, ',');
     getline(ss, contact, ',');
     getline(ss, membershipDate, ',');
+    // borrowed flag
+    getline(ss, field, ',');
+    borrowed = (field == "1");
+    // borrow count (lifetime)
     getline(ss, field);
     if (!field.empty())
     {
@@ -39,10 +43,10 @@ void Patron::deserialize(const string &line)
 
 vector<string> Patron::getFields() const
 {
-    return {"ID", "Name", "Contact", "Membership Date", "Borrow Count"};
+    return {"ID", "Name", "Contact", "Membership Date", "Borrowed", "Borrow Count"};
 }
 
 vector<string> Patron::getValues() const
 {
-    return {patronID, name, contact, membershipDate, to_string(borrowCount)};
+    return {patronID, name, contact, membershipDate, borrowed ? "borrowed" : "available", to_string(borrowCount)};
 }

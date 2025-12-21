@@ -12,10 +12,9 @@ using namespace std;
 class TransactionManager
 {
 private:
-    vector<Transaction> transactionList;
-    HashTable<string, int> transactionTable; // ID -> index
+    DataStore<string, Transaction> transactionStore;
+    HashTable<string, Transaction> transactionTable; // ID -> Transaction
     TransactionSearchMap searchMap;
-    DataStore<Transaction> transactionStore;
 
 public:
     TransactionManager(const string &filename) : transactionStore(filename)
@@ -23,42 +22,31 @@ public:
         loadTransactions();
     }
 
-    void loadTransactions()
-    {
-        transactionList.clear();
+    void loadTransactions(){
         transactionTable.clear();
         searchMap.clear();
-    
-        if (!transactionStore.loadData(transactionList))
-        {
+
+        if(!transactionStore.loadData(transactionTable)){
             cout << "Warning: Failed to load transactions from file\n";
-            return;
         }
-        buildSearchIndex();
         buildSearchMap();
     }
 
     void saveTransactions(){
-        if(!transactionStore.saveData(transactionList)){
+        if(!transactionStore.saveData(transactionTable)){
             cout << "Warning: Failed to save transactions to file\n";
         }
     }
 
-    void buildSearchIndex(){
-        transactionTable.clear();
-        for (int i = 0; i < (int)transactionList.size(); i++)
-            transactionTable.insert(transactionList[i].getKey(), i);
-    }
-
     void buildSearchMap(){
-        searchMap.buildIndices(transactionList);
+        searchMap.buildIndices(transactionTable);
     }
 
-    void addTransaction(const Transaction &t);
+    bool addTransaction(const Transaction &t);
     bool removeTransaction(const TransactionSearchKey key, const string &value);
     Transaction *findTransaction(const TransactionSearchKey key, const string &value) const;
     vector<Transaction *> findTransactions(const TransactionSearchKey key, const string &value) const;
-    void sortTransactions(const TransactionSortKey key, bool reverse = false);
+    vector<Transaction *> sortTransactions(const TransactionSortKey key, bool reverse = false);
 
     vector<Transaction *> getAllTransactions() const;
 };

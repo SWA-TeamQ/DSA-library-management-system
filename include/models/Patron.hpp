@@ -15,7 +15,6 @@ private:
     string membershipDate;
     int borrowCount;
     bool borrowed;
-
 public:
     Patron() = default;
 
@@ -42,13 +41,14 @@ public:
     const string getContact() const { return contact; }
     const string getMembershipDate() const { return membershipDate; }
     int getBorrowCount() const { return borrowCount; }
-    const bool getBorrowed() const { return borrowed; }
+    bool isBorrowed() const { return borrowed; }
 
     void setID(const string &id) { patronID = id; }
     void setName(const string &n) { name = n; }
     void setContact(const string &c) { contact = c; }
     void setMembershipDate(const string &date) { membershipDate = date; }
     void setBorrowCount(int bc) { borrowCount = bc; }
+    void setBorrowed(bool b) { borrowed = b; }
 
     void incrementBorrowCount() { ++borrowCount; }
     void decrementBorrowCount()

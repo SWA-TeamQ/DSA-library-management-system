@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// Simple search table for Books by title and author
+// Simple search table for Transactions by book and patron IDs
 class TransactionSearchMap
 {
 private:
@@ -23,12 +23,13 @@ public:
         patronIdIndex.clear();
     }
 
-    // Build indices from a list of Books
-    void buildIndices(const vector<Transaction>& transactions)
+    // Build indices from any container of Transactions (e.g., vector, HashTable)
+    template <typename Container>
+    void buildIndices(const Container& transactions)
     {
         clear();
-        for(const auto &t : transactions){
-            insert(t);
+        for(const auto &entry : transactions){
+            insert(entry.second);
         }
     }
 
@@ -43,12 +44,20 @@ public:
         string id = t.getKey(), bookId = t.getBookID(), patronId = t.getPatronID();
 
         auto it = bookIdIndex.find(bookId);
-        if(it != bookIdIndex.end())
+        if(it != bookIdIndex.end()){
             it->second.erase(id);
+            if(it->second.empty()){
+                bookIdIndex.erase(it);
+            }
+        }
         
         it = patronIdIndex.find(patronId);
-        if(it != patronIdIndex.end())
+        if(it != patronIdIndex.end()){
             it->second.erase(id);
+            if(it->second.empty()){
+                patronIdIndex.erase(it);
+            }
+        }
     }
 
     // Search transactions by bookId

@@ -20,7 +20,7 @@ public:
         nameIndex.clear();
     }
 
-    // Build indices from a map of Patrons
+    // Build indices from any map-like container of Patrons (e.g., unordered_map, HashTable)
     template <typename MapType>
     void buildIndices(const MapType& patrons)
     {
