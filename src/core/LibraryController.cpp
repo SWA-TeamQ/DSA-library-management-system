@@ -21,26 +21,15 @@ vector<Book *> LibraryController::findBooksByTitle(const string &title) const {
     return booksManager.findBooks(BookSearchKey::TITLE, title); 
 }
 
-void LibraryController::sortBooks(BookSortKey key, bool reverse) { 
-    booksManager.sortBooks(key, reverse); 
-}
+void LibraryController::sortBooksByTitle(bool reverse) { booksManager.sortBooksByTitle(reverse); }
 
-bool LibraryController::updateBook(const Book& b) { 
-    return booksManager.updateBook(b); 
-}
+void LibraryController::sortBooksByYear(bool reverse) { booksManager.sortBooksByYear(reverse); }
 
-// Patron operations
-bool LibraryController::addPatron(const Patron &p) { 
-    return patronsManager.addPatron(p); 
-}
+Book *LibraryController::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount) { return booksManager.updateBookDetails(isbn, title, author, edition, publicationYear, category, available, borrowCount); }
 
-bool LibraryController::removePatron(const string &patronID) { 
-    return patronsManager.removePatron(patronID); 
-}
+void LibraryController::listAllBooks() const { booksManager.listAllBooks(); }
 
-Patron *LibraryController::findPatron(const string &patronID) const { 
-    return patronsManager.findPatron(patronID); 
-}
+void LibraryController::listAllPatrons() const { patronsManager.displayAll(); }
 
 void LibraryController::sortPatrons(PatronSortKey key, bool reverse) { 
     patronsManager.sortPatrons(key, reverse); 

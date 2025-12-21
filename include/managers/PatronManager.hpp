@@ -43,9 +43,9 @@ public:
     }
 
     bool addPatron(const Patron &p);
-    bool removePatron(const PatronSearchKey key, const string &value);
-    Patron *findPatron(const PatronSearchKey key, const string &value) const;
-    vector<Patron *> findPatrons(const PatronSearchKey key, const string &value) const;
-    vector<Patron *> sortPatrons(const PatronSortKey key, bool reverse = false);
-    bool updatePatron(const Patron &p);
+    bool removePatron(const string &patronID);
+    Patron *findPatron(const string &patronID) const;
+
+    void displayAll() const;
 };
+

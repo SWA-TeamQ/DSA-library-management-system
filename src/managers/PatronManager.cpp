@@ -1,10 +1,7 @@
 #include "managers/PatronManager.hpp"
-#include <iostream>
-#include "dsa/MergeSort.hpp"
+#include <algorithm>
 
-using namespace std;
-
-bool PatronManager::addPatron(const Patron &p)
+void PatronManager::loadPatrons()
 {
     patronTable[p.getKey()] = p;
     searchMap.insert(p);
@@ -97,49 +94,27 @@ bool PatronManager::updatePatron(const Patron &newPatron)
     if(oldPatron == nullptr){
         return false;
     }
-
-    bool changed = false;
-
-    if (newPatron.getName() != oldPatron->getName() || 
-        newPatron.getContact() != oldPatron->getContact() ||
-        newPatron.getMembershipDate() != oldPatron->getMembershipDate())
-    {
-        searchMap.remove(*oldPatron);
-        oldPatron->setName(newPatron.getName());
-        oldPatron->setContact(newPatron.getContact());
-        oldPatron->setMembershipDate(newPatron.getMembershipDate());
-        searchMap.insert(*oldPatron);
-        changed = true;
-    }
-
-    if (changed)
-    {
-        savePatrons();
-    }
-
-    return changed;
 }
 
-vector<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse)
+bool PatronManager::removePatron(const string &patronID)
 {
-    vector<Patron *> sortedPatrons = patronTable.all();
+    patrons.erase(patronID);
+    auto it = std::find_if(patronList.begin(), patronList.end(), [&](const Patron &pat)
+                           { return pat.getID() == patronID; });
+    if (it != patronList.end())
+        patronList.erase(it);
+    savePatrons(); // persist after removal
+    return true;
+}
 
-    switch(key){
-        case PatronSortKey::NAME:
-            mergeSort(sortedPatrons, [](const Patron *p){
-                return p->getName();
-            }, reverse);
-            break;
-        case PatronSortKey::MEMBERSHIP_DATE:
-            mergeSort(sortedPatrons, [](const Patron *p){
-                return p->getMembershipDate();
-            }, reverse);
-            break;
-        case PatronSortKey::BORROW_COUNT:
-            mergeSort(sortedPatrons, [](const Patron *p){
-                return p->getBorrowCount();
-            }, reverse);
-            break;
-    }
-    return sortedPatrons;
+Patron *PatronManager::findPatron(const string &patronID) const
+{
+    return patrons.find(patronID);
+}
+
+void PatronManager::displayAll() const
+{
+    cout << "--- Patrons ---\n";
+    for (auto *p : patrons.all())
+        p->displayDetails();
 }

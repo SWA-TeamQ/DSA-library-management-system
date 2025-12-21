@@ -13,10 +13,10 @@ private:
     string author;
     string isbn;
     string edition;
-    string publicationYear;
+    int publicationYear;
     string category;
-    bool available;
-    int borrowCount;
+    bool available{true};
+    int borrowCount{0};
 
 public:
     Book() = default;
@@ -25,20 +25,21 @@ public:
          string author,
          string isbn,
          string edition,
-         string publicationYear,
+         int publicationYear,
          string category = "General",
+         int quantity = 1,
          bool available = true,
          int borrowCount = 0);
 
     // for generic lookup
     const string getKey() const { return isbn; }
 
-    const string getTitle() const { return title; }
-    const string getAuthor() const { return author; }
-    const string getISBN() const { return isbn; }
-    const string getEdition() const { return edition; }
-    const string getPublicationYear() const { return publicationYear; }
-    const string getCategory() const { return category; }
+    const string &getTitle() const { return title; }
+    const string &getAuthor() const { return author; }
+    const string &getISBN() const { return isbn; }
+    const string &getEdition() const { return edition; }
+    const string &getPublicationYear() const { return publicationYear; }
+    const string &getCategory() const { return category; }
     bool isAvailable() const { return available; }
     int getBorrowCount() const { return borrowCount; }
 
@@ -46,10 +47,10 @@ public:
     void setAuthor(const string &author) { this->author = author; }
     void setISBN(const string &isbn) { this->isbn = isbn; }
     void setEdition(const string &edition) { this->edition = edition; }
-    void setPublicationYear(const string &publicationYear) { this->publicationYear = publicationYear; }
+    void setPublicationYear(const int &publicationYear) { this->publicationYear = publicationYear; }
     void setCategory(const string &category) { this->category = category; }
-    void setAvailable(const bool &available) { this->available = available; }
-    void setBorrowCount(const int &borrowCount) { this->borrowCount = borrowCount; }
+    void setAvailable(bool available) { this->available = available; }
+    void setBorrowCount(int bc) { borrowCount = bc; }
 
     void incrementBorrowCount() { ++borrowCount; }
     void decrementBorrowCount() { if (borrowCount > 0) --borrowCount; }

@@ -1,6 +1,7 @@
 #include "ui/ConsoleInterface.hpp"
 #include <iostream>
 #include <cstdlib> // for system()
+#include <limits>
 using namespace std;
 
 
@@ -65,6 +66,11 @@ string ConsoleInterface::getInput(const string &prompt) const
     string input;
     getline(cin, input);
     return input;
+}
+
+void clearInput(){
+    cin.ignore('\n');
+    cin.clear();
 }
 
 // --- Menus ---
@@ -285,7 +291,7 @@ void ConsoleInterface::handleAddBook()
     }
     else
     {
-        bool ok = controller.addBook(Book(title, author, isbn, edition, "2023", category));
+        bool ok = controller.addBook(Book(title, author, isbn, edition, 2023, category));
         if (ok)
             cout << "\n Book added successfully!\n";
         else
@@ -338,35 +344,29 @@ void ConsoleInterface::handleListPatrons()
 
 void ConsoleInterface::handleBorrow()
 {
-    printHeader("Borrow Book");
-    string pid = getInput(" Enter Patron ID: ");
-    string isbn = getInput(" Enter Book ISBN: ");
+    string pid = getInput("Patron ID: ");
+    string isbn = getInput("Book ISBN: ");
 
     if (controller.borrowBook(pid, isbn))
-    {
-        cout << "\n Borrow successful! Due date is in 14 days.\n";
-    }
+        cout << "Borrow successful. Due in 14 days.\n";
     else
-    {
-        cout << "\n Borrow failed. Check if book exists, is available, or member ID is valid.\n";
-    }
+        cout << "Borrow failed." << "\n";
 }
+
 
 void ConsoleInterface::handleReturn()
 {
-    printHeader("Return Book");
-    string pid = getInput(" Enter Patron ID: ");
-    string isbn = getInput(" Enter Book ISBN: ");
+    string pid = getInput("Patron ID: ");
+    string isbn = getInput("Book ISBN: ");
 
     if (controller.returnBook(pid, isbn))
     {
-        cout << "\n Return processed successfully.\n";
+        cout << "Return successful.\n";
     }
     else
-    {
-        cout << "\n Return failed. Check details.\n";
-    }
+        cout << "Return failed.\n";
 }
+
 
 // --- Placeholders for Future Features ---
 
@@ -417,12 +417,10 @@ void ConsoleInterface::handleRemovePatron()
 
 void ConsoleInterface::handleViewHistory()
 {
-    cout << "\n +-------------------------------------------------------+\n";
-    cout << " | NOTICE: The [View History] feature is currently       |\n";
-    cout << " | being implemented by Member 4.                        |\n";
-    cout << " +-------------------------------------------------------+\n";
+    cout << "\n Feature [View History] is assigned to Patron 4.\n";
     waitForEnter();
 }
+
 
 void ConsoleInterface::handleSaveData()
 {

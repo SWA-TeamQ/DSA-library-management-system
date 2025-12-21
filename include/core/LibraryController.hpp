@@ -48,8 +48,10 @@ public:
     bool removeBook(const string &isbn);
     Book *findBook(const string &isbn) const;
     vector<Book *> findBooksByTitle(const string &title) const;
-    void sortBooks(BookSortKey key, bool reverse = false);
-    bool updateBook(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
+    vector<Book *> findBooksByAuthor(const string &author) const;
+    void sortBooksByTitle(bool reverse = false);
+    void sortBooksByYear(bool reverse = false);
+    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
     void listAllBooks() const;
 
     // Patron operations
@@ -66,4 +68,8 @@ public:
     // Borrow/Return operations
     bool borrowBook(const string &patronID, const string &isbn);
     bool returnBook(const string &patronID, const string &isbn);
+
+    // Reporting
+    void listAllPatrons() const;
+    void listAllTransactions() const;
 };

@@ -5,8 +5,11 @@ using namespace std;
 
 bool Transaction::isOverdue() const
 {
-    // Simplified: assume overdue if not returned
-    return !returned;
+    if (returned)
+        return false;
+
+    // Dates are YYYY-MM-DD → string comparison works
+    return returnDate.empty() && getCurrentDate() > dueDate;
 }
 
 void Transaction::markReturned()
