@@ -7,14 +7,12 @@
 #include "core/DataStore.hpp"
 #include "BookSearch.hpp"
 
-using BookHashTable = HashTable<Book>;
-
 using namespace std;
 
 class BookManager
 {
 private:
-    BookHashTable books;
+    HashTable<Book> books;
     BookSearchMap searchMap;
     DataStore<Book> bookStore{"books.txt"};
     vector<Book> bookList;
@@ -34,14 +32,17 @@ public:
     bool updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
     bool removeBookByISBN(const string &isbn);
     
-
+    // searching
     Book *findBookByISBN(const string &isbn) const;
     vector<Book *> findBooksByTitle(const string &title) const;
     vector<Book *> findBooksByAuthor(const string &author) const;
     
+    // sorting
     void sortBooksByTitle(bool reverse = false);
     void sortBooksByYear(bool reverse = false);
     
+    // listing
     void listAllBooks() const;
+    
     void buildSearchIndex();
 };

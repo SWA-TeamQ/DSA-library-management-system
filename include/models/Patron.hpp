@@ -3,6 +3,10 @@
 #include <iostream>
 using namespace std;
 
+enum PatronSearchKey { NAME, ID };
+enum PatronSortKey { NAME, MEMBERSHIP_DATE, BORROW_COUNT };
+enum PatronAllKey { ID, NAME, CONTACT, MEMBERSHIP_DATE, BORROW_COUNT };
+
 class Patron
 {
 private:
@@ -10,7 +14,8 @@ private:
     string name;
     string contact;
     string membershipDate;
-    int borrowCount{0};
+    int borrowCount;
+    bool borrowed;
 
 public:
     Patron() = default;
@@ -19,13 +24,15 @@ public:
            string name,
            string contact,
            string membershipDate,
-           int borrowCount = 0)
+           int borrowCount = 0,
+           bool borrowed = false)
     {
         this->patronID = patronID;
         this->name = name;
         this->contact = contact;
         this->membershipDate = membershipDate;
         this->borrowCount = borrowCount;
+        this->borrowed = borrowed;
     }
 
 

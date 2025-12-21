@@ -6,8 +6,6 @@
 
 using namespace std;
 
-// this class is a generic layer for storing data about each component of this lms (books, patrons, transactions) (virtual)
-
 template <typename T>
 class DataStore
 {
@@ -41,7 +39,7 @@ public:
 
     bool addData(const T &item) const
     {
-        ofstream file(filename, ios::app); // append mode
+        ofstream file(filename, ios::app);
 
         if (!file.is_open())
         {
@@ -69,7 +67,7 @@ public:
             if (line.empty())
                 continue; // skip blank lines
 
-            T item{};
+            T item;
             item.deserialize(line);
             dataList.push_back(item);
         }

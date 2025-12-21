@@ -15,6 +15,7 @@ private:
 
 public:
     BookSearchMap() = default;
+    ~BookSearchMap() = default;
 
     // Build indices from a list of Book pointers
     void buildIndices(const vector<Book*>& books)

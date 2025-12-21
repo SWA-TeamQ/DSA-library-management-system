@@ -3,6 +3,10 @@
 #include <iostream>
 using namespace std;
 
+enum BookSearchKey { ISBN, TITLE, AUTHOR, CATEGORY, AVAILABILITY };
+enum BookSortKey { TITLE, AUTHOR, YEAR, BORROW_COUNT };
+enum BookAllKey { TITLE, AUTHOR, ISBN, EDITION, PUBLICATION_YEAR, CATEGORY, AVAILABILITY, BORROW_COUNT };
+
 class Book
 {
 private:

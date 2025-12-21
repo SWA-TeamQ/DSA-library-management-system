@@ -21,9 +21,12 @@ public:
     void saveTransactions();
 
     bool addTransaction(const Transaction &t);
-    bool removeTransaction(const string &transactionID);
-    Transaction *findTransaction(const string &transactionID);
+    bool removeTransaction(TransactionSearchKey key);
+    Transaction *findTransaction(TransactionSearchKey key);
+    vector<Transaction *> findTransactions(TransactionSearchKey key);
+    void sortTransactions(TransactionSortKey key, bool reverse = false);
+    bool updateTransaction(TransactionSearchKey key);
 
-    void displayAll() const;
-    vector<Transaction *> getAllTransactions() const;
+    
+    void listAllTransactions() const;
 };

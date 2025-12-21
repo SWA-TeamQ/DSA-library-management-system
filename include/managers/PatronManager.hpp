@@ -22,7 +22,9 @@ public:
 
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
-    Patron *findPatron(const string &patronID) const;
-
-    void displayAll() const;
+    Patron *findPatron(PatronSearchKey key) const;
+    vector<Patron *> findPatrons(PatronSearchKey key) const;
+    void sortPatrons(PatronSortKey key, bool reverse = false);
+    bool updatePatron(PatronSearchKey key);
+    void listAllPatrons() const;
 };
