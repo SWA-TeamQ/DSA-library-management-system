@@ -2,16 +2,18 @@
 #include <vector>
 #include <functional>
 
+using namespace std;
+
 template <typename T, typename Func>
-void mergeSort(std::vector<T> &arr, Func func, bool reverse = false)
+void mergeSort(vector<T> &arr, Func func, bool reverse = false)
 {
     if (arr.size() <= 1)
         return;
 
     size_t mid = arr.size() / 2;
 
-    std::vector<T> left(arr.begin(), arr.begin() + mid);
-    std::vector<T> right(arr.begin() + mid, arr.end());
+    vector<T> left(arr.begin(), arr.begin() + mid);
+    vector<T> right(arr.begin() + mid, arr.end());
 
     mergeSort(left, func, reverse);
     mergeSort(right, func, reverse);

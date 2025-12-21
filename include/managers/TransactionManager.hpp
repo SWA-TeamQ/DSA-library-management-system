@@ -1,32 +1,64 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "models/Transaction.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
+#include "TransactionSearch.hpp"
+
+using namespace std;
 
 class TransactionManager
 {
 private:
-    HashTable<Transaction> transactions; // Hash table keyed by transactionID
     vector<Transaction> transactionList;
-    DataStore<Transaction> store;
+    HashTable<string, int> transactionTable; // ID -> index
+    TransactionSearchMap searchMap;
+    DataStore<Transaction> transactionStore;
 
 public:
-    TransactionManager(const string &filename) : store(filename)
+    TransactionManager(const string &filename)
     {
+        transactionStore = DataStore<Transaction>(filename);
         loadTransactions();
     }
 
-    void loadTransactions();
-    void saveTransactions();
-
-    bool addTransaction(const Transaction &t);
-    bool removeTransaction(TransactionSearchKey key);
-    Transaction *findTransaction(TransactionSearchKey key);
-    vector<Transaction *> findTransactions(TransactionSearchKey key);
-    void sortTransactions(TransactionSortKey key, bool reverse = false);
-    bool updateTransaction(TransactionSearchKey key);
-
+    void loadTransactions()
+    {
+        transactionList.clear();
+        transactionTable.clear();
+        searchMap.clear();
     
-    void listAllTransactions() const;
+        if (!transactionStore.loadData(transactionList))
+        {
+            cout << "Warning: Failed to load transactions from file\n";
+            return;
+        }
+        buildSearchIndex();
+        buildSearchMap();
+    }
+
+    void saveTransactions(){
+        if(!transactionStore.saveData(transactionList)){
+            cout << "Warning: Failed to save transactions to file\n";
+        };
+    };
+
+    void buildSearchIndex(){
+        transactionTable.clear();
+        for (int i = 0; i < (int)transactionList.size(); i++)
+            transactionTable.insert(transactionList[i].getKey(), i);
+    }
+
+    void buildSearchMap(){
+
+    };
+
+    void addTransaction(const Transaction &t);
+    bool removeTransaction(const TransactionSearchKey &key, const string &value);
+    Transaction *findTransaction(const TransactionSearchKey &key, const string &value) const;
+    vector<Transaction *> findTransactions(const TransactionSearchKey &key, const string &value) const;
+    void sortTransactions(const TransactionSortKey &key, bool reverse = false);
+
+    vector<Transaction *> getAllTransactions() const;
 };

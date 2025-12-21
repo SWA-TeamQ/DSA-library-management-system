@@ -22,11 +22,11 @@ private:
 
 public:
     LibraryController() 
+        : booksManager("books.txt"),
+          patronsManager("patrons.txt"),
+          transactionsManager("transactions.txt"),
+          loanService(booksManager, patronsManager, transactionsManager)
     {
-        booksManager = BookManager("books.txt");
-        patronsManager = PatronManager("patrons.txt");
-        transactionsManager = TransactionManager("transactions.txt");
-        loanService = LoanService(booksManager, patronsManager, transactionsManager);
     }
 
     void load()

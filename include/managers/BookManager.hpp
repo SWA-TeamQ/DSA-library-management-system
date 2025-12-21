@@ -28,10 +28,19 @@ public:
 
     // Data operations
     void loadBooks(){
-        bookStore.load();
+        bookList.clear();
+        bookTable.clear();
+        searchMap.clear();
+
+       if(!bookStore.loadData(bookList)){
+            cout << "Warning: unable "
+       };
+        buildSearchIndex();
+        buildSearchMap();
     };
+
     void saveBooks(){
-        bookStore.save();
+        bookStore.saveData(bookList);
     };
     
     // id -> index
@@ -50,14 +59,7 @@ public:
     bool addBook(const Book &b);
     bool updateBook(Book &b);
     bool removeBook(const BookSearchKey key, const string &value);
-    
-    // searching
     Book *findBook(const BookSearchKey key, const string &value) const;
     vector<Book *> findBooks(const BookSearchKey key, const string &value) const;
-    
-    // sorting
     void sortBooks(const BooksSortKey key, bool reverse = false);
-    
-    // listing
-    void listAllBooks() const;
 };

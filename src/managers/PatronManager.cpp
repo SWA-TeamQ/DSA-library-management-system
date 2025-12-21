@@ -4,40 +4,12 @@
 
 using namespace std;
 
-void PatronManager::loadPatrons()
-{
-    patronList.clear();
-    patronTable.clear();
-    if (!store.loadData(patronList))
-    {
-        cout << "Warning: Failed to load patrons from file\n";
-        return;
-    }
-    buildSearchIndex();
-}
-
-void PatronManager::savePatrons()
-{
-    if (!store.saveData(patronList))
-    {
-        cout << "Warning: Failed to save patrons to file\n";
-    }
-}
-
-void PatronManager::buildSearchIndex()
-{
-    patronTable.clear();
-    for (int i = 0; i < (int)patronList.size(); i++)
-    {
-        patronTable.insert(patronList[i].getKey(), i);
-    }
-}
 
 bool PatronManager::addPatron(const Patron &p)
 {
     patronList.push_back(p);
-    savePatrons();
-    buildSearchIndex();
+    patronTable.insert()
+    patronsStore.addData(p);
     return true;
 }
 
@@ -57,27 +29,29 @@ bool PatronManager::removePatron(const string &patronID)
 
 Patron *PatronManager::findPatron(const string &patronID) const
 {
-    int *indexPtr = patronTable.find(patronID);
-    if (indexPtr)
-    {
-        return const_cast<Patron *>(&patronList[*indexPtr]);
+    auto it = patronTable.find(patronID);
+    if(it != patronTable.end()){
+        return &it->second;
     }
     return nullptr;
 }
 
-void PatronManager::sortPatrons(PatronSortKey key, bool reverse)
+void PatronManager::sortPatrons(const PatronSortKey &key, bool reverse)
 {
-    // Implementation of sortPatrons using mergeSort (similar to BookManager)
-    // Assuming mergeSort is available and works with Patron
-    // For now, let's just leave it as a placeholder or implement if needed.
+
 }
 
-bool PatronManager::updatePatron(const string &patronID, const string &name, const string &contact, const string &membershipDate, int borrowCount)
+bool PatronManager::updatePatron(const Patron &p)
 {
-    int *indexPtr = patronTable.find(patronID);
-    if (!indexPtr) return false;
+    auto it = patronTable.find(p.getKey());
+    if(it != patronTable.end()){
+        patronList[it->second] = p;
+        savePatrons();
+        return true;
+    }
+    return false;
+}
 
-    Patron &p = patronList[*indexPtr];
     bool changed = false;
 
     if (!name.empty() && p.getName() != name) { p.setName(name); changed = true; }
@@ -90,19 +64,4 @@ bool PatronManager::updatePatron(const string &patronID, const string &name, con
         savePatrons();
     }
     return true;
-}
-
-void PatronManager::listAllPatrons() const
-{
-    cout << "\n--- All Patrons ---\n";
-    if (patronList.empty())
-    {
-        cout << "No patrons found.\n";
-        return;
-    }
-    for (const auto &p : patronList)
-    {
-        p.displayDetails();
-        cout << "-----------------\n";
-    }
 }

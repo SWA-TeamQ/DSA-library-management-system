@@ -12,22 +12,49 @@ class PatronManager
 private:
     vector<Patron> patronList;
     HashTable<string, int> patronTable; // ID -> index
-    DataStore<Patron> store;
+    PatronSearchMap searchMap;
+    DataStore<Patron> patronStore;
 
 public:
-    PatronManager(const string &filename) : store(filename)
+    PatronManager(const string &filename)
     {
+        patronStore = DataStore<Patron>(filename);
         loadPatrons();
     }
 
-    void loadPatrons();
-    void savePatrons();
-    void buildSearchIndex();
+    void loadPatrons(){
+        patronList.clear();
+        patronTable.clear();
+        searchMap.clear();
+
+        if(!patronStore.loadData(patronList)){
+            cout << "Warning: Failed to load patrons from file\n";
+            return;
+        };
+        buildSearchIndex();
+        buildSearchMap();
+    };
+
+    void savePatrons(){
+        if(!patronStore.saveData(patronList)){
+            cout << "Warning: Failed to save patrons to file\n";
+        };
+    };
+
+    void buildSearchIndex(){
+        patronTable.clear();
+        for(int i = 0; i < patronList.size(); i++)
+            patronTable.insert(patronList[i].getKey(), i);
+    };
+
+    void buildSearchMap(){
+        searchMap.buildIndices(patronList);
+    };
+
 
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
     Patron *findPatron(const string &patronID) const;
-    void sortPatrons(PatronSortKey key, bool reverse = false);
-    bool updatePatron(Patron &p);
-    void listAllPatrons() const;
+    void sortPatrons(const PatronSortKey &key, bool reverse = false);
+    bool updatePatron(const Patron &p);
 };

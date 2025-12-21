@@ -3,17 +3,6 @@
 
 using namespace std;
 
-void BookManager::loadBooks()
-{
-    bookList.clear();
-    bookTable.clear();
-    searchMap.clear();
-
-    bookStore.loadData(bookList); // load from books file
-    buildSearchIndex();
-    buildSearchMap();
-}
-
 void BookManager::addBook(const Book& b){
     const int index = bookList.size();
     bookList.push_back(b);
@@ -24,8 +13,6 @@ void BookManager::addBook(const Book& b){
 
 bool BookManager::removeBook(const BookSearchKey &key, const string &value)
 {
-    bool deleted = false;
-
     vector<string> ids;
     switch(key){
         case BookSearchKey::ID:
@@ -41,22 +28,28 @@ bool BookManager::removeBook(const BookSearchKey &key, const string &value)
             ids = searchMap.findByCategory(value);
             break;
     }
-    for(auto id : ids){
+
+    for(const auto &id : ids){
         Book *b = bookTable.find(id);
-        if(b){
-            bookTable.remove(id);
-            searchMap.remove(*b);
-            deleted = true;
+        if(!b){
+            cout << "Book not found" << endl;
+            return false;
         }
+        if(!b->isAvailable()){
+            cout << "Book is already borrowed so it couldn't be removed" << endl;
+            return false;
+        }
+        bookList.erase(bookList.begin() + bookTable.find(id));
+        bookTable.remove(id);
+        searchMap.remove(*b);
     }
-    if(deleted){
-        saveBooks(); // persist after removal
-        buildSearchIndex();
-    }
-    return deleted;
+
+    saveBooks(); // persist after removal
+    buildSearchIndex();
+    return true;
 }
 
-// Search a Book by its Id
+// Search a Book by its searchable keys
 Book *BookManager::findBook(const BookSearchKey &key, const string &value) const
 {
     vector<string> isbns;
@@ -74,43 +67,13 @@ Book *BookManager::findBook(const BookSearchKey &key, const string &value) const
             isbns = searchMap.findByAuthor(value);
             break;
     }
-    const int index = bookTable.find(isbns[0]);
-    return bookList[index];
-}
 
-// Update a book details
-bool BookManager::updateBook(Book &b)
-{
-    Book *book = bookTable.find(b.getKey());
-    if(book == nullptr){
-        return false;
+    if(isbns.empty()){
+        return nullptr;
     }
 
-    bool changed = false;
-    if(b.getTitle() )
-
-    if (b.getTitle() != book->getTitle() || 
-        b.getAuthor() != book->getAuthor() ||
-        b.getEdition() != book->getEdition() ||
-        b.getPublicationYear() != book->getPublicationYear() ||
-        b.getCategory() != book->getCategory())
-    {
-        searchMap.remove(*book);
-        book->setTitle(b.getTitle());
-        book->setAuthor(b.getAuthor());
-        book->setEdition(b.getEdition());
-        book->setPublicationYear(b.getPublicationYear());
-        book->setCategory(b.getCategory());
-        searchMap.insert(*book);
-        changed = true;
-    }
-
-    if (changed)
-    {
-        saveBooks(); // persist after update
-    }
-
-    return changed;
+    const int index = bookTable.find(isbns[0]); // only cares about the first found element
+    return &bookList[index];
 }
 
 // Search Books by a specific key
@@ -139,6 +102,43 @@ vector<Book *> BookManager::findBooks(const BookSearchKey &key, const string &va
     return books;
 }
 
+
+// Update a book details
+bool BookManager::updateBook(const Book &newBook)
+{
+    int *indexPtr = bookTable.find(newBook.getKey());
+    Book *oldBook = &bookList[*indexPtr];
+    if(oldBook == nullptr){
+        return false;
+    }
+
+    bool changed = false;
+
+    if (newBook.getTitle() != oldBook->getTitle() || 
+        newBook.getAuthor() != oldBook->getAuthor() ||
+        newBook.getEdition() != oldBook->getEdition() ||
+        newBook.getPublicationYear() != oldBook->getPublicationYear() ||
+        newBook.getCategory() != oldBook->getCategory())
+    {
+        searchMap.remove(*oldBook);
+        oldBook->setTitle(newBook.getTitle());
+        oldBook->setAuthor(newBook.getAuthor());
+        oldBook->setEdition(newBook.getEdition());
+        oldBook->setPublicationYear(newBook.getPublicationYear());
+        oldBook->setCategory(newBook.getCategory());
+        searchMap.insert(*oldBook);
+        changed = true;
+    }
+
+    if (changed)
+    {
+        saveBooks(); // persist after update
+    }
+
+    return changed;
+}
+
+
 void BookManager::sortBooks(const BookSortKey &key, const bool &reverse){
     switch(key){
         case BookSortKey::TITLE:
@@ -163,13 +163,4 @@ void BookManager::sortBooks(const BookSortKey &key, const bool &reverse){
             break;
     }
     saveBooks();
-}
-
-
-// display all books to the console
-void BookManager::listAllBooks() const
-{
-    cout << "--- Books ---\n";
-    for (auto *b : books.all())
-        b->display();
 }

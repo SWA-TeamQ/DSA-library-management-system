@@ -43,12 +43,18 @@ public:
     void remove(const Book& b)
     {
         string id = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
-        if(titleIndex.find(title) != titleIndex.end())
-            titleIndex[title].erase(id);
-        if(authorIndex.find(author) != authorIndex.end())
-            authorIndex[author].erase(id);
-        if(categoryIndex.find(category) != categoryIndex.end())
-            categoryIndex[category].erase(id);
+        
+        auto it = titleIndex.find(title);
+        if(it != titleIndex.end())
+            it->second.erase(id);
+
+        it = authorIndex.find(author);
+        if(it != authorIndex.end())
+            it->second.erase(id);
+
+        it = categoryIndex.find(category);
+        if(it != categoryIndex.end())
+            it->second.erase(id);
     }
 
     // Search books by title

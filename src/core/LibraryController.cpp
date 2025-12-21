@@ -25,12 +25,8 @@ void LibraryController::sortBooks(BookSortKey key, bool reverse) {
     booksManager.sortBooks(key, reverse); 
 }
 
-bool LibraryController::updateBook(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount) { 
-    return booksManager.updateBook(isbn, title, author, edition, publicationYear, category, available, borrowCount); 
-}
-
-void LibraryController::listAllBooks() const { 
-    booksManager.listAllBooks(); 
+bool LibraryController::updateBook(const Book& b) { 
+    return booksManager.updateBook(b); 
 }
 
 // Patron operations
@@ -50,18 +46,18 @@ void LibraryController::sortPatrons(PatronSortKey key, bool reverse) {
     patronsManager.sortPatrons(key, reverse); 
 }
 
-bool LibraryController::updatePatron(const string &patronID, const string &name, const string &contact, const string &membershipDate, int borrowCount) { 
-    return patronsManager.updatePatron(patronID, name, contact, membershipDate, borrowCount); 
-}
-
-void LibraryController::listAllPatrons() const { 
-    patronsManager.listAllPatrons(); 
+bool LibraryController::updatePatron(const Patron &p) { 
+    return patronsManager.updatePatron(p); 
 }
 
 // Transaction operations
-void LibraryController::listAllTransactions() const { 
-    transactionsManager.listAllTransactions(); 
+
+bool LibraryController::addTransaction(const Transaction &t) { 
+    return transactionsManager.addTransaction(t); 
 }
+
+
+
 
 // Borrow/Return operations
 bool LibraryController::borrowBook(const string &patronID, const string &isbn) {
