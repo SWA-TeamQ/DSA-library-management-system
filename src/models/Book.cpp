@@ -33,7 +33,6 @@ void Book::displayDetails() const
        << " | Edition: " << edition
        << " | PubYear: " << publicationYear
        << " | Category: " << category
-       << " | Quantity: " << quantity
        << " | Available: " << (available ? "Yes" : "No")
        << " | Borrows: " << borrowCount << '\n';
 }
@@ -75,4 +74,14 @@ void Book::deserialize(const string &line)
   {
     borrowCount = 0;
   }
+}
+
+vector<string> Book::getFields() const
+{
+  return {"Title", "Author", "ISBN", "Edition", "Publication Year", "Category", "Available", "Borrow Count"};
+}
+
+vector<string> Book::getValues() const
+{
+  return {title, author, isbn, edition, publicationYear, category, available ? "available" : "not available", to_string(borrowCount)};
 }

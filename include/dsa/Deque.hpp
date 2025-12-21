@@ -66,29 +66,33 @@ public:
     void push_front(const T &value)
     {
         Node<T> *node = new Node<T>(value);
-        length++;
         if (isEmpty())
         {
             head = tail = node;
-            return;
         }
-        node->next = head;
-        head->prev = node;
-        head = node;
+        else
+        {
+            node->next = head;
+            head->prev = node;
+            head = node;
+        }
+        length++;
     }
 
     void push_back(const T &value)
     {
         Node<T> *node = new Node<T>(value);
-        length++;
         if (isEmpty())
         {
             head = tail = node;
-            return;
         }
-        node->prev = tail;
-        tail->next = node;
-        tail = node;
+        else
+        {
+            node->prev = tail;
+            tail->next = node;
+            tail = node;
+        }
+        length++;
     }
 
     bool pop_front()
@@ -147,6 +151,11 @@ public:
             temp = temp->next;
         }
         std::cout << "NULL\n";
+    }
+
+    Node<T> *getHead() const
+    {
+        return head;
     }
 
     void clear()

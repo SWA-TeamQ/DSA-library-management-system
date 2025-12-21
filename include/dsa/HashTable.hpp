@@ -6,11 +6,11 @@
 
 using namespace std;
 
-template <typename T>
+template <typename U, typename T>
 class HashTable
 {
 private:
-    unordered_map<string, T> table;
+    unordered_map<U, T> table;
 
 public:
     HashTable() = default;
@@ -26,14 +26,28 @@ public:
         return table.size();
     }
 
-    bool insert(const T &item)
+    bool insert(const U &key, const T &item)
     {
-        string key = item.getKey();
         auto [it, inserted] = table.emplace(key, item);
         return inserted;
     }
 
-    T *find(const string &key) const
+    T &operator[](const U &key)
+    {
+        return table[key];
+    }
+
+    const T &operator[](const U &key) const
+    {
+        return table.at(key);
+    }
+
+    auto begin() { return table.begin(); }
+    auto end() { return table.end(); }
+    auto begin() const { return table.begin(); }
+    auto end() const { return table.end(); }
+
+    T *find(const U &key) const
     {
         auto it = table.find(key);
         if (it != table.end())
@@ -41,7 +55,7 @@ public:
         return nullptr;
     }
 
-    bool erase(const string &key)
+    bool remove(const U &key)
     {
         auto removed = table.erase(key);
         return removed > 0;
@@ -54,10 +68,10 @@ public:
 
     vector<T *> all() const
     {
-        vector<T *> out;
-        out.reserve(table.size());
+        vector<T *> result;
+        result.reserve(table.size());
         for (auto &[key, value] : table)
-            out.push_back(&value);
-        return out;
+            result.push_back(&value);
+        return result;
     }
 };

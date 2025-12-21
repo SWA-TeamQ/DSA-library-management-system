@@ -6,13 +6,13 @@
 
 using namespace std;
 
-static class Logger{
+class Logger{
 private:
     static const string filename{"library_log.txt"};
 
 public:
     static void logInfo(const string &message) {
-        ofstream logFile(filename, ios_base::app);
+        ofstream logFile(filename, ios::app);
         if (logFile.is_open()) {
             logFile << "\n[INFO]: " << message << endl;
             logFile.close();
@@ -20,7 +20,7 @@ public:
     }
 
     static void logError(const string &message) {
-        ofstream logFile(filename, ios_base::app);
+        ofstream logFile(filename, ios::app);
         if (logFile.is_open()) {
             logFile << "\n[ERROR]: " << message << endl;
             logFile.close();

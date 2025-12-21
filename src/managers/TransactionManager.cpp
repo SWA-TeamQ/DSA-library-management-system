@@ -1,100 +1,126 @@
 #include "managers/TransactionManager.hpp"
 #include <algorithm>
+#include <iostream>
+#include "dsa/MergeSort.hpp"
 
-void TransactionManager::loadTransactions()
-{
-    if (!store.loadData(transactionList))
-    {
-        cout << "Warning: Failed to load transactions from file\n";
-        return;
-    }
-    for (auto &t : transactionList)
-        transactions.insert(&t); // insert into hash table
-}
-
-void TransactionManager::saveTransactions()
-{
-    if (!store.saveData(transactionList))
-    {
-        cout << "Warning: Failed to save transactions to file\n";
-    }
-}
+using namespace std;
 
 bool TransactionManager::addTransaction(const Transaction &t)
 {
-    transactionList.push_back(t);
-    if (transactions.insert(&transactionList.back()))
-    {
-        if (!store.addData(transactionList.back()))
-        {
-            transactions.erase(transactionList.back().getID());
-            transactionList.pop_back();
-            return false;
-        }
-        return true;
-    }
-    else
-    {
-        transactionList.pop_back();
-        return false;
-    }
-}
-
-bool TransactionManager::removeTransaction(const string &transactionID)
-{
-    transactions.erase(transactionID);
-    auto it = std::find_if(transactionList.begin(), transactionList.end(), [&](const Transaction &tr)
-                           { return tr.getID() == transactionID; });
-    if (it != transactionList.end())
-        transactionList.erase(it);
-    saveTransactions(); // persist after removal
+    transactionTable[t.getKey()] = t;
+    searchMap.insert(t);
+    transactionStore.addData(t);
     return true;
 }
 
-Transaction *TransactionManager::findTransaction(const string &transactionID)
+bool TransactionManager::removeTransaction(const TransactionSearchKey key, const string &value)
 {
-    return transactions.find(transactionID);
+    vector<string> ids;
+    switch (key)
+    {
+    case TransactionSearchKey::ID:
+        ids.push_back(value);
+        break;
+    case TransactionSearchKey::BOOK_ID:
+        ids = searchMap.findByBookId(value);
+        break;
+    case TransactionSearchKey::PATRON_ID:
+        ids = searchMap.findByPatronId(value);
+        break;
+    }
+
+    if (ids.empty()) return false;
+
+    bool deleted = false;
+    for (const string &id : ids)
+    {
+        Transaction *t = transactionTable.find(id);
+        if(!t) continue;
+        searchMap.remove(*t);
+        transactionTable.remove(id);
+        deleted = true;
+    }
+    
+    if (deleted)
+    {
+        saveTransactions();
+    }
+    return deleted;
 }
 
-void TransactionManager::displayAll() const
+Transaction *TransactionManager::findTransaction(const TransactionSearchKey key, const string &value) const
 {
-    cout << "--- Transactions ---\n";
-    for (auto *t : transactions.all())
-        t->displayDetails();
+    vector<string> ids;
+    switch (key)
+    {
+    case TransactionSearchKey::ID:
+        ids.push_back(value);
+        break;
+    case TransactionSearchKey::BOOK_ID:
+        ids = searchMap.findByBookId(value);
+        break;
+    case TransactionSearchKey::PATRON_ID:
+        ids = searchMap.findByPatronId(value);
+        break;
+    }
+
+    if (ids.empty()) return nullptr;
+
+    Transaction *t = transactionTable.find(ids[0]);
+    return t;
+}
+
+vector<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) const
+{
+    vector<string> ids;
+    switch (key)
+    {
+    case TransactionSearchKey::ID:
+        ids.push_back(value);
+        break;
+    case TransactionSearchKey::BOOK_ID:
+        ids = searchMap.findByBookId(value);
+        break;
+    case TransactionSearchKey::PATRON_ID:
+        ids = searchMap.findByPatronId(value);
+        break;
+    }
+
+    vector<Transaction *> results;
+    for (const string &id : ids)
+    {
+        Transaction *t = transactionTable.find(id);
+        if (t) results.push_back(t);
+    }
+    return results;
+}
+
+vector<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key, bool reverse)
+{
+    vector<Transaction *> sorted = transactionTable.all();
+
+    switch (key)
+    {
+    case TransactionSortKey::BORROW_DATE:
+        mergeSort(sorted, [](const Transaction *t){
+            return t->getBorrowDate();
+        }, reverse);
+        break;
+    case TransactionSortKey::DUE_DATE:
+        mergeSort(sorted, [](const Transaction *t){
+            return t->getDueDate();
+        }, reverse);
+        break;
+    case TransactionSortKey::RETURN_DATE:
+        mergeSort(sorted, [](const Transaction *t){
+            return t->getReturnDate();
+        }, reverse);
+        break;
+    }
+    return sorted;
 }
 
 vector<Transaction *> TransactionManager::getAllTransactions() const
 {
-    return transactions.all();
-}
-vector<Transaction> TransactionManager::getBorrowHistory(const string &patronID) const
-{
-    vector<Transaction> history;
-    for (const auto &t : transactionList)
-    {
-        if (t.getPatronID() == patronID)
-            history.push_back(t);
-    }
-    return history;
-}
-
-vector<Transaction*> TransactionManager::getOverdueBooks() const
-{
-    vector<Transaction*> overdue;
-    for (auto &t : transactionList)
-    {
-        if (!t.isReturned() && t.isOverdue())
-            overdue.push_back(&t);
-    }
-    return overdue;
-}
-
-bool TransactionManager::hasOverdueBooks(const string &patronID) const
-{
-    for (const auto &t : transactionList)
-    {
-        if (t.getPatronID() == patronID && !t.isReturned() && t.isOverdue())
-            return true;
-    }
-    return false;
+    return transactionTable.all();
 }

@@ -1,8 +1,8 @@
-#include "core/LibraryController.hpp"
 #include <iostream>
 #include <algorithm>
 #include <cctype>
 #include "managers/BookManager.hpp"
+#include "dsa/MergeSort.hpp"
 
 using namespace std;
 
@@ -18,11 +18,11 @@ void BookManager::loadBooks()
 {
     bookStore.loadData(bookList); // load from books.txt
     for (auto &b : bookList)
-        books.insert(b); // insert into hash table
+        books.insert(&b); // insert into hash table
     buildSearchIndex();
 }
 
-void BookManager::saveBooks()
+bool BookManager::removeBook(const BookSearchKey key, const string &value)
 {
     bookList.clear();
     for (auto *b : books.all())
@@ -33,9 +33,9 @@ void BookManager::saveBooks()
 bool BookManager::addBook(const Book &b)
 {
     bookList.push_back(b);
-    if (books.insert(bookList.back()))
+    if (books.insert(&bookList.back()))
     {
-        bookStore.addData(bookList.back()); // persist after addition
+        saveBooks(); // persist after addition
         buildSearchIndex();
         return true;
     }
@@ -46,43 +46,44 @@ bool BookManager::addBook(const Book &b)
     }
 }
 
-// Remove a book by its ISBN
 bool BookManager::removeBookByISBN(const string &isbn)
 {
-    Book *book = books.find(isbn);
-    if (!book)
-        return false;
-
-    if (book->getBorrowCount() > 0)
+    if (books.erase(isbn))
     {
-        cout << "Cannot remove: some copies are on loan." << endl;
-        return false;
+        saveBooks(); // persist after removal
+        buildSearchIndex();
+        return true;
     }
-
-    books.erase(isbn); // remove the book from the hash table
-
-    saveBooks();
-    buildSearchIndex();
-    return true;
+    return false;
 }
-
 // Search a Book by its Id
 Book *BookManager::findBookByISBN(const string &isbn) const
 {
-    return books.find(isbn);
-}
+    vector<string> ids;
+    switch(key){
+        case BookSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case BookSearchKey::TITLE:
+            ids = searchMap.findByTitle(value);
+            break;
+        case BookSearchKey::AUTHOR:
+            ids = searchMap.findByAuthor(value);
+            break;
+        case BookSearchKey::CATEGORY:
+            ids = searchMap.findByCategory(value);
+            break;
+    }
 
-void BookManager::sortBooksByTitle(bool reverse)
-{
-    mergeSort(bookList, [reverse](const Book &a, const Book &b)
-              {
-        if(reverse){
-            return a.getTitle() > b.getTitle();
-        }
-        return a.getTitle() < b.getTitle(); });
+    if(ids.empty()){
+        return nullptr;
+    }
 
-    // Update the book store file with the sorted list
-    bookStore.saveData(bookList);
+    Book *book = bookTable.find(ids[0]);
+    if (book) {
+        return book;
+    }
+    return nullptr;
 }
 
 // Sort a books by its publication year in ascending order
@@ -91,7 +92,7 @@ void BookManager::sortBooksByYear(bool reverse)
     mergeSort(bookList, [reverse](const Book &a, const Book &b)
               {
         if(reverse){
-            return a.getPublicationYear()> b.getPublicationYear();
+            return a.getPublicationYear() > b.getPublicationYear();
         }
         return a.getPublicationYear() < b.getPublicationYear(); });
 
@@ -121,49 +122,41 @@ vector<Book *> BookManager::findBooksByAuthor(const string &author) const
     return searchMap.findByAuthor(author);
 }
 
+
 // Update a book details
-Book *BookManager::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const int &publicationYear, const string &category, const int &quantity, bool available, int borrowCount)
+Book *BookManager::updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount)
 {
-    Book *b = findBookByISBN(isbn);
-    if (!b)
-    {
-        return nullptr;
+    Book *oldBook = bookTable.find(newBook.getKey());
+    if(oldBook == nullptr){
+        return false;
     }
 
     bool changed = false;
     int publicationYear = -1; // check if publicationYear is changed
 
-    string trimmedTitle = trim(title);
-    if (!trimmedTitle.empty())
+    if (!title.empty())
     {
-        b->setTitle(trimmedTitle);
+        b->setTitle(title);
         changed = true;
     }
-
-    string trimmedAuthor = trim(author);
-    if (!trimmedAuthor.empty())
+    if (!author.empty())
     {
-        b->setAuthor(trimmedAuthor);
+        b->setAuthor(author);
         changed = true;
     }
-
-    string trimmedEdition = trim(edition);
-    if (!trimmedEdition.empty())
+    if (!edition.empty())
     {
-        b->setEdition(trimmedEdition);
+        b->setEdition(edition);
         changed = true;
     }
-
-    if (publicationYear != -1)
-    { // sentinel check
+    if (!publicationYear.empty())
+    {
         b->setPublicationYear(publicationYear);
         changed = true;
     }
-
-    string trimmedCategory = trim(category);
-    if (!trimmedCategory.empty())
+    if (!category.empty())
     {
-        b->setCategory(trimmedCategory);
+        b->setCategory(category);
         changed = true;
     }
 
@@ -172,7 +165,6 @@ Book *BookManager::updateBookDetails(const string &isbn, const string &title, co
         b->setAvailable(available);
         changed = true;
     }
-
     if (b->getBorrowCount() != borrowCount)
     {
         b->setBorrowCount(borrowCount);
@@ -182,16 +174,36 @@ Book *BookManager::updateBookDetails(const string &isbn, const string &title, co
     if (changed)
     {
         saveBooks(); // persist after update
-        buildSearchIndex();
     }
 
-    return b;
+    return changed;
 }
 
-// display all books to the console
-void BookManager::listAllBooks() const
-{
-    cout << "--- Books ---\n";
-    for (auto *b : books.all())
-        b->displayDetails();
+
+vector<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse){
+    vector<Book *> sortedBooks = bookTable.all();
+
+    switch(key){
+        case BookSortKey::TITLE:
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getTitle();
+            }, reverse);
+            break;
+        case BookSortKey::AUTHOR:
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getAuthor();
+            }, reverse);
+            break;
+        case BookSortKey::YEAR:
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getPublicationYear();
+            }, reverse);
+            break;
+        case BookSortKey::BORROW_COUNT:
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getBorrowCount();
+            }, reverse);
+            break;
+    }
+    return sortedBooks;
 }

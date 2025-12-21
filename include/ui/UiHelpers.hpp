@@ -9,3 +9,7 @@ void waitForEnter() const;
 string getInput(const string &prompt) const;
 void clearInput();
 void printDivider() const;
+
+void print(const Book &book);
+void print(const Patron &patron);
+void print(const Transaction &transaction);

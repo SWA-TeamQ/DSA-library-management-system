@@ -1,71 +1,109 @@
 #include "managers/PatronManager.hpp"
 #include <algorithm>
-#include <iomanip>
 
 void PatronManager::loadPatrons()
 {
-    if (!store.loadData(patronList))
-    {
-        cout << "Warning: Failed to load patrons from file\n";
-        return;
-    }
-    for (auto &p : patronList)
-        patrons.insert(&p); // insert into hash table
+    patronTable[p.getKey()] = p;
+    searchMap.insert(p);
+    patronStore.addData(p);
+    return true;
 }
 
-void PatronManager::savePatrons()
+bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
 {
-    if (!store.saveData(patronList))
-    {
-        cout << "Warning: Failed to save patrons to file\n";
+    vector<string> ids;
+    switch(key){
+        case PatronSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case PatronSearchKey::NAME:
+            ids = searchMap.findByName(value);
+            break;
     }
-}
 
-bool PatronManager::addPatron(const Patron &p)
-{
-    patronList.push_back(p);
-    if (patrons.insert(&patronList.back()))
-    {
-        if (!store.addData(patronList.back()))
-        {
-            patrons.erase(patronList.back().getID());
-            patronList.pop_back();
-            return false;
+    if(ids.empty()){
+        return false;
+    }
+
+    bool deleted = false;
+    for(const auto &id : ids){
+        Patron *p = patronTable.find(id);
+        if(!p) continue;
+        
+        // Prevent deletion if patron still has an active borrow
+        if(p->isBorrowed()){
+            cout << "Patron " << p->getKey() << " has active borrows and cannot be removed" << endl;
+            continue;
         }
-        return true;
+
+        deleted = true;
+        searchMap.remove(*p);
+        patronTable.remove(id);
     }
-    else
-    {
-        patronList.pop_back();
+
+    if (deleted) {
+        savePatrons();
+    }
+    return deleted;
+}
+
+Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value) const
+{
+    vector<string> ids;
+    switch(key){
+        case PatronSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case PatronSearchKey::NAME:
+            ids = searchMap.findByName(value);
+            break;
+    }
+
+    if(ids.empty()){
+        return nullptr;
+    }
+
+    return patronTable.find(ids[0]);
+}
+
+vector<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) const
+{
+    vector<string> ids;
+    switch(key){
+        case PatronSearchKey::ID:
+            ids.push_back(value);
+            break;
+        case PatronSearchKey::NAME:
+            ids = searchMap.findByName(value);
+            break;
+    }
+
+    vector<Patron *> patrons;
+    for(const auto &id : ids){
+        Patron *p = patronTable.find(id);
+        if (p) {
+            patrons.push_back(p);
+        }
+    }
+    return patrons;
+}
+
+bool PatronManager::updatePatron(const Patron &newPatron)
+{
+    Patron *oldPatron = patronTable.find(newPatron.getKey());
+    if(oldPatron == nullptr){
         return false;
     }
 }
 
-// solved the issue Constraint: cannot remove patrons with unreturned books
-bool PatronManager::removePatron(const string& patronID)
+bool PatronManager::removePatron(const string &patronID)
 {
-    Patron* p = patrons.find(patronID);
-    if (!p)
-        return false;
-
-    // TODO: Prevent removal if patron has unreturned books
-    // This will be enforced via TransactionManager
-
     patrons.erase(patronID);
-
-    auto it = std::find_if(
-        patronList.begin(),
-        patronList.end(),
-        [&](const Patron& pat)
-        {
-            return pat.getID() == patronID;
-        }
-    );
-
+    auto it = std::find_if(patronList.begin(), patronList.end(), [&](const Patron &pat)
+                           { return pat.getID() == patronID; });
     if (it != patronList.end())
         patronList.erase(it);
-
-    savePatrons();
+    savePatrons(); // persist after removal
     return true;
 }
 
@@ -74,56 +112,9 @@ Patron *PatronManager::findPatron(const string &patronID) const
     return patrons.find(patronID);
 }
 
-//formatted table with borrow counts and contact info
-
 void PatronManager::displayAll() const
 {
-    cout << "\n Patron List \n";
-
-    cout << left
-         << setw(15) << "Patron ID"
-         << setw(20) << "Name"
-         << setw(25) << "Contact"
-         << setw(10) << "Borrowed"
-         << "\n";
-
-    cout << string(70, '-') << "\n";
-
-    for (auto* p : patrons.all())
-    {
-        cout << left
-             << setw(15) << p->getID()
-             << setw(20) << p->getName()
-             << setw(25) << p->getContact()
-             << setw(10) << p->getBorrowCount()
-             << "\n";
-    }
-
-    cout << "\n";
-}
-
-
-// searching and accessing the patrons using their names
-Patron* PatronManager::findPatronByName(const string& name)
-{
-    for (auto& p : patronList)
-    {
-        if (p.getName() == name)
-            return &p;
-    }
-    return nullptr;
-}
-
-// update patron contact function
-bool PatronManager::updatePatronContact(
-    const string& patronID,
-    const string& newContact)
-{
-    Patron* p = patrons.find(patronID);
-    if (!p)
-        return false;
-
-    p->setContact(newContact);
-    savePatrons();
-    return true;
+    cout << "--- Patrons ---\n";
+    for (auto *p : patrons.all())
+        p->displayDetails();
 }

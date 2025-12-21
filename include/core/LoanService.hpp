@@ -15,7 +15,7 @@ private:
     TransactionManager &transactionManager;
 
 public:
-    LoanService(const BookManager &bm, const PatronManager &pm, const TransactionManager &tm)
+    LoanService(BookManager &bm, PatronManager &pm, TransactionManager &tm)
         : bookManager(bm), patronManager(pm), transactionManager(tm) {}
 
     bool borrowBook(const string &patronID, const string &isbn);

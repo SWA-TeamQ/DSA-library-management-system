@@ -3,6 +3,9 @@
 #include <iostream>
 using namespace std;
 
+enum TransactionSearchKey { ID, BOOK_ID, PATRON_ID };
+enum TransactionSortKey { BORROW_DATE, DUE_DATE, RETURN_DATE };
+
 class Transaction
 {
 private:
@@ -60,4 +63,7 @@ public:
     void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
+
+    vector<string> getFields() const;
+    vector<string> getValues() const;
 };

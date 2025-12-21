@@ -2,76 +2,58 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-// this class is a generic layer for storing data about each component of this lms (books, patrons, transactions) (virtual)
-
-template <typename T>
+template <typename U, typename T>
 class DataStore
 {
 private:
     string filename;
 
 public:
-    DataStore(const string &filename)
-    {
-        this->filename = filename;
-    }
+    DataStore(const string &filename = "") : filename(filename) {}
 
-    bool saveData(const vector<T> &dataList) const
+    // any type of map-like object
+    template <typename MapType>
+    bool saveData(const MapType &dataMap) const
     {
         ofstream file(filename, ios::out | ios::trunc);
+        if (!file.is_open()) return false;
 
-        if (!file.is_open())
-        {
-            return false;
-        }
-
-        // Write each item, one per line
-        for (const T &item : dataList)
+        for (const auto &[key, item] : dataMap)
         {
             file << item.serialize() << '\n';
         }
-
         file.close();
         return true;
     }
 
     bool addData(const T &item) const
     {
-        ofstream file(filename, ios::app); // append mode
-
-        if (!file.is_open())
-        {
-            return false;
-        }
+        ofstream file(filename, ios::app);
+        if (!file.is_open()) return false;
 
         file << item.serialize() << '\n';
         file.close();
         return true;
     }
 
-    bool loadData(vector<T> &dataList)
+    template <typename MapType>
+    bool loadData(MapType &dataMap)
     {
-        dataList.clear();
+        dataMap.clear();
         ifstream file(filename, ios::in);
-
-        if (!file.is_open())
-        {
-            return false;
-        }
+        if (!file.is_open()) return false;
 
         string line;
         while (getline(file, line))
         {
-            if (line.empty())
-                continue; // skip blank lines
-
-            T item{};
+            if (line.empty()) continue;
+            T item;
             item.deserialize(line);
-            dataList.push_back(item);
+            dataMap[item.getKey()] = item;
         }
         file.close();
         return true;

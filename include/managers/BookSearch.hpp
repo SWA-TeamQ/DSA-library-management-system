@@ -1,8 +1,9 @@
 #pragma once
-#include <vector>
-#include <string>
-#include <unordered_map>
 #include "models/Book.hpp"
+#include <unordered_set>
+#include <unordered_map>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -10,40 +11,96 @@ using namespace std;
 class BookSearchMap
 {
 private:
-    unordered_map<string, vector<Book*>> titleIndex;
-    unordered_map<string, vector<Book*>> authorIndex;
+    unordered_map<string, unordered_set<string>> titleIndex;
+    unordered_map<string, unordered_set<string>> authorIndex;
+    unordered_map<string, unordered_set<string>> categoryIndex;
 
 public:
     BookSearchMap() = default;
+    ~BookSearchMap() = default;
 
-    // Build indices from a list of Book pointers
-    void buildIndices(const vector<Book*>& books)
-    {
+    void clear(){
         titleIndex.clear();
         authorIndex.clear();
+        categoryIndex.clear();
+    }
 
-        for (auto* b : books)
-        {
-            titleIndex[b->getTitle()].push_back(b);
-            authorIndex[b->getAuthor()].push_back(b);
+    // Build indices from any map-like container of Books (e.g., unordered_map, HashTable)
+    template <typename MapType>
+    void buildIndices(const MapType& books)
+    {
+        clear();
+        for(const auto &[id, book] : books){
+            insert(book);
+        }
+    }
+
+    void insert(const Book& b)
+    {
+        titleIndex[b.getTitle()].insert(b.getKey());
+        authorIndex[b.getAuthor()].insert(b.getKey());
+        categoryIndex[b.getCategory()].insert(b.getKey());
+    }
+
+    void remove(const Book& b)
+    {
+        string id = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
+        
+        // remove from titleIndex
+        auto it = titleIndex.find(title);
+        if(it != titleIndex.end()){
+            it->second.erase(id);
+            // after deletion if the unordered set is empty, then we want to remove the key
+            if(it->second.empty()){
+                titleIndex.erase(it);
+            }
+        }
+
+        // remove from authorIndex
+        it = authorIndex.find(author);
+        if(it != authorIndex.end()){
+            it->second.erase(id);
+            // after deletion if the unordered set is empty, then we want to remove the key
+            if(it->second.empty()){
+                authorIndex.erase(it);
+            }
+        }
+
+        // remove from categoryIndex
+        it = categoryIndex.find(category);
+        if(it != categoryIndex.end()){
+            it->second.erase(id);
+            // after deletion if the unordered set is empty, then we want to remove the key
+            if(it->second.empty()){
+                categoryIndex.erase(it);
+            }
         }
     }
 
     // Search books by title
-    vector<Book*> findByTitle(const string& title) const
+    vector<string> findByTitle(const string& title) const
     {
         auto it = titleIndex.find(title);
         if (it != titleIndex.end())
-            return it->second;
-        return {}; // empty if not found
+            return vector<string>(it->second.begin(), it->second.end());
+        return {};
     }
 
     // Search books by author
-    vector<Book*> findByAuthor(const string& author) const
+    vector<string> findByAuthor(const string& author) const
     {
         auto it = authorIndex.find(author);
         if (it != authorIndex.end())
-            return it->second;
-        return {}; // empty if not found
+            return vector<string>(it->second.begin(), it->second.end());
+        return {};
+    }
+
+    // Search books by category
+    vector<string> findByCategory(const string& category) const
+    {
+        auto it = categoryIndex.find(category);
+        if (it != categoryIndex.end())
+            return vector<string>(it->second.begin(), it->second.end());
+        return {};
     }
 };
