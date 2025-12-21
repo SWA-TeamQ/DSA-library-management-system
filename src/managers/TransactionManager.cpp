@@ -67,3 +67,34 @@ vector<Transaction *> TransactionManager::getAllTransactions() const
 {
     return transactions.all();
 }
+vector<Transaction> TransactionManager::getBorrowHistory(const string &patronID) const
+{
+    vector<Transaction> history;
+    for (const auto &t : transactionList)
+    {
+        if (t.getPatronID() == patronID)
+            history.push_back(t);
+    }
+    return history;
+}
+
+vector<Transaction*> TransactionManager::getOverdueBooks() const
+{
+    vector<Transaction*> overdue;
+    for (auto &t : transactionList)
+    {
+        if (!t.isReturned() && t.isOverdue())
+            overdue.push_back(&t);
+    }
+    return overdue;
+}
+
+bool TransactionManager::hasOverdueBooks(const string &patronID) const
+{
+    for (const auto &t : transactionList)
+    {
+        if (t.getPatronID() == patronID && !t.isReturned() && t.isOverdue())
+            return true;
+    }
+    return false;
+}
