@@ -19,20 +19,9 @@ void BookManager::saveBooks()
     bookStore.saveData(bookList); // save to books.txt
 }
 
-bool BookManager::addBook(const Book &b)
+void BookManager::buildSearchMap()
 {
-    bookList.push_back(b);
-    if (books.insert(&bookList.back()))
-    {
-        saveBooks(); // persist after addition
-        buildSearchIndex();
-        return true;
-    }
-    else
-    {
-        bookList.pop_back();
-        return false;
-    }
+    searchMap.buildIndices(bookList);
 }
 
 bool BookManager::removeBookByISBN(const string &isbn)
@@ -41,6 +30,7 @@ bool BookManager::removeBookByISBN(const string &isbn)
     {
         saveBooks(); // persist after removal
         buildSearchIndex();
+        buildSearchMap();
         return true;
     }
     return false;

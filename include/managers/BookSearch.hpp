@@ -10,8 +10,8 @@ using namespace std;
 class BookSearchMap
 {
 private:
-    unordered_map<string, vector<int>> titleIndex;
-    unordered_map<string, vector<int>> authorIndex;
+    unordered_map<string, vector<string>> titleIndex;
+    unordered_map<string, vector<string>> authorIndex;
 
 public:
     BookSearchMap() = default;
@@ -29,8 +29,20 @@ public:
         }
     }
 
+    void addBook(const Book& b)
+    {
+        titleIndex[b.getTitle()].push_back(b.getISBN());
+        authorIndex[b.getAuthor()].push_back(b.getISBN());
+    }
+
+    void removeBook(const Book& b)
+    {
+        titleIndex[b.getTitle()].remove(b.getISBN());
+        authorIndex[b.getAuthor()].remove(b.getISBN());
+    }
+
     // Search books by title
-    vector<int> findByTitle(const string& title) const
+    vector<string> findByTitle(const string& title) const
     {
         auto it = titleIndex.find(title);
         if (it != titleIndex.end())
@@ -39,7 +51,7 @@ public:
     }
 
     // Search books by author
-    vector<int> findByAuthor(const string& author) const
+    vector<string> findByAuthor(const string& author) const
     {
         auto it = authorIndex.find(author);
         if (it != authorIndex.end())

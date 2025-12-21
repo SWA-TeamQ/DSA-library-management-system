@@ -12,16 +12,18 @@ using namespace std;
 class BookManager
 {
 private:
-    HashTable<Book> books;
+    vector<Book> bookList;
+    HashTable<string, int> books;
     BookSearchMap searchMap;
     DataStore<Book> bookStore;
-    vector<Book> bookList;
 
 public:
     BookManager(const string &filename)
     {
         bookStore = DataStore<Book>(filename);
         loadBooks();
+        buildSearchIndex();
+        buildSearchMap();
     }
 
     // Data operations
@@ -34,8 +36,9 @@ public:
 
     // Book operations
     bool addBook(const Book &b){
-        books.insert(b);
-        searchMap.insert(b);
+        int index = bookList.size() - 1;
+        books.insert(b.getISBN(), index);
+        searchMap.addBook(b);
         bookList.push_back(b);
         return true;
     };
@@ -53,4 +56,5 @@ public:
     void listAllBooks() const;
     
     void buildSearchIndex();
+    void buildSearchMap();
 };
