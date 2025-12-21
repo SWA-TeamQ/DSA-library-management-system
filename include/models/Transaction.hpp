@@ -5,7 +5,7 @@ using namespace std;
 
 enum TransactionSearchKey { ID, BOOK_ID, PATRON_ID };
 enum TransactionSortKey { BORROW_DATE, DUE_DATE };
-enum TransactionAllKey { ID, BOOK_ID, PATRON_ID, BORROW_DATE, DUE_DATE, RETURN_DATE, RETURNED };
+enum TransactionAllKey { BOOK_ID, PATRON_ID, BORROW_DATE, DUE_DATE, RETURN_DATE, RETURNED };
 
 class Transaction
 {

@@ -14,32 +14,40 @@ class BookManager
 private:
     HashTable<Book> books;
     BookSearchMap searchMap;
-    DataStore<Book> bookStore{"books.txt"};
+    DataStore<Book> bookStore;
     vector<Book> bookList;
 
 public:
-    BookManager(const string &filename) : bookStore(filename)
+    BookManager(const string &filename)
     {
+        bookStore = DataStore<Book>(filename);
         loadBooks();
     }
 
     // Data operations
-    void loadBooks();
-    void saveBooks();
+    void loadBooks(){
+        bookStore.load();
+    };
+    void saveBooks(){
+        bookStore.save();
+    };
 
     // Book operations
-    bool addBook(const Book &b);
-    bool updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
-    bool removeBookByISBN(const string &isbn);
+    bool addBook(const Book &b){
+        books.insert(b);
+        searchMap.insert(b);
+        bookList.push_back(b);
+        return true;
+    };
+    bool updateBookDetails(BookAllKey key);
+    bool removeBook(BookSearchKey key);
     
     // searching
-    Book *findBookByISBN(const string &isbn) const;
-    vector<Book *> findBooksByTitle(const string &title) const;
-    vector<Book *> findBooksByAuthor(const string &author) const;
+    Book *findBook(BookSearchKey key) const;
+    vector<Book *> findBooks(BookSearchKey key) const;
     
     // sorting
-    void sortBooksByTitle(bool reverse = false);
-    void sortBooksByYear(bool reverse = false);
+    void sortBooks(BooksSortKey key, bool reverse = false);
     
     // listing
     void listAllBooks() const;

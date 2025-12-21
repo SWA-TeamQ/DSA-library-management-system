@@ -5,7 +5,7 @@ using namespace std;
 
 enum PatronSearchKey { NAME, ID };
 enum PatronSortKey { NAME, MEMBERSHIP_DATE, BORROW_COUNT };
-enum PatronAllKey { ID, NAME, CONTACT, MEMBERSHIP_DATE, BORROW_COUNT };
+enum PatronAllKey { NAME, CONTACT, MEMBERSHIP_DATE, BORROW_COUNT };
 
 class Patron
 {

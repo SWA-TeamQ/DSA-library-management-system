@@ -10,41 +10,40 @@ using namespace std;
 class BookSearchMap
 {
 private:
-    unordered_map<string, vector<Book*>> titleIndex;
-    unordered_map<string, vector<Book*>> authorIndex;
+    unordered_map<string, vector<int>> titleIndex;
+    unordered_map<string, vector<int>> authorIndex;
 
 public:
     BookSearchMap() = default;
     ~BookSearchMap() = default;
 
-    // Build indices from a list of Book pointers
-    void buildIndices(const vector<Book*>& books)
+    // Build indices from a list of Books
+    void buildIndices(const vector<Book>& books)
     {
         titleIndex.clear();
         authorIndex.clear();
 
-        for (auto* b : books)
-        {
-            titleIndex[b->getTitle()].push_back(b);
-            authorIndex[b->getAuthor()].push_back(b);
+        for(auto b : books){
+            titleIndex[b.getTitle()].push_back(b.getISBN());
+            authorIndex[b.getAuthor()].push_back(b.getISBN());
         }
     }
 
     // Search books by title
-    vector<Book*> findByTitle(const string& title) const
+    vector<int> findByTitle(const string& title) const
     {
         auto it = titleIndex.find(title);
         if (it != titleIndex.end())
             return it->second;
-        return {}; // empty if not found
+        return {};
     }
 
     // Search books by author
-    vector<Book*> findByAuthor(const string& author) const
+    vector<int> findByAuthor(const string& author) const
     {
         auto it = authorIndex.find(author);
         if (it != authorIndex.end())
             return it->second;
-        return {}; // empty if not found
+        return {};
     }
 };
