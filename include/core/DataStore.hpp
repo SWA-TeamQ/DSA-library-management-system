@@ -2,11 +2,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-template <typename T>
+template <typname U, typename T>
 class DataStore
 {
 private:
@@ -18,21 +18,17 @@ public:
         this->filename = filename;
     }
 
-    bool saveData(const vector<T> &dataList) const
+    bool saveData(const unordered_map<U, T> &dataMap) const
     {
         ofstream file(filename, ios::out | ios::trunc);
+        if (!file.is_open()) return false;
 
-        if (!file.is_open())
-        {
-            return false;
-        }
 
         // Write each item, one per line
-        for (const T &item : dataList)
+        for (const auto &[key, item] : dataMap)
         {
             file << item.serialize() << '\n';
         }
-
         file.close();
         return true;
     }
@@ -51,25 +47,22 @@ public:
         return true;
     }
 
-    bool loadData(vector<T> &dataList)
+    bool loadData(unordered_map<U, T> &dataMap)
     {
-        dataList.clear();
+        dataMap.clear();
         ifstream file(filename, ios::in);
 
-        if (!file.is_open())
-        {
-            return false;
-        }
+        if (!file.is_open()) return false;
 
         string line;
         while (getline(file, line))
         {
-            if (line.empty())
-                continue; // skip blank lines
+            // skip blank lines
+            if (line.empty()) continue;
 
             T item;
             item.deserialize(line);
-            dataList.push_back(item);
+            dataMap[item.getKey()] = item;
         }
         file.close();
         return true;
