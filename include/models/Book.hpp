@@ -3,9 +3,8 @@
 #include <iostream>
 using namespace std;
 
-enum BookSearchKey { ISBN, TITLE, AUTHOR, CATEGORY, AVAILABILITY };
+enum BookSearchKey { ID, TITLE, AUTHOR, CATEGORY };
 enum BookSortKey { TITLE, AUTHOR, YEAR, BORROW_COUNT };
-enum BookAllKey { TITLE, AUTHOR, EDITION, PUBLICATION_YEAR, CATEGORY, AVAILABILITY, BORROW_COUNT };
 
 class Book
 {
@@ -16,8 +15,8 @@ private:
     string edition;
     string publicationYear;
     string category;
-    bool available{true};
-    int borrowCount{0};
+    bool available;
+    int borrowCount;
 
 public:
     Book() = default;
@@ -32,14 +31,14 @@ public:
          int borrowCount = 0);
 
     // for generic lookup
-    const string &getKey() const { return isbn; }
+    const string getKey() const { return isbn; }
 
-    const string &getTitle() const { return title; }
-    const string &getAuthor() const { return author; }
-    const string &getISBN() const { return isbn; }
-    const string &getEdition() const { return edition; }
-    const string &getPublicationYear() const { return publicationYear; }
-    const string &getCategory() const { return category; }
+    const string getTitle() const { return title; }
+    const string getAuthor() const { return author; }
+    const string getISBN() const { return isbn; }
+    const string getEdition() const { return edition; }
+    const string getPublicationYear() const { return publicationYear; }
+    const string getCategory() const { return category; }
     bool isAvailable() const { return available; }
     int getBorrowCount() const { return borrowCount; }
 
@@ -49,17 +48,15 @@ public:
     void setEdition(const string &edition) { this->edition = edition; }
     void setPublicationYear(const string &publicationYear) { this->publicationYear = publicationYear; }
     void setCategory(const string &category) { this->category = category; }
-    void setAvailable(bool available) { this->available = available; }
-    void setBorrowCount(int bc) { borrowCount = bc; }
+    void setAvailable(const bool &available) { this->available = available; }
+    void setBorrowCount(const int &borrowCount) { this->borrowCount = borrowCount; }
 
     void incrementBorrowCount() { ++borrowCount; }
-    void decrementBorrowCount()
-    {
-        if (borrowCount > 0)
-            --borrowCount;
-    }
+    void decrementBorrowCount() { if (borrowCount > 0) --borrowCount; }
 
-    void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
+
+    vector<string> getFields() const;
+    vector<string> getValues() const;
 };

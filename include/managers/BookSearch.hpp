@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include "models/Book.hpp"
 
 using namespace std;
@@ -10,35 +10,45 @@ using namespace std;
 class BookSearchMap
 {
 private:
-    unordered_map<string, vector<string>> titleIndex;
-    unordered_map<string, vector<string>> authorIndex;
+    unordered_map<string, unordered_set<string>> titleIndex;
+    unordered_map<string, unordered_set<string>> authorIndex;
+    unordered_map<string, unordered_set<string>> categoryIndex;
 
 public:
     BookSearchMap() = default;
     ~BookSearchMap() = default;
 
+    void clear(){
+        titleIndex.clear();
+        authorIndex.clear();
+        categoryIndex.clear();
+    }
+
     // Build indices from a list of Books
     void buildIndices(const vector<Book>& books)
     {
-        titleIndex.clear();
-        authorIndex.clear();
-
-        for(auto b : books){
-            titleIndex[b.getTitle()].push_back(b.getISBN());
-            authorIndex[b.getAuthor()].push_back(b.getISBN());
+        clear();
+        for(const auto &b : books){
+            insert(b);
         }
     }
 
-    void addBook(const Book& b)
+    void insert(const Book& b)
     {
-        titleIndex[b.getTitle()].push_back(b.getISBN());
-        authorIndex[b.getAuthor()].push_back(b.getISBN());
+        titleIndex[b.getTitle()].insert(b.getKey());
+        authorIndex[b.getAuthor()].insert(b.getKey());
+        categoryIndex[b.getCategory()].insert(b.getKey());
     }
 
-    void removeBook(const Book& b)
+    void remove(const Book& b)
     {
-        titleIndex[b.getTitle()].remove(b.getISBN());
-        authorIndex[b.getAuthor()].remove(b.getISBN());
+        string id = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
+        if(titleIndex.find(title) != titleIndex.end())
+            titleIndex[title].erase(id);
+        if(authorIndex.find(author) != authorIndex.end())
+            authorIndex[author].erase(id);
+        if(categoryIndex.find(category) != categoryIndex.end())
+            categoryIndex[category].erase(id);
     }
 
     // Search books by title
@@ -46,7 +56,7 @@ public:
     {
         auto it = titleIndex.find(title);
         if (it != titleIndex.end())
-            return it->second;
+            return vector<string>(it->second.begin(), it->second.end());
         return {};
     }
 
@@ -55,7 +65,16 @@ public:
     {
         auto it = authorIndex.find(author);
         if (it != authorIndex.end())
-            return it->second;
+            return vector<string>(it->second.begin(), it->second.end());
+        return {};
+    }
+
+    // Search books by category
+    vector<string> findByCategory(const string& category) const
+    {
+        auto it = categoryIndex.find(category);
+        if (it != categoryIndex.end())
+            return vector<string>(it->second.begin(), it->second.end());
         return {};
     }
 };

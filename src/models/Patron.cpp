@@ -36,3 +36,13 @@ void Patron::deserialize(const string &line)
         borrowCount = 0;
     }
 }
+
+vector<string> Patron::getFields() const
+{
+    return {"ID", "Name", "Contact", "Membership Date", "Borrow Count"};
+}
+
+vector<string> Patron::getValues() const
+{
+    return {patronID, name, contact, membershipDate, to_string(borrowCount)};
+}

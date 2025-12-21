@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <memory>
 #include "models/Book.hpp"
 #include "models/Patron.hpp"
 #include "models/Transaction.hpp"
-#include "dsa/HashTable.hpp"
 #include "managers/BookManager.hpp"
 #include "managers/TransactionManager.hpp"
 #include "managers/PatronManager.hpp"
@@ -12,73 +12,58 @@
 
 using namespace std;
 
-
 class LibraryController
 {
 private:
-    PatronManager patronsManager;
     BookManager booksManager;
+    PatronManager patronsManager;
     TransactionManager transactionsManager;
     LoanService loanService;
 
 public:
-    LibraryController()
+    LibraryController() 
     {
-        bookManager = BookManager("books.txt");
-        patronManager = PatronManager("patrons.txt");
-        transactionManager = TransactionManager("transactions.txt");
-        loanService(booksManager, patronsManager, transactionsManager);
+        booksManager = BookManager("books.txt");
+        patronsManager = PatronManager("patrons.txt");
+        transactionsManager = TransactionManager("transactions.txt");
+        loanService = LoanService(booksManager, patronsManager, transactionsManager);
     }
 
     void load()
     {
-        patronsManager.loadPatrons();
         booksManager.loadBooks();
+        patronsManager.loadPatrons();
         transactionsManager.loadTransactions();
     }
 
     void save()
     {
-        patronsManager.savePatrons();
         booksManager.saveBooks();
+        patronsManager.savePatrons();
         transactionsManager.saveTransactions();
     }
 
     // Book operations
     bool addBook(const Book &b);
-    bool removeBook(BookSearchKey key);
-
-    Book *findBook(BookSearchKey key) const;
-    vector<Book *> findBooks(BookSearchKey key) const;
+    bool removeBook(const string &isbn);
+    Book *findBook(const string &isbn) const;
+    vector<Book *> findBooksByTitle(const string &title) const;
     void sortBooks(BookSortKey key, bool reverse = false);
-    bool updateBook(BookAllKey key);
+    bool updateBook(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
     void listAllBooks() const;
-
 
     // Patron operations
     bool addPatron(const Patron &p);
-    bool removePatron(PatronSearchKey key);
-    Patron *findPatron(PatronSearchKey key);
-    vector<Patron *> findPatrons(PatronSearchKey key);
+    bool removePatron(const string &patronID);
+    Patron *findPatron(const string &patronID) const;
     void sortPatrons(PatronSortKey key, bool reverse = false);
-    bool updatePatron(PatronAllKey key);
+    bool updatePatron(const string &patronID, const string &name, const string &contact, const string &membershipDate, int borrowCount);
     void listAllPatrons() const;
 
     // Transaction operations
-    bool addTransaction(const Transaction &t);
-    bool removeTransaction(TransactionSearchKey key);
-    Transaction *findTransaction(TransactionSearchKey key);
-    vector<Transaction *> findTransactions(TransactionSearchKey key);
-    void sortTransactions(TransactionSortKey key, bool reverse = false);
-    bool updateTransaction(TransactionAllKey key);
     void listAllTransactions() const;
 
     // Borrow/Return operations
     bool borrowBook(const string &patronID, const string &isbn);
     bool returnBook(const string &patronID, const string &isbn);
-
-    // Reporting
-    void listAllBooks() const;
-    void listAllPatrons() const;
-    void listAllTransactions() const;
 };

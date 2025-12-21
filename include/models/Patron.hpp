@@ -5,7 +5,6 @@ using namespace std;
 
 enum PatronSearchKey { NAME, ID };
 enum PatronSortKey { NAME, MEMBERSHIP_DATE, BORROW_COUNT };
-enum PatronAllKey { NAME, CONTACT, MEMBERSHIP_DATE, BORROW_COUNT };
 
 class Patron
 {
@@ -61,4 +60,7 @@ public:
     void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
+    
+    vector<string> getFields() const;
+    vector<string> getValues() const;
 };

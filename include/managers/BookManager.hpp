@@ -13,7 +13,7 @@ class BookManager
 {
 private:
     vector<Book> bookList;
-    HashTable<string, int> books;
+    HashTable<string, int> bookTable;
     BookSearchMap searchMap;
     DataStore<Book> bookStore;
 
@@ -33,28 +33,31 @@ public:
     void saveBooks(){
         bookStore.save();
     };
+    
+    // id -> index
+    void buildSearchIndex(){
+        bookTable.clear();
+        for(int i = 0; i < bookList.size(); i++)
+            bookTable.insert(bookList[i].getKey(), i);
+    };
+    
+    // title -> id, author -> id
+    void buildSearchMap(){
+        searchMap.buildIndices(bookList);
+    }; 
 
     // Book operations
-    bool addBook(const Book &b){
-        int index = bookList.size() - 1;
-        books.insert(b.getISBN(), index);
-        searchMap.addBook(b);
-        bookList.push_back(b);
-        return true;
-    };
-    bool updateBookDetails(BookAllKey key);
-    bool removeBook(BookSearchKey key);
+    bool addBook(const Book &b);
+    bool updateBook(Book &b);
+    bool removeBook(const BookSearchKey key, const string &value);
     
     // searching
-    Book *findBook(BookSearchKey key) const;
-    vector<Book *> findBooks(BookSearchKey key) const;
+    Book *findBook(const BookSearchKey key, const string &value) const;
+    vector<Book *> findBooks(const BookSearchKey key, const string &value) const;
     
     // sorting
-    void sortBooks(BooksSortKey key, bool reverse = false);
+    void sortBooks(const BooksSortKey key, bool reverse = false);
     
     // listing
     void listAllBooks() const;
-    
-    void buildSearchIndex();
-    void buildSearchMap();
 };

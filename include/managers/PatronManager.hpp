@@ -1,14 +1,17 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "models/Patron.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
 
+using namespace std;
+
 class PatronManager
 {
 private:
-    HashTable<Patron> patrons; // Hash table keyed by patronID
     vector<Patron> patronList;
+    HashTable<string, int> patronTable; // ID -> index
     DataStore<Patron> store;
 
 public:
@@ -19,12 +22,12 @@ public:
 
     void loadPatrons();
     void savePatrons();
+    void buildSearchIndex();
 
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
-    Patron *findPatron(PatronSearchKey key) const;
-    vector<Patron *> findPatrons(PatronSearchKey key) const;
+    Patron *findPatron(const string &patronID) const;
     void sortPatrons(PatronSortKey key, bool reverse = false);
-    bool updatePatron(PatronSearchKey key);
+    bool updatePatron(Patron &p);
     void listAllPatrons() const;
 };
