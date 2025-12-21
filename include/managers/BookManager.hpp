@@ -50,5 +50,5 @@ public:
     bool removeBook(const BookSearchKey key, const string &value);
     Book *findBook(const BookSearchKey key, const string &value) const;
     vector<Book *> findBooks(const BookSearchKey key, const string &value) const;
-    void sortBooks(const BookSortKey key, bool reverse = false);
+    vector<Book *> sortBooks(const BookSortKey key, bool reverse = false);
 };

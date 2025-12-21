@@ -32,6 +32,21 @@ public:
         return inserted;
     }
 
+    T &operator[](const U &key)
+    {
+        return table[key];
+    }
+
+    const T &operator[](const U &key) const
+    {
+        return table.at(key);
+    }
+
+    auto begin() { return table.begin(); }
+    auto end() { return table.end(); }
+    auto begin() const { return table.begin(); }
+    auto end() const { return table.end(); }
+
     T *find(const U &key) const
     {
         auto it = table.find(key);

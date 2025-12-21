@@ -25,8 +25,9 @@ public:
         categoryIndex.clear();
     }
 
-    // Build indices from a list of Books
-    void buildIndices(const unordered_map<string, Book>& books)
+    // Build indices from any map-like container of Books (e.g., unordered_map, HashTable)
+    template <typename MapType>
+    void buildIndices(const MapType& books)
     {
         clear();
         for(const auto &[id, book] : books){

@@ -20,11 +20,12 @@ public:
         nameIndex.clear();
     }
 
-    // Build indices from a list of Patrons
-    void buildIndices(const vector<Patron>& patrons)
+    // Build indices from a map of Patrons
+    template <typename MapType>
+    void buildIndices(const MapType& patrons)
     {
         clear();
-        for(const auto &p : patrons){
+        for(const auto &[id, p] : patrons){
             insert(p);
         }
     }
@@ -39,8 +40,12 @@ public:
         string id = p.getKey(), name = p.getName();
         
         auto it = nameIndex.find(name);
-        if(it != nameIndex.end())
+        if(it != nameIndex.end()){
             it->second.erase(id);
+            if(it->second.empty()){
+                nameIndex.erase(it);
+            }
+        }
     }
 
     // Search patrons by name
