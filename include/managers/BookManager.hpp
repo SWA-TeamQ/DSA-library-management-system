@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
 #include "models/Book.hpp"
 #include "dsa/HashTable.hpp"
 #include "dsa/MergeSort.hpp"
@@ -12,54 +13,42 @@ using namespace std;
 class BookManager
 {
 private:
-    vector<Book> bookList;
-    HashTable<string, int> bookTable;
+    // file store
+    DataStore<string, Book> bookStore;
+    HashTable<string, Book> bookTable; // id -> book
     BookSearchMap searchMap;
-    DataStore<Book> bookStore;
 
 public:
-    BookManager(const string &filename)
+    BookManager(const string &filename) : bookStore(filename)
     {
-        bookStore = DataStore<Book>(filename);
         loadBooks();
-        buildSearchIndex();
-        buildSearchMap();
     }
 
     // Data operations
     void loadBooks(){
-        bookList.clear();
         bookTable.clear();
         searchMap.clear();
 
-       if(!bookStore.loadData(bookList)){
-            cout << "Warning: unable "
-       };
-        buildSearchIndex();
+        if(!bookStore.loadData(bookTable)){
+            cout << "Warning: unable to load books from file" << endl;
+        }
         buildSearchMap();
-    };
+    }
 
     void saveBooks(){
-        bookStore.saveData(bookList);
-    };
-    
-    // id -> index
-    void buildSearchIndex(){
-        bookTable.clear();
-        for(int i = 0; i < bookList.size(); i++)
-            bookTable.insert(bookList[i].getKey(), i);
-    };
+        bookStore.saveData(bookTable);
+    }
     
     // title -> id, author -> id
     void buildSearchMap(){
-        searchMap.buildIndices(bookList);
-    }; 
+        searchMap.buildIndices(bookTable);
+    } 
 
     // Book operations
-    bool addBook(const Book &b);
-    bool updateBook(Book &b);
+    void addBook(const Book &b);
+    bool updateBook(const Book &b);
     bool removeBook(const BookSearchKey key, const string &value);
     Book *findBook(const BookSearchKey key, const string &value) const;
     vector<Book *> findBooks(const BookSearchKey key, const string &value) const;
-    void sortBooks(const BooksSortKey key, bool reverse = false);
+    void sortBooks(const BookSortKey key, bool reverse = false);
 };

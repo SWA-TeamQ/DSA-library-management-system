@@ -6,7 +6,7 @@
 
 using namespace std;
 
-template <typname U, typename T>
+template <typename U, typename T>
 class DataStore
 {
 private:

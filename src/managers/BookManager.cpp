@@ -3,25 +3,23 @@
 
 using namespace std;
 
-void BookManager::addBook(const Book& b){
-    const int index = bookList.size();
-    bookList.push_back(b);
-    bookTable.insert(b.getKey(), index);
-    searchMap.insert(b);
-    bookStore.addData(b); // persist after addition
+void BookManager::addBook(const Book& book){
+    bookTable[book.getKey()] = book;
+    searchMap.insert(book);
+    bookStore.addData(book); // persist after addition
 }
 
-bool BookManager::removeBook(const BookSearchKey &key, const string &value)
+bool BookManager::removeBook(const BookSearchKey key, const string &value)
 {
     vector<string> ids;
     switch(key){
         case BookSearchKey::ID:
             ids.push_back(value);
             break;
-        case BookSearchKey::Title:
+        case BookSearchKey::TITLE:
             ids = searchMap.findByTitle(value);
             break;
-        case BookSearchKey::Author:
+        case BookSearchKey::AUTHOR:
             ids = searchMap.findByAuthor(value);
             break;
         case BookSearchKey::CATEGORY:
@@ -29,75 +27,84 @@ bool BookManager::removeBook(const BookSearchKey &key, const string &value)
             break;
     }
 
-    for(const auto &id : ids){
-        Book *b = bookTable.find(id);
-        if(!b){
-            cout << "Book not found" << endl;
-            return false;
-        }
-        if(!b->isAvailable()){
-            cout << "Book is already borrowed so it couldn't be removed" << endl;
-            return false;
-        }
-        bookList.erase(bookList.begin() + bookTable.find(id));
-        bookTable.remove(id);
-        searchMap.remove(*b);
+    if(ids.empty()){
+        return false;
     }
 
-    saveBooks(); // persist after removal
-    buildSearchIndex();
-    return true;
+    bool deleted = false;
+    for(const auto &id : ids){
+        Book *b = bookTable.find(id);
+        if(!b) continue;
+        if(!b->isAvailable()){
+            cout << "Book " << b->getKey() << " is already borrowed so it couldn't be removed" << endl;
+            continue;
+        }
+        deleted = true;
+        searchMap.remove(*b);
+        bookTable.remove(id);
+    }
+
+    if (deleted) {
+        saveBooks();
+    }
+    return deleted;
 }
 
 // Search a Book by its searchable keys
-Book *BookManager::findBook(const BookSearchKey &key, const string &value) const
+Book *BookManager::findBook(const BookSearchKey key, const string &value) const
 {
-    vector<string> isbns;
+    vector<string> ids;
     switch(key){
         case BookSearchKey::ID:
-            isbns.push_back(value);
+            ids.push_back(value);
+            break;
+        case BookSearchKey::TITLE:
+            ids = searchMap.findByTitle(value);
+            break;
+        case BookSearchKey::AUTHOR:
+            ids = searchMap.findByAuthor(value);
             break;
         case BookSearchKey::CATEGORY:
-            isbns = searchMap.findByCategory(value);
-            break;
-        case BookSearchKey::Title:
-            isbns = searchMap.findByTitle(value);
-            break;
-        case BookSearchKey::Author:
-            isbns = searchMap.findByAuthor(value);
+            ids = searchMap.findByCategory(value);
             break;
     }
 
-    if(isbns.empty()){
+    if(ids.empty()){
         return nullptr;
     }
 
-    const int index = bookTable.find(isbns[0]); // only cares about the first found element
-    return &bookList[index];
+    Book *book = bookTable.find(ids[0]);
+    if (book) {
+        return book;
+    }
+    return nullptr;
 }
 
 // Search Books by a specific key
-vector<Book *> BookManager::findBooks(const BookSearchKey &key, const string &value)
+vector<Book *> BookManager::findBooks(const BookSearchKey key, const string &value) const
 {
-    vector<string> isbns;
+    vector<string> ids;
     switch(key){
         case BookSearchKey::ID:
-            isbns.push_back(value);
+            ids.push_back(value);
             break;
         case BookSearchKey::CATEGORY:
-            isbns = searchMap.findByCategory(value);
+            ids = searchMap.findByCategory(value);
             break;
-        case BookSearchKey::Title:
-            isbns = searchMap.findByTitle(value);
+        case BookSearchKey::TITLE:
+            ids = searchMap.findByTitle(value);
             break;
-        case BookSearchKey::Author:
-            isbns = searchMap.findByAuthor(value);
+        case BookSearchKey::AUTHOR:
+            ids = searchMap.findByAuthor(value);
             break;
     }
+
     vector<Book *> books;
-    for(auto isbn : isbns){
-        const int index = bookTable.find(isbn);
-        books.push_back(&bookList[index]);
+    for(const auto &id : ids){
+        Book *book = bookTable.find(id);
+        if (book) {
+            books.push_back(book);
+        }
     }
     return books;
 }
@@ -106,8 +113,7 @@ vector<Book *> BookManager::findBooks(const BookSearchKey &key, const string &va
 // Update a book details
 bool BookManager::updateBook(const Book &newBook)
 {
-    int *indexPtr = bookTable.find(newBook.getKey());
-    Book *oldBook = &bookList[*indexPtr];
+    Book *oldBook = bookTable.find(newBook.getKey());
     if(oldBook == nullptr){
         return false;
     }
@@ -139,28 +145,30 @@ bool BookManager::updateBook(const Book &newBook)
 }
 
 
-void BookManager::sortBooks(const BookSortKey &key, const bool &reverse){
+vector<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse){
+    vector<Book *> sortedBooks = bookTable.all();
+
     switch(key){
         case BookSortKey::TITLE:
-            mergeSort(bookList, [](const Book& b){
-                return b.getTitle();
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getTitle();
             }, reverse);
             break;
         case BookSortKey::AUTHOR:
-            mergeSort(bookList, [](const Book& b){
-                return b.getAuthor();
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getAuthor();
             }, reverse);
             break;
         case BookSortKey::YEAR:
-            mergeSort(bookList, [](const Book& b){
-                return b.getPublicationYear();
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getPublicationYear();
             }, reverse);
             break;
         case BookSortKey::BORROW_COUNT:
-            mergeSort(bookList, [](const Book& b){
-                return b.getBorrowCount();
+            mergeSort(sortedBooks, [](const Book *b){
+                return b->getBorrowCount();
             }, reverse);
             break;
     }
-    saveBooks();
+    return sortedBooks;
 }

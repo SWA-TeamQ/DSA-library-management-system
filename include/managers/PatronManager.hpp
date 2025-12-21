@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
 #include "models/Patron.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
+#include "PatronSearch.hpp"
 
 using namespace std;
 
@@ -16,9 +18,8 @@ private:
     DataStore<Patron> patronStore;
 
 public:
-    PatronManager(const string &filename)
+    PatronManager(const string &filename) : patronStore(filename)
     {
-        patronStore = DataStore<Patron>(filename);
         loadPatrons();
     }
 
@@ -30,27 +31,26 @@ public:
         if(!patronStore.loadData(patronList)){
             cout << "Warning: Failed to load patrons from file\n";
             return;
-        };
+        }
         buildSearchIndex();
         buildSearchMap();
-    };
+    }
 
     void savePatrons(){
         if(!patronStore.saveData(patronList)){
             cout << "Warning: Failed to save patrons to file\n";
-        };
-    };
+        }
+    }
 
     void buildSearchIndex(){
         patronTable.clear();
-        for(int i = 0; i < patronList.size(); i++)
+        for(int i = 0; i < (int)patronList.size(); i++)
             patronTable.insert(patronList[i].getKey(), i);
-    };
+    }
 
     void buildSearchMap(){
         searchMap.buildIndices(patronList);
-    };
-
+    }
 
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);

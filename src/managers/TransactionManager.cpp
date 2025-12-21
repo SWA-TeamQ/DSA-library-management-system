@@ -1,6 +1,7 @@
 #include "managers/TransactionManager.hpp"
 #include <algorithm>
 #include <iostream>
+#include "dsa/MergeSort.hpp"
 
 using namespace std;
 
@@ -39,16 +40,21 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
         {
             int index = *indexPtr;
             Transaction t = transactionList[index]; 
-            transactionList.erase(transactionList.begin() + index);
+            
             searchMap.remove(t);
+            transactionTable.remove(id);
+            
+            transactionList.erase(transactionList.begin() + index);
             deleted = true;
+            
+            buildSearchIndex();
         }
     }
     
     if (deleted)
     {
-        buildSearchIndex();
         saveTransactions();
+        buildSearchMap();
     }
     return deleted;
 }
@@ -72,7 +78,10 @@ Transaction *TransactionManager::findTransaction(const TransactionSearchKey key,
     if (ids.empty()) return nullptr;
 
     int *indexPtr = transactionTable.find(ids[0]);
-    return &transactionList[*indexPtr];
+    if (indexPtr) {
+        return const_cast<Transaction*>(&transactionList[*indexPtr]);
+    }
+    return nullptr;
 }
 
 vector<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) const
@@ -95,12 +104,14 @@ vector<Transaction *> TransactionManager::findTransactions(const TransactionSear
     for (const string &id : ids)
     {
         int *indexPtr = transactionTable.find(id);
-        results.push_back(&transactionList[*indexPtr]);
+        if (indexPtr) {
+            results.push_back(const_cast<Transaction*>(&transactionList[*indexPtr]));
+        }
     }
     return results;
 }
 
-void TransactionManager::sortTransactions(TransactionSortKey key, bool reverse)
+void TransactionManager::sortTransactions(const TransactionSortKey key, bool reverse)
 {
     switch (key)
     {
@@ -115,6 +126,9 @@ void TransactionManager::sortTransactions(TransactionSortKey key, bool reverse)
         }, reverse);
         break;
     }
+    saveTransactions();
+    buildSearchIndex();
+    buildSearchMap();
 }
 
 vector<Transaction *> TransactionManager::getAllTransactions() const
@@ -122,7 +136,7 @@ vector<Transaction *> TransactionManager::getAllTransactions() const
     vector<Transaction *> results;
     for (const auto &t : transactionList)
     {
-        results.push_back(&t);
+        results.push_back(const_cast<Transaction*>(&t));
     }
     return results;
 }

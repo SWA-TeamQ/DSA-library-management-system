@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <iostream>
 #include "models/Transaction.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
@@ -17,9 +18,8 @@ private:
     DataStore<Transaction> transactionStore;
 
 public:
-    TransactionManager(const string &filename)
+    TransactionManager(const string &filename) : transactionStore(filename)
     {
-        transactionStore = DataStore<Transaction>(filename);
         loadTransactions();
     }
 
@@ -41,8 +41,8 @@ public:
     void saveTransactions(){
         if(!transactionStore.saveData(transactionList)){
             cout << "Warning: Failed to save transactions to file\n";
-        };
-    };
+        }
+    }
 
     void buildSearchIndex(){
         transactionTable.clear();
@@ -51,14 +51,14 @@ public:
     }
 
     void buildSearchMap(){
-
-    };
+        searchMap.buildIndices(transactionList);
+    }
 
     void addTransaction(const Transaction &t);
-    bool removeTransaction(const TransactionSearchKey &key, const string &value);
-    Transaction *findTransaction(const TransactionSearchKey &key, const string &value) const;
-    vector<Transaction *> findTransactions(const TransactionSearchKey &key, const string &value) const;
-    void sortTransactions(const TransactionSortKey &key, bool reverse = false);
+    bool removeTransaction(const TransactionSearchKey key, const string &value);
+    Transaction *findTransaction(const TransactionSearchKey key, const string &value) const;
+    vector<Transaction *> findTransactions(const TransactionSearchKey key, const string &value) const;
+    void sortTransactions(const TransactionSortKey key, bool reverse = false);
 
     vector<Transaction *> getAllTransactions() const;
 };

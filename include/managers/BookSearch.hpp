@@ -1,8 +1,9 @@
 #pragma once
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include "models/Book.hpp"
+#include <unordered_set>
+#include <unordered_map>
+#include <string>
+#include <vector>
 
 using namespace std;
 
@@ -25,11 +26,11 @@ public:
     }
 
     // Build indices from a list of Books
-    void buildIndices(const vector<Book>& books)
+    void buildIndices(const unordered_map<string, Book>& books)
     {
         clear();
-        for(const auto &b : books){
-            insert(b);
+        for(const auto &[id, book] : books){
+            insert(book);
         }
     }
 
@@ -44,17 +45,35 @@ public:
     {
         string id = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
         
+        // remove from titleIndex
         auto it = titleIndex.find(title);
-        if(it != titleIndex.end())
+        if(it != titleIndex.end()){
             it->second.erase(id);
+            // after deletion if the unordered set is empty, then we want to remove the key
+            if(it->second.empty()){
+                titleIndex.erase(it);
+            }
+        }
 
+        // remove from authorIndex
         it = authorIndex.find(author);
-        if(it != authorIndex.end())
+        if(it != authorIndex.end()){
             it->second.erase(id);
+            // after deletion if the unordered set is empty, then we want to remove the key
+            if(it->second.empty()){
+                authorIndex.erase(it);
+            }
+        }
 
+        // remove from categoryIndex
         it = categoryIndex.find(category);
-        if(it != categoryIndex.end())
+        if(it != categoryIndex.end()){
             it->second.erase(id);
+            // after deletion if the unordered set is empty, then we want to remove the key
+            if(it->second.empty()){
+                categoryIndex.erase(it);
+            }
+        }
     }
 
     // Search books by title

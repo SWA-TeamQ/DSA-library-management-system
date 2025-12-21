@@ -1,28 +1,18 @@
-// File: src/ui/BookMenu.cpp
-// Simple interactive Book menu for the DSA-library-management-system.
-// Self-contained UI component (no external dependencies) — stores books in-memory.
-
 #include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
 #include <limits>
-
-struct Book {
-    int id;
-    std::string title;
-    std::string author;
-    std::string isbn;
-};
+#include "models/Book.hpp"
+#include "UiHelpers.hpp"
 
 class BookMenu {
 public:
-    BookMenu() : nextId(1) {}
+    BookMenu() = default;
     void show();
 
 private:
     std::vector<Book> books;
-    int nextId;
 
     void listBooks();
     void addBook();
@@ -58,7 +48,7 @@ void BookMenu::listBooks() {
     std::cout << "ID\tTitle\tAuthor\tISBN\n";
     std::cout << "-------------------------------------------\n";
     for (const auto& b : books) {
-        std::cout << b.id << '\t' << b.title << '\t' << b.author << '\t' << b.isbn << '\n';
+        print(b);
     }
 }
 
