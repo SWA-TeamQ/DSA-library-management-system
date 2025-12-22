@@ -17,7 +17,7 @@ bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
     Array<string> ids;
     switch(key){
         case PatronSearchKey::ID:
-            ids.push_back(value);
+            ids.append(value);
             break;
         case PatronSearchKey::NAME:
             ids = searchMap.findByName(value);
@@ -55,7 +55,7 @@ Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value
     Array<string> ids;
     switch(key){
         case PatronSearchKey::ID:
-            ids.push_back(value);
+            ids.append(value);
             break;
         case PatronSearchKey::NAME:
             ids = searchMap.findByName(value);
@@ -74,7 +74,7 @@ Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const stri
     Array<string> ids;
     switch(key){
         case PatronSearchKey::ID:
-            ids.push_back(value);
+            ids.append(value);
             break;
         case PatronSearchKey::NAME:
             ids = searchMap.findByName(value);
@@ -85,7 +85,7 @@ Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const stri
     for(const auto &id : ids){
         Patron *p = patronTable.find(id);
         if (p) {
-            patrons.push_back(p);
+            patrons.append(p);
         }
     }
     return patrons;

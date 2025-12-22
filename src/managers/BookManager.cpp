@@ -18,7 +18,7 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
     switch (key)
     {
     case BookSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case BookSearchKey::TITLE:
         ids = searchMap.findByTitle(value);
@@ -66,7 +66,7 @@ Book *BookManager::findBook(const BookSearchKey key, const string &value) const
     switch (key)
     {
     case BookSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case BookSearchKey::TITLE:
         ids = searchMap.findByTitle(value);
@@ -99,7 +99,7 @@ Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &valu
     switch (key)
     {
     case BookSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case BookSearchKey::CATEGORY:
         ids = searchMap.findByCategory(value);
@@ -118,7 +118,7 @@ Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &valu
         Book *book = bookTable.find(id);
         if (book)
         {
-            books.push_back(book);
+            books.append(book);
         }
     }
     return books;

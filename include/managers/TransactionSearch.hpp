@@ -18,63 +18,85 @@ public:
     TransactionSearchMap() = default;
     ~TransactionSearchMap() = default;
 
-    void clear(){
+    void clear()
+    {
         bookIdIndex.clear();
         patronIdIndex.clear();
     }
 
     // Build indices from any container of Transactions (e.g., vector, HashTable)
     template <typename Container>
-    void buildIndices(const Container& transactions)
+    void buildIndices(const Container &transactions)
     {
         clear();
-        for(const auto &entry : transactions){
+        for (const auto &entry : transactions)
+        {
             insert(entry.second);
         }
     }
 
-    void insert(const Transaction& t)
+    void insert(const Transaction &t)
     {
         bookIdIndex[t.getBookID()].insert(t.getKey());
         patronIdIndex[t.getPatronID()].insert(t.getKey());
     }
 
-    void remove(const Transaction& t)
+    void remove(const Transaction &t)
     {
         string id = t.getKey(), bookId = t.getBookID(), patronId = t.getPatronID();
 
         auto it = bookIdIndex.find(bookId);
-        if(it != bookIdIndex.end()){
+        if (it != bookIdIndex.end())
+        {
             it->second.erase(id);
-            if(it->second.empty()){
+            if (it->second.empty())
+            {
                 bookIdIndex.erase(it);
             }
         }
-        
+
         it = patronIdIndex.find(patronId);
-        if(it != patronIdIndex.end()){
+        if (it != patronIdIndex.end())
+        {
             it->second.erase(id);
-            if(it->second.empty()){
+            if (it->second.empty())
+            {
                 patronIdIndex.erase(it);
             }
         }
     }
 
     // Search transactions by bookId
-    Array<string> findByBookId(const string& bookId) const
+    Array<string> findByBookId(const string &bookId) const
     {
         auto it = bookIdIndex.find(bookId);
         if (it != bookIdIndex.end())
-            return Array<string>(it->second.begin(), it->second.end());
+        {
+            auto setIt = it->second;
+            Array<string> ids;
+            for (auto &key : setIt)
+            {
+                ids.append(key);
+            }
+            return ids;
+        }
         return {};
     }
 
     // Search transactions by patronId
-    Array<string> findByPatronId(const string& patronId) const
+    Array<string> findByPatronId(const string &patronId) const
     {
         auto it = patronIdIndex.find(patronId);
         if (it != patronIdIndex.end())
-            return Array<string>(it->second.begin(), it->second.end());
+        {
+            auto setIt = it->second;
+            Array<string> ids;
+            for (auto &key : setIt)
+            {
+                ids.append(key);
+            }
+            return ids;
+        }
         return {};
     }
 };

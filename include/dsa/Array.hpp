@@ -91,6 +91,14 @@ public:
         return items[index];
     }
 
+    T* begin(){
+        return items;
+    }
+
+    T* end(){
+        return items + length;
+    }
+
     T* back(){
         if(length > 0)
             return &items[length - 1];

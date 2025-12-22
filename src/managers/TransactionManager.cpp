@@ -19,7 +19,7 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
     switch (key)
     {
     case TransactionSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case TransactionSearchKey::BOOK_ID:
         ids = searchMap.findByBookId(value);
@@ -54,7 +54,7 @@ Transaction *TransactionManager::findTransaction(const TransactionSearchKey key,
     switch (key)
     {
     case TransactionSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case TransactionSearchKey::BOOK_ID:
         ids = searchMap.findByBookId(value);
@@ -76,7 +76,7 @@ Array<Transaction *> TransactionManager::findTransactions(const TransactionSearc
     switch (key)
     {
     case TransactionSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case TransactionSearchKey::BOOK_ID:
         ids = searchMap.findByBookId(value);
@@ -90,7 +90,9 @@ Array<Transaction *> TransactionManager::findTransactions(const TransactionSearc
     for (const string &id : ids)
     {
         Transaction *t = transactionTable.find(id);
-        if (t) results.push_back(t);
+        if (t) {
+            results.append(t);
+        }
     }
     return results;
 }

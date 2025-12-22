@@ -52,8 +52,14 @@ public:
     Array<string> findByName(const string& name) const
     {
         auto it = nameIndex.find(name);
-        if (it != nameIndex.end())
-            return Array<string>(it->second.begin(), it->second.end());
+        if (it != nameIndex.end()){
+            auto setIt = it->second;
+            Array<string> ids;
+            for(auto &key : setIt){
+                ids.append(key);
+            }
+            return ids;
+        }
         return {};
     }
 };
