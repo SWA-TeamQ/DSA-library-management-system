@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-struct Date
+class Date
 {
 private:
     int day;
