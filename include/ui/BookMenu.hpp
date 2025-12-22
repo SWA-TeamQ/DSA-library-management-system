@@ -1,16 +1,28 @@
 #pragma once
+
 #include <string>
-#include <iostream>
-using namespace std;
+#include <vector>
 
-class BookMenu{
-    void handleBookMenu();
-   
-   // --- Book Operations ---
-   void handleAddBook();
-   void handleListBooks();
-   void handleSearchBooks();
-   void handleSortBooks();
-   void handleRemoveBook();
+#include "core/LibraryController.hpp"
 
+class BookMenu
+{
+public:
+    explicit BookMenu(LibraryController &controller);
+
+    void show();
+
+private:
+    LibraryController &controller;
+
+    void listBooks();
+    void addBook();
+    void removeBook();
+    void searchBooks();
+    void sortBooks();
+
+    void printBooksTable(const std::vector<Book *> &books) const;
+    std::string readLine(const std::string &prompt) const;
+    int readInt(const std::string &prompt) const;
+    void waitForEnter() const;
 };
