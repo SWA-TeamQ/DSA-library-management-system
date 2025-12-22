@@ -58,7 +58,7 @@ void Book::deserialize(const string &line)
   }
 }
 
-vector<string> Book::getFields() const
+Array<string> Book::getFields() const
 {
   return {
     "Title", 
@@ -71,7 +71,7 @@ vector<string> Book::getFields() const
     "Borrow Count"};
 }
 
-vector<string> Book::getValues() const
+Array<string> Book::getValues() const
 {
   return {
     title, 

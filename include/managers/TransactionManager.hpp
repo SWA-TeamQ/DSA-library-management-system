@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include <string>
 #include <iostream>
+#include "dsa/Array.hpp"
 #include "models/Transaction.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
@@ -45,8 +45,8 @@ public:
     bool addTransaction(const Transaction &t);
     bool removeTransaction(const TransactionSearchKey key, const string &value);
     Transaction *findTransaction(const TransactionSearchKey key, const string &value) const;
-    vector<Transaction *> findTransactions(const TransactionSearchKey key, const string &value) const;
-    vector<Transaction *> sortTransactions(const TransactionSortKey key, bool reverse = false);
+    Array<Transaction *> findTransactions(const TransactionSearchKey key, const string &value) const;
+    Array<Transaction *> sortTransactions(const TransactionSortKey key, bool reverse = false);
 
-    vector<Transaction *> getAllTransactions() const;
+    Array<Transaction *> getAllTransactions() const;
 };

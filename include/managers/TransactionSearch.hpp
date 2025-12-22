@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
-#include <vector>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
@@ -61,20 +61,20 @@ public:
     }
 
     // Search transactions by bookId
-    vector<string> findByBookId(const string& bookId) const
+    Array<string> findByBookId(const string& bookId) const
     {
         auto it = bookIdIndex.find(bookId);
         if (it != bookIdIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+            return Array<string>(it->second.begin(), it->second.end());
         return {};
     }
 
     // Search transactions by patronId
-    vector<string> findByPatronId(const string& patronId) const
+    Array<string> findByPatronId(const string& patronId) const
     {
         auto it = patronIdIndex.find(patronId);
         if (it != patronIdIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+            return Array<string>(it->second.begin(), it->second.end());
         return {};
     }
 };

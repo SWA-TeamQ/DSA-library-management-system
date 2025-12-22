@@ -3,7 +3,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
-#include <vector>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
@@ -78,29 +78,29 @@ public:
     }
 
     // Search books by title
-    vector<string> findByTitle(const string& title) const
+    Array<string> findByTitle(const string& title) const
     {
         auto it = titleIndex.find(title);
         if (it != titleIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+            return Array<string>(it->second.begin(), it->second.end());
         return {};
     }
 
     // Search books by author
-    vector<string> findByAuthor(const string& author) const
+    Array<string> findByAuthor(const string& author) const
     {
         auto it = authorIndex.find(author);
         if (it != authorIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+            return Array<string>(it->second.begin(), it->second.end());
         return {};
     }
 
     // Search books by category
-    vector<string> findByCategory(const string& category) const
+    Array<string> findByCategory(const string& category) const
     {
         auto it = categoryIndex.find(category);
         if (it != categoryIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+            return Array<string>(it->second.begin(), it->second.end());
         return {};
     }
 };

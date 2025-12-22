@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "dsa/Array.hpp"
 using namespace std;
 
 enum PatronSearchKey { NAME, ID };
@@ -55,6 +56,6 @@ public:
     string serialize() const;
     void deserialize(const string &line);
     
-    vector<string> getFields() const;
-    vector<string> getValues() const;
+    Array<string> getFields() const;
+    Array<string> getValues() const;
 };

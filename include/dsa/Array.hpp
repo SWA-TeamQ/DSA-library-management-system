@@ -1,22 +1,80 @@
-#include <iostream>
-
-using namespace std;
+#include <initializer_list>
+#include <stdexcept>
+#include <utility>
+#include <iterator>
+#include <algorithm>
 
 template <typename T>
 class Array{
-private:
+public:
     int capacity, intialCapacity, length;
     T *items;
 
-public:
     Array(int capacity = 1000){
         this->length = 0;
         this->intialCapacity = capacity;
         this->capacity = capacity;
         this->items = new T[capacity];
     };
+
+    // Copy Constructor (for deep copy)
+    Array(const Array &other) {
+        this->length = other.length;
+        this->initialCapacity = other.initialCapacity;
+        this->capacity = other.capacity;
+        this->items = new T[this->capacity];
+        for (int i = 0; i < length; i++) {
+            this->items[i] = other.items[i];
+        }
+    }
+
+    // Copy Assignment Operator ( '=' operator overloading) // to make it work with out class objects
+    Array &operator=(const Array &other) {
+        if (this != &other) {
+            delete[] items;
+            this->length = other.length;
+            this->initialCapacity = other.initialCapacity;
+            this->capacity = other.capacity;
+            this->items = new T[this->capacity];
+            for (int i = 0; i < length; i++) {
+                this->items[i] = other.items[i];
+            }
+        }
+        return *this;
+    }
+
+    // Move Constructor
+    Array(Array &&other) noexcept {
+        this->length = other.length;
+        this->initialCapacity = other.initialCapacity;
+        this->capacity = other.capacity;
+        this->items = other.items;
+
+        other.items = nullptr;
+        other.length = 0;
+        other.capacity = 0;
+    }
+
+    // Move Assignment Operator
+    Array &operator=(Array &&other) noexcept {
+        if (this != &other) {
+            delete[] items;
+            this->length = other.length;
+            this->initialCapacity = other.initialCapacity;
+            this->capacity = other.capacity;
+            this->items = other.items;
+
+            other.items = nullptr;
+            other.length = 0;
+            other.capacity = 0;
+        }
+        return *this;
+    }
+
     ~Array(){
-        delete[] items;
+        if (items) {
+            delete[] items;
+        }
     }
 
     // indexing
@@ -33,10 +91,17 @@ public:
         return items[index];
     }
 
+    T* back(){
+        if(length > 0)
+            return &items[length - 1];
+        return nullptr;
+    }
+
     void append(const T &item)
     {
-        if(full()) resize();
-            items[length++] = item;
+        if(full()) 
+            resize();
+        items[length++] = item;
     }
 
     void pop()
@@ -47,9 +112,10 @@ public:
     
     void insertAt(int index, T item)
     {
-        if(!index == length) 
+        if(index != length) 
             validateIndex(index);
-        if(full()) resize();
+        if(full()) 
+            resize();
 
         append(item);
         for(int i = length - 1; i > index; --i){
@@ -102,7 +168,7 @@ public:
     void clear()
     {
         length = 0;
-        capacity = intialCapacity;
+        capacity = initialCapacity;
         delete[] items;
         items = new T[capacity];
      }

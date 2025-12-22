@@ -1,10 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <vector>
 #include <unordered_map>
-
-using namespace std;
+#include "dsa/Array.hpp"
 
 template <typename U, typename T>
 class HashTable
@@ -66,10 +64,10 @@ public:
         table.clear();
     }
 
-    vector<T *> all() const
+    Array<T *> all() const
     {
-        vector<T *> result;
-        result.reserve(table.size());
+        Array<T *> result = Array<T *>(table.size());
+        
         for (auto &[key, value] : table)
             result.push_back(&value);
         return result;

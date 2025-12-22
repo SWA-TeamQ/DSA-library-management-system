@@ -58,12 +58,12 @@ void Transaction::deserialize(const string &line)
     returned = (field == "1");
 }
 
-vector<string> Transaction::getFields() const
+Array<string> Transaction::getFields() const
 {
     return {"Transaction ID", "Book ID", "Patron ID", "Borrow Date", "Due Date", "Return Date", "Returned"};
 }
 
-vector<string> Transaction::getValues() const
+Array<string> Transaction::getValues() const
 {
     return {transactionID, bookID, patronID, borrowDate, dueDate, returnDate, returned ? "Yes" : "No"};
 }

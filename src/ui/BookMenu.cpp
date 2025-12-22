@@ -46,7 +46,7 @@ void BookMenu::waitForEnter() const
     getline(std::cin, dummy);
 }
 
-void BookMenu::printBooksTable(const vector<Book *> &books) const
+void BookMenu::printBooksTable(const Array<Book *> &books) const
 {
     if (books.empty())
     {
@@ -159,7 +159,7 @@ void BookMenu::searchBooks()
         string isbn = readLine("ISBN: ");
         if (auto *book = controller.findBook(isbn))
         {
-            printBooksTable(vector<Book *>{book});
+            printBooksTable(Array<Book *>{book});
         }
         else
         {

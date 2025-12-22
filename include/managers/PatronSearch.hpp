@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
-#include <vector>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
@@ -49,11 +49,11 @@ public:
     }
 
     // Search patrons by name
-    vector<string> findByName(const string& name) const
+    Array<string> findByName(const string& name) const
     {
         auto it = nameIndex.find(name);
         if (it != nameIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+            return Array<string>(it->second.begin(), it->second.end());
         return {};
     }
 };

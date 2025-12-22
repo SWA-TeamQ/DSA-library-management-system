@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include "dsa/Array.hpp"
 
 #include "core/LibraryController.hpp"
 
@@ -21,7 +21,7 @@ private:
     void searchBooks();
     void sortBooks();
 
-    void printBooksTable(const std::vector<Book *> &books) const;
+    void printBooksTable(const Array<Book *> &books) const;
     std::string readLine(const std::string &prompt) const;
     int readInt(const std::string &prompt) const;
     void waitForEnter() const;

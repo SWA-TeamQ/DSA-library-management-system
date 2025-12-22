@@ -34,7 +34,7 @@ void Patron::deserialize(const string &line)
     }
 }
 
-vector<string> Patron::getFields() const
+Array<string> Patron::getFields() const
 {
     return {
         "ID", 
@@ -45,7 +45,7 @@ vector<string> Patron::getFields() const
         "Borrow Count"};
 }
 
-vector<string> Patron::getValues() const
+    Array<string> Patron::getValues() const
 {
     return {
         patronID, 
