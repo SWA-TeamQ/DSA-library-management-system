@@ -20,27 +20,14 @@ Book::Book(string title,
   this->edition = edition;
   this->publicationYear = publicationYear;
   this->category = category;
-  this->quantity = quantity;
   this->available = available;
   this->borrowCount = borrowCount;
-}
-
-void Book::displayDetails() const
-{
-  cout << "Title: " << title
-       << " | Author: " << author
-       << " | ISBN: " << isbn
-       << " | Edition: " << edition
-       << " | PubYear: " << publicationYear
-       << " | Category: " << category
-       << " | Available: " << (available ? "Yes" : "No")
-       << " | Borrows: " << borrowCount << '\n';
 }
 
 string Book::serialize() const
 {
   return title + "," + author + "," + isbn + "," + edition + "," +
-         to_string(publicationYear) + "," + category + "," + to_string(quantity) + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
+         to_string(publicationYear) + "," + category + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Book::deserialize(const string &line)
@@ -59,11 +46,6 @@ void Book::deserialize(const string &line)
     publicationYear = -1;
   getline(ss, category, ',');
   getline(ss, field, ',');
-  if (!field.empty())
-    quantity = stoi(field);
-  else
-    quantity = 1;
-  getline(ss, field, ',');
   available = (field == "1");
   getline(ss, field);
   if (!field.empty())
@@ -78,10 +60,26 @@ void Book::deserialize(const string &line)
 
 vector<string> Book::getFields() const
 {
-  return {"Title", "Author", "ISBN", "Edition", "Publication Year", "Category", "Available", "Borrow Count"};
+  return {
+    "Title", 
+    "Author", 
+    "ISBN", 
+    "Edition", 
+    "Publication Year", 
+    "Category", 
+    "Available", 
+    "Borrow Count"};
 }
 
 vector<string> Book::getValues() const
 {
-  return {title, author, isbn, edition, publicationYear, category, available ? "available" : "not available", to_string(borrowCount)};
+  return {
+    title, 
+    author, 
+    isbn, 
+    edition, 
+    to_string(publicationYear), 
+    category, 
+    available ? "available" : "not available", 
+    to_string(borrowCount)};
 }

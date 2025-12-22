@@ -1,16 +1,9 @@
 #include "models/Patron.hpp"
 #include <sstream>
+#include <iostream>
+#include <vector>
 
 using namespace std;
-
-void Patron::displayDetails() const
-{
-    cout << "ID: " << patronID
-         << " | Name: " << name
-         << " | Contact: " << contact
-         << " | Membership Date: " << membershipDate
-         << " | Borrow Count: " << borrowCount << '\n';
-}
 
 string Patron::serialize() const
 {
@@ -43,10 +36,22 @@ void Patron::deserialize(const string &line)
 
 vector<string> Patron::getFields() const
 {
-    return {"ID", "Name", "Contact", "Membership Date", "Borrowed", "Borrow Count"};
+    return {
+        "ID", 
+        "Name", 
+        "Contact", 
+        "Membership Date", 
+        "Borrowed", 
+        "Borrow Count"};
 }
 
 vector<string> Patron::getValues() const
 {
-    return {patronID, name, contact, membershipDate, borrowed ? "borrowed" : "available", to_string(borrowCount)};
+    return {
+        patronID, 
+        name, 
+        contact, 
+        membershipDate, 
+        borrowed ? "borrowed" : "available", 
+        to_string(borrowCount)};
 }

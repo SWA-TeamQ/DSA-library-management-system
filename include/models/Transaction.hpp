@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
+
 using namespace std;
 
 enum TransactionSearchKey { ID, BOOK_ID, PATRON_ID };
@@ -60,7 +62,6 @@ public:
     void markReturned();
     double calculateFine(double dailyRate = 0.50) const;
 
-    void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
 
