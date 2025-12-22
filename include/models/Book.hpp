@@ -3,8 +3,20 @@
 #include <iostream>
 using namespace std;
 
-enum BookSearchKey { ID, TITLE, AUTHOR, CATEGORY };
-enum BookSortKey { TITLE, AUTHOR, YEAR, BORROW_COUNT };
+enum BookSearchKey
+{
+    ID,
+    TITLE,
+    AUTHOR,
+    CATEGORY
+};
+enum BookSortKey
+{
+    TITLE,
+    AUTHOR,
+    YEAR,
+    BORROW_COUNT
+};
 
 class Book
 {
@@ -34,12 +46,12 @@ public:
     // for generic lookup
     const string getKey() const { return isbn; }
 
-    const string &getTitle() const { return title; }
-    const string &getAuthor() const { return author; }
-    const string &getISBN() const { return isbn; }
-    const string &getEdition() const { return edition; }
-    const string &getPublicationYear() const { return publicationYear; }
-    const string &getCategory() const { return category; }
+    const string getTitle() const { return title; }
+    const string getAuthor() const { return author; }
+    const string getISBN() const { return isbn; }
+    const string getEdition() const { return edition; }
+    const int getPublicationYear() const { return publicationYear; }
+    const string getCategory() const { return category; }
     bool isAvailable() const { return available; }
     int getBorrowCount() const { return borrowCount; }
 
@@ -53,7 +65,6 @@ public:
     void setBorrowCount(int bc) { borrowCount = bc; }
 
     void incrementBorrowCount() { ++borrowCount; }
-    void decrementBorrowCount() { if (borrowCount > 0) --borrowCount; }
 
     string serialize() const;
     void deserialize(const string &line);

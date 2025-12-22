@@ -46,13 +46,10 @@ public:
 
     // Book operations
     bool addBook(const Book &b);
-    bool removeBookByISBN(const string &isbn);
-    Book *findBookByISBN(const string &isbn) const;
-    void buildSearchIndex();
-    vector<Book *> findBooksByTitle(const string &title) const;
-    vector<Book *> findBooksByAuthor(const string &author) const;
-    void sortBooksByTitle(bool reverse = false);
-    void sortBooksByYear(bool reverse = false);
-    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
-    void listAllBooks() const;
+    bool updateBook(const Book &b);
+    bool removeBook(const BookSearchKey key, const string &value);
+    Book *findBook(const BookSearchKey key, const string &value) const;
+    vector<Book *> findBooks(const BookSearchKey key, const string &value) const;
+    vector<Book *> sortBooks(const BookSortKey key, bool reverse = false);
+    vector<Book *> getAllBooks() const;
 };
