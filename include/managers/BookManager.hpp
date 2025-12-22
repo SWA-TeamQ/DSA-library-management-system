@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include <string>
 #include <iostream>
+#include "dsa/Array.hpp"
 #include "models/Book.hpp"
 #include "dsa/HashTable.hpp"
 #include "dsa/MergeSort.hpp"
@@ -49,7 +49,7 @@ public:
     bool updateBook(const Book &b);
     bool removeBook(const BookSearchKey key, const string &value);
     Book *findBook(const BookSearchKey key, const string &value) const;
-    vector<Book *> findBooks(const BookSearchKey key, const string &value) const;
-    vector<Book *> sortBooks(const BookSortKey key, bool reverse = false);
-    vector<Book *> getAllBooks() const;
+    Array<Book *> findBooks(const BookSearchKey key, const string &value) const;
+    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false);
+    Array<Book *> getAllBooks() const;
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <vector>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
@@ -8,7 +8,7 @@ template <class T>
 class Stack
 {
 private:
-    vector<T> objects;
+    Array<T> objects;
 
 public:
     Stack() = default;

@@ -15,11 +15,11 @@ bool TransactionManager::addTransaction(const Transaction &t)
 
 bool TransactionManager::removeTransaction(const TransactionSearchKey key, const string &value)
 {
-    vector<string> ids;
+    Array<string> ids;
     switch (key)
     {
     case TransactionSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case TransactionSearchKey::BOOK_ID:
         ids = searchMap.findByBookId(value);
@@ -50,11 +50,11 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
 
 Transaction *TransactionManager::findTransaction(const TransactionSearchKey key, const string &value) const
 {
-    vector<string> ids;
+    Array<string> ids;
     switch (key)
     {
     case TransactionSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case TransactionSearchKey::BOOK_ID:
         ids = searchMap.findByBookId(value);
@@ -70,13 +70,13 @@ Transaction *TransactionManager::findTransaction(const TransactionSearchKey key,
     return t;
 }
 
-vector<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) const
+Array<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) const
 {
-    vector<string> ids;
+    Array<string> ids;
     switch (key)
     {
     case TransactionSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case TransactionSearchKey::BOOK_ID:
         ids = searchMap.findByBookId(value);
@@ -86,18 +86,20 @@ vector<Transaction *> TransactionManager::findTransactions(const TransactionSear
         break;
     }
 
-    vector<Transaction *> results;
+    Array<Transaction *> results;
     for (const string &id : ids)
     {
         Transaction *t = transactionTable.find(id);
-        if (t) results.push_back(t);
+        if (t) {
+            results.append(t);
+        }
     }
     return results;
 }
 
-vector<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key, bool reverse)
+Array<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key, bool reverse)
 {
-    vector<Transaction *> sorted = transactionTable.all();
+    Array<Transaction *> sorted = transactionTable.all();
 
     switch (key)
     {
@@ -120,7 +122,7 @@ vector<Transaction *> TransactionManager::sortTransactions(TransactionSortKey ke
     return sorted;
 }
 
-vector<Transaction *> TransactionManager::getAllTransactions() const
+Array<Transaction *> TransactionManager::getAllTransactions() const
 {
     return transactionTable.all();
 }

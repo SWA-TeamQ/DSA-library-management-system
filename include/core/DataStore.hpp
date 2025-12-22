@@ -5,8 +5,7 @@
 #include <unordered_map>
 
 using namespace std;
-
-template <typename U, typename T>
+template <typename T>
 class DataStore
 {
 private:

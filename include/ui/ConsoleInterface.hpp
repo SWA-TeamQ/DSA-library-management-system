@@ -2,8 +2,12 @@
 #include "core/LibraryController.hpp"
 #include <string>
 #include <iostream>
-using namespace std;
+#include "models/Patron.hpp"
+#include "models/Book.hpp"
+#include "models/Transaction.hpp"
+#include "dsa/Array.hpp"
 
+using namespace std;
 class ConsoleInterface
 {
 private:

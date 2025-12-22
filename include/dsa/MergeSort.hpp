@@ -1,24 +1,31 @@
 #pragma once
-#include <vector>
 #include <functional>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
 template <typename T, typename Func>
-void mergeSort(vector<T> &arr, Func func, bool reverse = false)
+void mergeSort(Array<T> &arr, Func func, bool reverse = false)
 {
     if (arr.size() <= 1)
         return;
 
-    size_t mid = arr.size() / 2;
+    int mid = arr.size() / 2;
 
-    vector<T> left(arr.begin(), arr.begin() + mid);
-    vector<T> right(arr.begin() + mid, arr.end());
+    Array<T> left;
+    for(int i = 0; i < mid; i++){
+        left.append(arr[i]);
+    }
+
+    Array<T> right;
+    for(int i = mid; i < arr.size(); i++){
+        right.append(arr[i]);
+    }
 
     mergeSort(left, func, reverse);
     mergeSort(right, func, reverse);
 
-    size_t i = 0, j = 0, k = 0;
+    int i = 0, j = 0, k = 0;
 
     while (i < left.size() && j < right.size())
     {

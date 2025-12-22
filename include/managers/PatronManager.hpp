@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include <string>
 #include <iostream>
+#include "dsa/Array.hpp"
 #include "models/Patron.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
@@ -45,9 +45,9 @@ public:
     bool addPatron(const Patron &p);
     bool removePatron(const PatronSearchKey key, const string &value);
     Patron *findPatron(const PatronSearchKey key, const string &value) const;
-    vector<Patron *> findPatrons(const PatronSearchKey key, const string &value) const;
-    vector<Patron *> sortPatrons(const PatronSortKey key, bool reverse = false);
+    Array<Patron *> findPatrons(const PatronSearchKey key, const string &value) const;
+    Array<Patron *> sortPatrons(const PatronSortKey key, bool reverse = false);
     bool updatePatron(const Patron &p);
-    vector<Patron *> getAllPatrons() const;
+    Array<Patron *> getAllPatrons() const;
 };
 

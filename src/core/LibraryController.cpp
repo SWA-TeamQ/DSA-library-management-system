@@ -17,15 +17,15 @@ Book *LibraryController::findBook(const string &isbn) const {
     return booksManager.findBook(BookSearchKey::ID, isbn); 
 }
 
-vector<Book *> LibraryController::findBooksByTitle(const string &title) const { 
+Array<Book *> LibraryController::findBooksByTitle(const string &title) const { 
     return booksManager.findBooks(BookSearchKey::TITLE, title); 
 }
 
-vector<Book *> LibraryController::findBooksByAuthor(const string &author) const {
+Array<Book *> LibraryController::findBooksByAuthor(const string &author) const {
     return booksManager.findBooks(BookSearchKey::AUTHOR, author);
 }
 
-vector<Book *> LibraryController::sortBooks(BookSortKey key, bool reverse) { 
+Array<Book *> LibraryController::sortBooks(BookSortKey key, bool reverse) { 
     return booksManager.sortBooks(key, reverse); 
 }
 
@@ -49,7 +49,7 @@ Patron *LibraryController::findPatron(const string &patronID) const {
 
 void LibraryController::listAllPatrons() const { patronsManager.displayAll(); }
 
-vector<Patron *> LibraryController::sortPatrons(PatronSortKey key, bool reverse) { 
+Array<Patron *> LibraryController::sortPatrons(PatronSortKey key, bool reverse) { 
     return patronsManager.sortPatrons(key, reverse); 
 }
 

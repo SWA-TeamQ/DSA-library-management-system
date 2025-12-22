@@ -14,10 +14,10 @@ bool PatronManager::addPatron(const Patron &p)
 
 bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
 {
-    vector<string> ids;
+    Array<string> ids;
     switch(key){
         case PatronSearchKey::ID:
-            ids.push_back(value);
+            ids.append(value);
             break;
         case PatronSearchKey::NAME:
             ids = searchMap.findByName(value);
@@ -52,10 +52,10 @@ bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
 
 Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value) const
 {
-    vector<string> ids;
+    Array<string> ids;
     switch(key){
         case PatronSearchKey::ID:
-            ids.push_back(value);
+            ids.append(value);
             break;
         case PatronSearchKey::NAME:
             ids = searchMap.findByName(value);
@@ -69,23 +69,23 @@ Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value
     return patronTable.find(ids[0]);
 }
 
-vector<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) const
+Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) const
 {
-    vector<string> ids;
+    Array<string> ids;
     switch(key){
         case PatronSearchKey::ID:
-            ids.push_back(value);
+            ids.append(value);
             break;
         case PatronSearchKey::NAME:
             ids = searchMap.findByName(value);
             break;
     }
 
-    vector<Patron *> patrons;
+    Array<Patron *> patrons;
     for(const auto &id : ids){
         Patron *p = patronTable.find(id);
         if (p) {
-            patrons.push_back(p);
+            patrons.append(p);
         }
     }
     return patrons;
@@ -120,9 +120,9 @@ bool PatronManager::updatePatron(const Patron &newPatron)
     return changed;
 }
 
-vector<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse)
+Array<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse)
 {
-    vector<Patron *> sortedPatrons = patronTable.all();
+    Array<Patron *> sortedPatrons = patronTable.all();
 
     switch(key){
         case PatronSortKey::NAME:
@@ -144,7 +144,7 @@ vector<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool revers
     return sortedPatrons;
 }
 
-vector<Patron *> PatronManager::getAllPatrons() const
+Array<Patron *> PatronManager::getAllPatrons() const
 {
     return patronTable.all();
 }

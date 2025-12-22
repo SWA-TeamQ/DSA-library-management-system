@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include <string>
 #include <memory>
+#include "dsa/Array.hpp"
 #include "models/Book.hpp"
 #include "models/Patron.hpp"
 #include "models/Transaction.hpp"
@@ -21,7 +21,7 @@ private:
     LoanService loanService;
 
 public:
-    LibraryController() 
+    LibraryController()
         : booksManager("books.txt"),
           patronsManager("patrons.txt"),
           transactionsManager("transactions.txt"),
@@ -47,9 +47,10 @@ public:
     bool addBook(const Book &b);
     bool removeBook(const string &isbn);
     Book *findBook(const string &isbn) const;
-    vector<Book *> findBooksByTitle(const string &title) const;
-    vector<Book *> findBooksByAuthor(const string &author) const;
-    vector<Book *> sortBooks(BookSortKey key, bool reverse = false);
+    Array<Book *> findBooksByTitle(const string &title) const;
+    Array<Book *> findBooksByAuthor(const string &author) const;
+    Array<Book *> sortBooksByTitle(bool reverse = false);
+    Array<Book *> sortBooksByAuthor(bool reverse = false);
     bool updateBook(const Book &b);
     void listAllBooks() const;
 
@@ -57,7 +58,9 @@ public:
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
     Patron *findPatron(const string &patronID) const;
-    vector<Patron *> sortPatrons(PatronSortKey key, bool reverse = false);
+    Array<Patron *> sortPatronsByName(bool reverse = false);
+    Array<Patron *> sortPatronsByMembershipDate(bool reverse = false);
+    Array<Patron *> sortPatronsByBorrowCount(bool reverse = false);
     bool updatePatron(const Patron &p);
     void listAllPatrons() const;
 

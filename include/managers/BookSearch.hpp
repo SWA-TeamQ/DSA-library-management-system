@@ -3,7 +3,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <string>
-#include <vector>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
@@ -19,7 +19,8 @@ public:
     BookSearchMap() = default;
     ~BookSearchMap() = default;
 
-    void clear(){
+    void clear()
+    {
         titleIndex.clear();
         authorIndex.clear();
         categoryIndex.clear();
@@ -27,80 +28,113 @@ public:
 
     // Build indices from any map-like container of Books (e.g., unordered_map, HashTable)
     template <typename MapType>
-    void buildIndices(const MapType& books)
+    void buildIndices(const MapType &books)
     {
         clear();
-        for(const auto &[id, book] : books){
+        for (const auto &[id, book] : books)
+        {
             insert(book);
         }
     }
 
-    void insert(const Book& b)
+    void insert(const Book &b)
     {
         titleIndex[b.getTitle()].insert(b.getKey());
         authorIndex[b.getAuthor()].insert(b.getKey());
         categoryIndex[b.getCategory()].insert(b.getKey());
     }
 
-    void remove(const Book& b)
+    void remove(const Book &b)
     {
         string id = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
-        
+
         // remove from titleIndex
         auto it = titleIndex.find(title);
-        if(it != titleIndex.end()){
+        if (it != titleIndex.end())
+        {
             it->second.erase(id);
             // after deletion if the unordered set is empty, then we want to remove the key
-            if(it->second.empty()){
+            if (it->second.empty())
+            {
                 titleIndex.erase(it);
             }
         }
 
         // remove from authorIndex
         it = authorIndex.find(author);
-        if(it != authorIndex.end()){
+        if (it != authorIndex.end())
+        {
             it->second.erase(id);
             // after deletion if the unordered set is empty, then we want to remove the key
-            if(it->second.empty()){
+            if (it->second.empty())
+            {
                 authorIndex.erase(it);
             }
         }
 
         // remove from categoryIndex
         it = categoryIndex.find(category);
-        if(it != categoryIndex.end()){
+        if (it != categoryIndex.end())
+        {
             it->second.erase(id);
             // after deletion if the unordered set is empty, then we want to remove the key
-            if(it->second.empty()){
+            if (it->second.empty())
+            {
                 categoryIndex.erase(it);
             }
         }
     }
 
     // Search books by title
-    vector<string> findByTitle(const string& title) const
+    Array<string> findByTitle(const string &title) const
     {
         auto it = titleIndex.find(title);
         if (it != titleIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+        {
+            auto setIt = it->second;
+            Array<string> ids;
+            for (auto &key : setIt)
+            {
+                ids.append(key);
+            }
+            return ids;
+        }
         return {};
     }
 
     // Search books by author
-    vector<string> findByAuthor(const string& author) const
+    Array<string> findByAuthor(const string &author) const
     {
         auto it = authorIndex.find(author);
         if (it != authorIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+        {
+            auto setIt = it->second;
+            Array<string> ids;
+            for (auto &key : setIt)
+            {
+                ids.append(key);
+            }
+            return ids;
+        }
+
         return {};
     }
 
     // Search books by category
-    vector<string> findByCategory(const string& category) const
+    Array<string> findByCategory(const string &category) const
     {
         auto it = categoryIndex.find(category);
         if (it != categoryIndex.end())
-            return vector<string>(it->second.begin(), it->second.end());
+        {
+            auto setIt = it->second;
+            Array<string> ids;
+            for (auto &key : setIt)
+            {
+                ids.append(key);
+            }
+            return ids;
+        }
+
         return {};
     }
 };

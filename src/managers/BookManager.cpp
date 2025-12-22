@@ -14,11 +14,11 @@ bool BookManager::addBook(const Book &book)
 
 bool BookManager::removeBook(const BookSearchKey key, const string &value)
 {
-    vector<string> ids;
+    Array<string> ids;
     switch (key)
     {
     case BookSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case BookSearchKey::TITLE:
         ids = searchMap.findByTitle(value);
@@ -62,11 +62,11 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
 // Search a Book by its searchable keys
 Book *BookManager::findBook(const BookSearchKey key, const string &value) const
 {
-    vector<string> ids;
+    Array<string> ids;
     switch (key)
     {
     case BookSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case BookSearchKey::TITLE:
         ids = searchMap.findByTitle(value);
@@ -93,13 +93,13 @@ Book *BookManager::findBook(const BookSearchKey key, const string &value) const
 }
 
 // Search Books by a specific key
-vector<Book *> BookManager::findBooks(const BookSearchKey key, const string &value) const
+Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &value) const
 {
-    vector<string> ids;
+    Array<string> ids;
     switch (key)
     {
     case BookSearchKey::ID:
-        ids.push_back(value);
+        ids.append(value);
         break;
     case BookSearchKey::CATEGORY:
         ids = searchMap.findByCategory(value);
@@ -112,13 +112,13 @@ vector<Book *> BookManager::findBooks(const BookSearchKey key, const string &val
         break;
     }
 
-    vector<Book *> books;
+    Array<Book *> books;
     for (const auto &id : ids)
     {
         Book *book = bookTable.find(id);
         if (book)
         {
-            books.push_back(book);
+            books.append(book);
         }
     }
     return books;
@@ -159,9 +159,9 @@ bool BookManager::updateBook(const Book &newBook)
     return changed;
 }
 
-vector<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse)
+Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse)
 {
-    vector<Book *> sortedBooks = bookTable.all();
+    Array<Book *> sortedBooks = bookTable.all();
 
     switch (key)
     {
@@ -185,7 +185,7 @@ vector<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse)
     return sortedBooks;
 }
 
-vector<Book *> BookManager::getAllBooks() const
+Array<Book *> BookManager::getAllBooks() const
 {
     return bookTable.all();
 }
