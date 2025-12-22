@@ -51,13 +51,7 @@ public:
     void setBorrowed(bool b) { borrowed = b; }
 
     void incrementBorrowCount() { ++borrowCount; }
-    void decrementBorrowCount()
-    {
-        if (borrowCount > 0)
-            --borrowCount;
-    }
 
-    void displayDetails() const;
     string serialize() const;
     void deserialize(const string &line);
     

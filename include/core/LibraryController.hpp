@@ -49,27 +49,23 @@ public:
     Book *findBook(const string &isbn) const;
     vector<Book *> findBooksByTitle(const string &title) const;
     vector<Book *> findBooksByAuthor(const string &author) const;
-    void sortBooksByTitle(bool reverse = false);
-    void sortBooksByYear(bool reverse = false);
-    Book *updateBookDetails(const string &isbn, const string &title, const string &author, const string &edition, const string &publicationYear, const string &category, bool available, int borrowCount);
+    vector<Book *> sortBooks(BookSortKey key, bool reverse = false);
+    bool updateBook(const Book &b);
     void listAllBooks() const;
 
     // Patron operations
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
     Patron *findPatron(const string &patronID) const;
-    void sortPatrons(PatronSortKey key, bool reverse = false);
-    bool updatePatron(const string &patronID, const string &name, const string &contact, const string &membershipDate, int borrowCount);
+    vector<Patron *> sortPatrons(PatronSortKey key, bool reverse = false);
+    bool updatePatron(const Patron &p);
     void listAllPatrons() const;
 
     // Transaction operations
+    bool addTransaction(const Transaction &t);
     void listAllTransactions() const;
 
     // Borrow/Return operations
     bool borrowBook(const string &patronID, const string &isbn);
     bool returnBook(const string &patronID, const string &isbn);
-
-    // Reporting
-    void listAllPatrons() const;
-    void listAllTransactions() const;
 };

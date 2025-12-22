@@ -1,6 +1,10 @@
 #include "ui/UiHelpers.hpp"
 #include <iostream>
 #include <string>
+#include "models/Book.hpp"
+#include "models/Patron.hpp"
+#include "models/Transaction.hpp"
+#include <vector>
 
 using namespace std;
 
