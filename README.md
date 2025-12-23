@@ -1,224 +1,82 @@
-# 📚 Library Management System (DSA Project)
+# 📚 Library Management System (C++ • DSA)
 
-A clear, simple, team‑friendly documentation of **what we are building** and **how** we will build it using **C++** and **basic DSA concepts**.
+Console-based Library Management System showcasing fundamental Data Structures and Algorithms with a clean, layered C++ design.
 
----
+— Current branch: feature/starter • Build system: CMake • C++17
 
-# ✅ 1. Project Overview
+## Quick Start
 
-This project is a **console‑based Library Management System** built using **C++** and fundamental **Data Structures and Algorithms**.
+Prerequisites
+- CMake 3.15+
+- C++17 toolchain (MSVC, Clang, or GCC)
 
-The system will manage:
-
-* Books
-* Members
-* Borrow/Return operations
-* Searching & sorting using simple DSA methods
-
-Storage will use simple **text files (.txt)** for persistence.
-
----
-
-# ✅ 2. Core Features
-
-### **A. Book Management**
-
-* Add new books
-* Remove books
-* Update book details
-* Search books (title, author, category, etc.)
-* Sort books (title, year, availability)
-* Display all books
-
-### **B. Member Management**
-
-* Add members
-* Remove members
-* Update profile details
-* Search members
-* Display all members
-
-### **C. Borrow / Return System**
-
-* Borrow a book
-* Return a book
-* Check availability
-* Maintain a borrowing history log
-
-### **D. Utility Components**
-
-* Input validation
-* Date handling
-* File read/write
-* Unique ID generators
-
----
-
-# ✅ 3. Data Structures to Use
-
-We will use only the DSA structures allowed:
-
-| Component      | Data Structure                     | Why                   |
-| -------------- | ---------------------------------- | --------------------- |
-| Books          | `vector`, `list`, or `linked list` | Easy traversal/update |
-| Members        | `vector` or `linked list`          | Simple operations     |
-| Borrow Records | `queue` or `list`                  | FIFO tracking / logs  |
-| Search         | Linear Search                      | Simple + allowed      |
-| Sort           | Bubble Sort / Selection Sort       | DSA requirement       |
-| Mapping IDs    | `map` (C++ STL)                    | Fast lookup           |
-
----
-
-# ✅ 4. Storage (Text Files)
-
-We will use **simple text files**, not SQLite.
-
-### Why text files?
-
-* Simpler implementation
-* Fully compatible with DSA course requirements
-* No external libraries
-* Easy for each member to debug
-
-### Files:
-
-```
-data/
- ├── books.txt
- ├── members.txt
- └── logs.txt
+Configure & build
+```bash
+cmake -S . -B build
+# Single-config generators (Ninja/Makefiles):
+cmake --build build
+# Multi-config generators (Visual Studio):
+cmake --build build --config Release
 ```
 
----
+Run
+- Windows (MSVC): `build/Release/lms.exe` (or `build/Debug/lms.exe`)
+- Single-config: `build/lms`
 
-# ✅ 5. Project Structure (Folder Layout)
+## What’s Included
+- Book, Patron, Transaction models with `serialize()/deserialize()`
+- Managers for books, patrons, transactions
+- Core services: `LibraryController`, `LoanService`
+- Console UI: `ConsoleInterface` + `UiHelpers`
+- Custom DSA: HashTable, MergeSort, Array, Deque, Queue, Stack
 
+See docs/architecture.md for the layered design.
+
+## Project Layout
 ```
-LibraryManagementSystem/
-│
-├── include/
-│   ├── BookManager.h
-│   ├── MemberManager.h
-│   ├── BorrowManager.h
-│   ├── DataModels.h
-│   └── Utils.h
-│
-├── src/
-│   ├── BookManager.cpp
-│   ├── MemberManager.cpp
-│   ├── BorrowManager.cpp
-│   ├── Utils.cpp
-│   └── main.cpp
-│
-├── data/
-│   ├── books.txt
-│   ├── members.txt
-│   └── logs.txt
-│
-└── Makefile
+include/
+	core/        # DataStore, LibraryController, LoanService
+	dsa/         # HashTable, MergeSort, Array, etc.
+	managers/    # BookManager, PatronManager, TransactionManager
+	models/      # Book, Patron, Transaction
+	ui/          # ConsoleInterface, Menus, UiHelpers
+	utils/       # formatting.hpp, utils.hpp
+src/
+	core/ managers/ models/ ui/ utils/
+docs/
 ```
 
----
+## Persistence (Option A: document here)
+The app uses plain text files (CSV-like) for storage. Each line is one record; fields are comma-separated and written by each model’s `serialize()`.
 
-# ✅ 6. Team Task Breakdown (6 Members)
+Default data folder (recommended): `data/`
+- Books: `data/books.txt` → fields: Title, Author, ISBN, Edition, PublicationYear, Category, Available(1|0), BorrowCount
+- Patrons: `data/patrons.txt` → fields: ID, Name, Contact, MembershipDate, Borrowed(1|0), BorrowCount
+- Transactions: `data/transactions.txt` → fields: TransactionID, BookID, PatronID, BorrowDate, DueDate, ReturnDate, Returned(1|0)
 
-Each member gets a balanced, well‑defined responsibility.
+Notes
+- Paths are configurable by managers/controllers; `data/` is a project-level default.
+- File creation should be handled by DataStore; create `data/` if missing.
+- Dates use `YYYY-MM-DD` strings; lexicographic comparisons assume this format.
 
-## **👤 Member 1 — Project Lead & System Integrator**
+## Build/Run Tips
+- If using Visual Studio generators, always pass `--config Debug|Release` when building and choose the matching binary to run.
+- Enable warnings are configured (`/W4` on MSVC, `-Wall -Wextra -pedantic` elsewhere).
+- If you see missing file errors, ensure the `data/` folder exists.
 
-* Coordinates team work
-* Reviews code
-* Ensures all modules integrate smoothly
-* Final menu system & main.cpp
+## Feature Status
+- Current focus (see todo.md):
+	- Wire save/load on startup/shutdown
+	- Borrow rules, overdue, fines via `LoanService`/`Transaction`
+	- Search/sort in managers using custom DSA
 
-## **👤 Member 2 — Book Management Module**
+More detail: docs/Task-classification.md and todo.md
 
-* Implement add/remove/update/search/sort books
-* Handle book‑related file operations
-* Maintain `BookManager.cpp/.h`
+## Contributing
+- Headers in `include/`, implementations in `src/`
+- Prefer project DSAs over STL where provided (`include/dsa`)
+- Small PRs, build locally with CMake before pushing
+- See workflow.md for the roadmap and integration order
 
-## **👤 Member 3 — Member Management Module**
-
-* Implement add/remove/update/search members
-* Handle member data storage
-* Maintain `MemberManager.cpp/.h`
-
-## **👤 Member 4 — Borrow & Return Module**
-
-* Borrow/return logic
-* Availability checking
-* Borrow logs
-* Maintain `BorrowManager.cpp/.h`
-
-## **👤 Member 5 — Utility & Data Models**
-
-* Create `struct Book`, `struct Member`, `struct BorrowRecord`
-* Implement `Utils.cpp` (validation, date handling, ID generation)
-* Ensure common functions work for all modules
-
-## **👤 Member 6 — File Handling & Persistence**
-
-* Design file formats and loading/saving logic
-* Write reusable file I/O helpers
-* Ensure data consistency across the system
-
----
-
-# ✅ 7. Recommended Development Flow
-
-### **A → B → C Approach**
-
-### **A. Core Structures First**
-
-1. DataModels
-2. Utils
-3. File handling helpers
-
-### **B. Build Main Modules**
-
-1. MemberManager
-2. BookManager
-3. BorrowManager
-
-### **C. Final Integration**
-
-1. main.cpp — Menu UI
-2. Testing
-3. Debugging & validation
-
----
-
-# ✅ 8. UI Structure (Console Menu)
-
-```
-======== Library Management System ========
-1. Manage Books
-2. Manage Members
-3. Borrow/Return
-4. Exit
--------------------------------------------
-```
-
-Each submenu follows similar structure.
-
----
-
-# ✅ 9. Extra (Optional) Features
-
-* Search by multiple filters
-* Sorting by various fields
-* Issue date + due date
-* Late fine calculation
-* Export log to a file
-
----
-
-# 🎯 Final Notes
-
-* Keep the system **simple**.
-* Use **text files**.
-* Stick to **basic DSA algorithms**.
-* Write **clean, modular C++ code**.
-* Every team member has a clear job.
-
-This documentation is ready to share as a `.md` file.
+## License
+See LICENSE.

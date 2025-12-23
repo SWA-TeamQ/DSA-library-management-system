@@ -35,7 +35,7 @@ The project follows a layered architecture to keep the code clean and manageable
 *   **Interaction**: Uses `DataStore` for file I/O and `DSA` structures for in-memory storage.
 
 ### Layer 4: DSA (Data Structures & Algorithms)
-*   **Files**: `HashTable.hpp`, `Deque.hpp`, `Stack.hpp`, `Queue.hpp`, `MergeSort.hpp`
+*   **Files**: `include/dsa/HashTable.hpp`, `include/dsa/Deque.hpp`, `include/dsa/Stack.hpp`, `include/dsa/Queue.hpp`, `include/dsa/MergeSort.hpp`
 *   **Role**: The foundation. These are custom-built containers that provide the performance for the layers above.
 
 ### Layer 5: Models (Data Entities)
@@ -53,7 +53,7 @@ The project follows a layered architecture to keep the code clean and manageable
     *   Checks if the book is available and if the patron hasn't exceeded their limit.
     *   Creates a `Transaction` object.
 4.  **Managers**: Update the book's status to "unavailable" and add the transaction to the list.
-5.  **DataStore**: Automatically saves the updated state to `books.txt` and `transactions.txt`.
+5.  **DataStore**: Saves updated state to `data/books.txt`, `data/patrons.txt`, and `data/transactions.txt`.
 6.  **UI**: Displays "Success! Due date is [Date]."
 
 ---
@@ -61,18 +61,16 @@ The project follows a layered architecture to keep the code clean and manageable
 ## 4. Development Roadmap (Workflow)
 
 ### Phase 1: Foundation (Current State)
-*   Implement custom `Deque`, `Stack`, `Queue`.
-*   Implement `MergeSort` for sorting.
-*   Implement `HashTable` for fast lookups.
+*   Custom DSA in place: `Deque`, `Stack`, `Queue`, `MergeSort`, `HashTable`.
 
 ### Phase 2: Management & Search
-*   Build `BookSearchMap` for multi-criteria search (title/author).
+*   Implement multi-criteria search (title/author) over `HashTable` buckets.
 *   Implement `BookManager` and `PatronManager` logic.
 *   Ensure `DataStore` can serialize/deserialize objects to files.
 
 ### Phase 3: Business Rules
-*   Complete `LoanService` to handle borrowing/returning logic.
-*   Implement fine calculation and overdue tracking.
+*   Complete `LoanService` borrowing/returning logic.
+*   Implement overdue tracking and fine calculation using `Transaction::calculateFine(dailyRate)`.
 
 ### Phase 4: UI & Integration
 *   Connect all menu options in `ConsoleInterface`.
@@ -86,6 +84,23 @@ The project follows a layered architecture to keep the code clean and manageable
 2.  **Follow the Headers**: Keep your `.hpp` files in `include/` and `.cpp` files in `src/`.
 3.  **Use Custom DSA**: Avoid `std::unordered_map` or `std::list` where a custom structure exists.
 4.  **Test Often**: Run `cmake --build build` frequently to catch errors early.
+
+---
+
+## 7. Build & Run (CMake)
+
+See README for details. Quick commands:
+
+```bash
+cmake -S . -B build
+cmake --build build
+# For Visual Studio generators:
+cmake --build build --config Debug
+```
+
+Run the binary from `build/lms` (single-config) or `build/Debug/lms.exe` (MSVC).
+
+Ensure a `data/` folder exists or configure paths accordingly.
 
 ---
 
