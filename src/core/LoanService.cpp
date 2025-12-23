@@ -1,16 +1,13 @@
 #include "core/LoanService.hpp"
-#include <ctime>
-#include <string>
-#include "models/Transaction.hpp"
 
-bool LoanService::borrowBook(const std::string& patronID, const std::string& isbn) {
-    Book* book = booksManager.findBook(BookSearchKey::ID, isbn);
+bool LoanService::borrowBook(const string& patronID, const string& isbn) {
+    Book* book = bookManager.findBook(BookSearchKey::ID, isbn);
     if (!book || !book->isAvailable()) return false;
-    Patron* patron = patronsManager.findPatron(PatronSearchKey::ID, patronID);
+    Patron* patron = patronManager.findPatron(PatronSearchKey::ID, patronID);
     if (!patron) return false;
-    std::string transactionID = "T" + std::to_string(std::time(nullptr));
-    std::string borrowDate = getCurrentDate();
-    std::string dueDate = "2023-01-15"; // TODO: calculate proper due date
+    string transactionID = "T" + to_string(time(nullptr));
+    string borrowDate = getCurrentDate();
+    string dueDate = "2023-01-15"; // TODO: calculate proper due date
     Transaction t(transactionID, isbn, patronID, borrowDate, dueDate, "", false);
     if (!transactionManager.addTransaction(t)) return false;
     book->setAvailable(false);
@@ -19,10 +16,10 @@ bool LoanService::borrowBook(const std::string& patronID, const std::string& isb
     return true;
 }
 
-bool LoanService::returnBook(const std::string& patronID, const std::string& isbn) {
-    Book* book = booksManager.findBook(BookSearchKey::ID, isbn);
+bool LoanService::returnBook(const string& patronID, const string& isbn) {
+    Book* book = bookManager.findBook(BookSearchKey::ID, isbn);
     if (!book || book->isAvailable()) return false;
-    Patron* patron = patronsManager.findPatron(PatronSearchKey::ID, patronID);
+    Patron* patron = patronManager.findPatron(PatronSearchKey::ID, patronID);
     if (!patron) return false;
     
     Transaction* trans = nullptr;

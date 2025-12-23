@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <unordered_map>
 
 using namespace std;
 template <typename T>

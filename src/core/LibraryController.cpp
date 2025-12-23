@@ -1,7 +1,4 @@
 #include "core/LibraryController.hpp"
-#include <iostream>
-
-using namespace std;
 
 // Book operations
 bool LibraryController::addBook(const Book &b) {
@@ -34,7 +31,7 @@ bool LibraryController::updateBook(const Book &b) {
 }
 
 void LibraryController::listAllBooks() const { 
-    for (auto *b : booksManager.sortBooks(BookSortKey::TITLE)) {
+    for (auto *b : bookManager.sortBooks(BookSortKey::TITLE)) {
         cout << b->getTitle() << " | " << b->getAuthor() << " | " << b->getISBN() << "\n";
     }
 }

@@ -1,21 +1,19 @@
 #pragma once
-
-#include "core/LibraryController.hpp"
+#include <iostream>
 #include <string>
+#include "ui/UiHelpers.hpp"
+#include "ui/BookMenu.hpp"
+#include "ui/PatronMenu.hpp"
+#include "ui/TransactionMenu.hpp"
+#include "core/LibraryController.hpp"
+
+using namespace std;
 
 class ConsoleInterface
 {
 private:
     LibraryController controller;
     bool running{true};
-
-    // --- UI Helpers ---
-    void clearScreen() const;
-    void printDivider() const;
-    void printHeader(const std::string &title) const;
-    void waitForEnter() const;
-    std::string getInput(const std::string &prompt) const;
-    void printWelcomeBanner() const;
 
     // --- Menus ---
     void printMainMenu() const;
@@ -31,6 +29,6 @@ private:
     void handleLoadData();
 
 public:
-    explicit ConsoleInterface(LibraryController c) : controller(c) {}
+    ConsoleInterface(LibraryController c) : controller(c) {}
     void run();
 };

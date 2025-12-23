@@ -1,9 +1,4 @@
 #include "utils/utils.hpp"
-#include <iostream>
-#include <ctime>
-#include <sstream>
-#include <iomanip>
-#include <cstdlib>
 
 using namespace std;
 
@@ -24,8 +19,4 @@ string generateId(const string& prefix) {
     return ss.str();
 }
 
-void clearInput(){
-    cin.ignore();
-    cin.clear();
-}
 

@@ -2,6 +2,7 @@
 
 #include <string>
 #include "core/LibraryController.hpp"
+#include "ui/UiHelpers.hpp"
 
 class TransactionMenu
 {
@@ -12,6 +13,8 @@ public:
 private:
     LibraryController &controller;
 
-    std::string readLine(const std::string &prompt) const;
-    void waitForEnter() const;
+    void listTransactions();
+    void addTransaction();
+    void searchTransactions();
+    void sortTransactions();
 };
