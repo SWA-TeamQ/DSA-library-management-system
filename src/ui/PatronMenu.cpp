@@ -73,21 +73,46 @@ void PatronMenu::addPatron()
 void PatronMenu::removePatron()
 {
 	printHeader("Remove Patron");
-	string id = readString("Enter Patron ID: ");
 
-	if (controller.removePatronById(id))
-
-	if (controller.removePatronById(id))
-
-		cout << "Removed.\n";
-	else
-		cout << "Cannot remove (active loans or not found).\n";
-	waitForEnter();
+	cout << "1. By ID\n"
+		 << "2. By Name\n"
+		 << "0. Back\n";
+		 int choice = readInt("Choose: ");
+		 switch (choice)
+		 {
+		 case 0:
+			return;
+		 case 1:
+			{
+				string id = readString("Enter Patron ID: ");
+				if (controller.removePatronById(id))
+					cout << "Patron removed.\n";
+				else
+					cout << "can not remove (active loans or Patron not found.)\n";
+				break;
+			}
+		 case 2:
+			{
+				string name = readString("Enter Patron Name: ");
+				if (controller.removePatronByName(name))
+					cout << "Patron removed.\n";
+				else
+					cout << "can not remove (active loans or Patron not found.)\n";
+				break;
+			}
+		 default:
+			cout << "Invalid choice.\n";
+			break;
+		 }
+		waitForEnter();
 }
 
 void PatronMenu::updatePatron()
 {
 	printHeader("Update Patron");
+	controller.updatePatron(Patron());
+	
+	waitForEnter();
 }
 
 void PatronMenu::searchPatrons(){
