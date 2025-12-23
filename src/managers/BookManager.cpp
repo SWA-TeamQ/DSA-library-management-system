@@ -23,6 +23,8 @@ bool BookManager::addBook(const Book &book)
     return false;
 }
 
+
+
 bool BookManager::removeBook(const BookSearchKey key, const string &value)
 {
     Array<string> ids;

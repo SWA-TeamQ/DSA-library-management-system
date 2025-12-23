@@ -35,6 +35,9 @@ public:
 
     unordered_map()
     {
+    Array<Entry<T>>* buckets;
+//Map()=default
+    unordered_map(){
         buckets = new Array<Entry<T>>[bucketCount];
     }
     ~unordered_map()
