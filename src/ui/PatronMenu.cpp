@@ -49,7 +49,8 @@ void PatronMenu::show()
 void PatronMenu::listPatrons()
 {
 	printHeader("List Patrons");
-	controller.listAllPatrons();
+	Array<Patron *> patrons = controller.listAllPatrons();
+	tablePrint(patrons);
 	waitForEnter();
 }
 

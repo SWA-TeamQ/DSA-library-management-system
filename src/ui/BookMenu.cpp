@@ -48,7 +48,8 @@ void BookMenu::show()
 
 void BookMenu::listBooks()
 {
-    controller.listAllBooks();
+    Array<Book *> books = controller.listAllBooks();
+    tablePrint(books);
 }
 
 void BookMenu::addBook()
