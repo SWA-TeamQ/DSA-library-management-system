@@ -1,38 +1,53 @@
 #include <iostream>
 #include <string>
+#include <Array.hpp>
 
 using std::string;
 
-inline size_t hash(const string &key)
+inline std::size_t hash(const string &key)
 {
-    const size_t BASE = 31;
-    size_t hash = 0;
+    const std::size_t BASE = 31;
+    std::size_t h = 0;
     for (unsigned char c : key)
     {
-        hash = hash * BASE + c;
+        h = h * BASE + c;
     }
-    return hash;
+    return h;
 }
 
 template <typename T>
-struct Enty{
+struct Entry{
     string key;
     T value;
 };
 
 template <typename T>
 class Map{
-    const size_t bucketCount = 201241; // prime number
-    Array<Array<Entry<T>>> buckets[bucketCount];
+public:
+    static constexpr std::size_t bucketCount = 201241; // prime number
+    Array<Entry<T>> buckets[bucketCount];
 
     Map() = default;
     ~Map() = default;
 
-    T* find(string key){
-        size_t index = hash(key) % bucketCount;
-        auto &bucket = buckets[index];
+    void insert(const string& key, const T& value) {
+        std::size_t index = getIndex(key);
+        Array<Entry<T>>& bucket = buckets[index];
+
+        for (std::size_t i = 0; i < bucket.size(); i++) {
+            if (bucket[i].key == key) {
+                bucket[i].value = value;
+                return;
+            }
+        }
+        bucket.push_back({key, value});
+    }
+
+    T* find(const string& key){
+        std::size_t index = getIndex(key);
+        Array<Entry<T>>& bucket = buckets[index];
         
-        for(size_t i = 0; i < bucket.size(); i++){
+        for(std::size_t i = 0; i < bucket.size(); i++){
             if(bucket[i].key == key){
                 return &bucket[i].value;
             }
@@ -41,7 +56,29 @@ class Map{
         return nullptr;
     }
 
+    bool remove(const string& key) {
+        std::size_t index = getIndex(key);
+        Array<Entry<T>>& bucket = buckets[index];
 
+        for (std::size_t i = 0; i < bucket.size(); i++) {
+            if (bucket[i].key == key) {
+                bucket.removeAt(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    T& operator[](const string& key) {
+        T* existing = find(key);
+        if (existing) return *existing;
+
+        insert(key, T());
+        return *find(key);
+    }
+
+private:
+    std::size_t getIndex(const string& key) const {
+        return hash(key) % bucketCount;
+    }
 };
-
-
