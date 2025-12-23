@@ -75,7 +75,7 @@ void BookMenu::removeBook()
     printHeader("Remove Book");
     string isbn = readString("Enter ISBN: ");
 
-    if (controller.removeBook(isbn))
+    if (controller.removeBookById(isbn))
         cout << "Book removed.\n";
     else
         cout << "Book not found.\n";
@@ -104,7 +104,7 @@ void BookMenu::searchBooks()
         case 1:
         {
             string isbn = readString("ISBN: ");
-            if (auto *book = controller.findBook(isbn))
+            if (auto *book = controller.findBookById(isbn))
                 print(*book);
             else
                 cout << "Book not found.\n";

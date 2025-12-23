@@ -63,26 +63,52 @@ Array<Book *> LibraryController::listAllBooks() const {
     return bookManager.getAllBooks();
 }
 
-bool LibraryController::removePatron(const string &patronID) {
+bool LibraryController::addPatron(const Patron &p) { 
+    return patronManager.addPatron(p); 
+}
+
+bool LibraryController::removePatronById(const string &patronID) {
     return patronManager.removePatron(PatronSearchKey::ID, patronID);
 }
 
-Patron *LibraryController::findPatron(const string &patronID) const {
+bool removePatronByName(const string &patronName) {
+    return patronManager.removePatron(PatronSearchKey::NAME, patronName);
+}
+
+Patron *LibraryController::findPatronById(const string &patronID) const {
     return patronManager.findPatron(PatronSearchKey::ID, patronID);
 }
 
-void LibraryController::listAllPatrons() const {
-    for (auto *p : patronManager.sortPatrons(PatronSortKey::NAME)) {
-        cout << p->getID() << " | " << p->getName() << " | " << p->getMembershipDate() << "\n";
-    }
+Patron *LibraryController::findPatronByName(const string &patronName) const{
+    return patronManager.findPatron(PatronSearchKey::NAME, patronName);
 }
 
-Array<Patron *> LibraryController::sortPatrons(PatronSortKey key, bool reverse) { 
-    return patronManager.sortPatrons(key, reverse); 
+Array<Patron *> LibraryController::findPatronsById(const string &patronID)const{
+    return patronManager.findPatrons(PatronSearchKey::ID, patronID);
+}
+
+Array<Patron *> LibraryController::findPatronsByName(const string &patronName) const{
+    return patronManager.findPatrons(PatronSearchKey::NAME,patronName);
+}
+
+Array<Patron *> LibraryController::sortPatronsByName(bool reverse) { 
+    return patronManager.sortPatrons(PatronSortKey::NAME, reverse); 
+}
+
+Array<Patron *> LibraryController::sortPatronsByMembershipDate(bool reverse){
+    return patronManager.sortPatrons(PatronSortKey::MEMBERSHIP_DATE,reverse);
+}
+
+Array<Patron *> LibraryController::sortPatronsByBorrowCount(bool reverse){
+    return patronManager.sortPatrons(PatronSortKey::BORROW_COUNT,reverse);
 }
 
 bool LibraryController::updatePatron(const Patron &p) { 
     return patronManager.updatePatron(p); 
+}
+
+Array<Patron *> LibraryController::listAllPatrons() const {
+   patronManager.getAllPatrons();
 }
 
 // Transaction operations

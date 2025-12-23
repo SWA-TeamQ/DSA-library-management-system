@@ -60,16 +60,20 @@ public:
 
     bool updateBook(const Book &b);
     Array<Book *> listAllBooks() const;
-Z
+
     // Patron operations
     bool addPatron(const Patron &p);
-    bool removePatron(const string &patronID);
-    Patron *findPatron(const string &patronID) const;
+    bool removePatronById(const string &patronID);
+    bool removePatronByName(const string &patronName);
+    Patron *findPatronById(const string &patronID) const;
+    Patron *findPatronByName(const string &patronName) const;
+    Array<Patron *> findPatronsById(const string &patronID) const;
+    Array<Patron *> findPatronsByName(const string &patronName) const;
     Array<Patron *> sortPatronsByName(bool reverse = false);
     Array<Patron *> sortPatronsByMembershipDate(bool reverse = false);
     Array<Patron *> sortPatronsByBorrowCount(bool reverse = false);
     bool updatePatron(const Patron &p);
-    void listAllPatrons() const;
+    Array<Patron *> listAllPatrons() const;
 
     // Transaction operations
     bool addTransaction(const Transaction &t);
