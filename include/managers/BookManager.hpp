@@ -31,6 +31,7 @@ public:
 
         if(!bookStore.loadData(bookTable)){
             cout << "Warning: unable to load books from file" << endl;
+            return;
         }
         buildSearchMap();
     }

@@ -28,6 +28,7 @@ public:
 
         if(!transactionStore.loadData(transactionTable)){
             cout << "Warning: Failed to load transactions from file\n";
+            return;
         }
         buildSearchMap();
     }
