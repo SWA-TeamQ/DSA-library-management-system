@@ -74,7 +74,7 @@ void PatronMenu::removePatron()
 {
 	printHeader("Remove Patron");
 	string id = readString("Enter Patron ID: ");
-	if (controller.removePatron(id))
+	if (controller.removePatronById(id))
 		cout << "Removed.\n";
 	else
 		cout << "Cannot remove (active loans or not found).\n";

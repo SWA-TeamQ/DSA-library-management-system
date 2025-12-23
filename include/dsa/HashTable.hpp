@@ -54,9 +54,9 @@ public:
         return nullptr;
     }
 
-    T *operator[](const string ){
+    // T *operator[](const string ){
 
-    }
+    // }
 
     T *find(const string &key) const
     {
