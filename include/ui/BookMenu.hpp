@@ -4,12 +4,12 @@
 #include <iomanip>
 #include "dsa/Array.hpp"
 #include "core/LibraryController.hpp"
-#include ""
+#include "ui/UiHelpers.hpp"
 
 class BookMenu
 {
 public:
-    BookMenu(LibraryController &controller);
+    BookMenu(LibraryController &controller) : controller(controller) {};
     void show();
 
 private:
@@ -18,6 +18,7 @@ private:
     void listBooks();
     void addBook();
     void removeBook();
+    void updateBook();
     void searchBooks();
     void sortBooks();
 };

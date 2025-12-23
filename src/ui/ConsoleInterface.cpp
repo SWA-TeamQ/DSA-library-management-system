@@ -22,7 +22,7 @@ void ConsoleInterface::run()
     while (running)
     {
         printMainMenu();
-        int choice = getInt(" Select an option: ");
+        int choice = readInt(" Select an option: ");
         switch (choice)
         {
         case 1:

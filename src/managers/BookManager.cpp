@@ -6,9 +6,19 @@ using namespace std;
 
 bool BookManager::addBook(const Book &book)
 {
-    bookTable[book.getKey()] = book;
-    searchMap.insert(book);
-    bookStore.addData(book); // persist after addition
+    Book* existing = bookTable.find(book.getKey());
+
+    if (!existing)
+    {
+        // New book
+        Book newBook = book;
+        newBook.setBorrowCount(0);
+        newBook.setTotalQuantity(newBook.getTotalQuantity());
+        
+        bookTable[newBook.getKey()] = newBook;
+        searchMap.insert(newBook);
+        bookStore.addData(newBook); // persist new book
+    }
     return true;
 }
 
@@ -125,38 +135,35 @@ Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &valu
 }
 
 // Update a book details
-bool BookManager::updateBook(const Book &newBook)
+bool BookManager::updateBook(const Book& newBook)
 {
-    Book *oldBook = bookTable.find(newBook.getKey());
-    if (oldBook == nullptr)
-    {
+    Book* oldBook = bookTable.find(newBook.getKey());
+    if (!oldBook)
         return false;
-    }
 
-    bool changed = false;
-
-    if (newBook.getTitle() != oldBook->getTitle() ||
+    bool changed =
+        newBook.getTitle() != oldBook->getTitle() ||
         newBook.getAuthor() != oldBook->getAuthor() ||
         newBook.getEdition() != oldBook->getEdition() ||
         newBook.getPublicationYear() != oldBook->getPublicationYear() ||
-        newBook.getCategory() != oldBook->getCategory())
-    {
-        searchMap.remove(*oldBook);
-        oldBook->setTitle(newBook.getTitle());
-        oldBook->setAuthor(newBook.getAuthor());
-        oldBook->setEdition(newBook.getEdition());
-        oldBook->setPublicationYear(newBook.getPublicationYear());
-        oldBook->setCategory(newBook.getCategory());
-        searchMap.insert(*oldBook);
-        changed = true;
-    }
+        newBook.getCategory() != oldBook->getCategory();
+        if (!changed)
+        return false;
 
-    if (changed)
-    {
-        saveBooks(); // persist after update
-    }
+    // Update search index (title, author, etc.)
+    searchMap.remove(*oldBook);
 
-    return changed;
+    oldBook->setTitle(newBook.getTitle());
+    oldBook->setAuthor(newBook.getAuthor());
+    oldBook->setEdition(newBook.getEdition());
+    oldBook->setPublicationYear(newBook.getPublicationYear());
+    oldBook->setCategory(newBook.getCategory());
+
+    searchMap.insert(*oldBook);
+
+    saveBooks();  // persist once
+
+    return true;
 }
 
 Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse) const

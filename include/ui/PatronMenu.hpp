@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "core/LibraryController.hpp"
+#include "ui/UiHelpers.hpp"
 
 using namespace std;
 class PatronMenu
@@ -15,6 +16,7 @@ private:
     void listPatrons();
     void addPatron();
     void removePatron();
+    void updatePatron();
     void searchPatrons();
     void sortPatrons();
 

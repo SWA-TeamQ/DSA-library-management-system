@@ -22,15 +22,13 @@ bool LoanService::borrowBook(const string& patronID, const string& isbn) {
         }
     }
 
-    string transactionID = generateId("T");
+    string transactionID = generateId("TXN");
     string borrowDate = getCurrentDate();
     string dueDate = addDays(borrowDate, 14); // 14-day loan period
     Transaction t(transactionID, isbn, patronID, borrowDate, dueDate, "", false);
-    if (!transactionManager.addTransaction(t)) return false;
-    // Persist change
-    transactionManager.saveTransactions();
-
-    book->setAvailable(false);
+    if (!transactionManager.addTransaction(t)) {
+      return false;
+    }
     book->incrementBorrowCount();
     patron->incrementBorrowCount();
     return true;
