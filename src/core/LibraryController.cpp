@@ -59,7 +59,6 @@ bool LibraryController::updateBook(const Book &b) {
 }
 
 
-
 Array<Book *> LibraryController::listAllBooks() const { 
     return bookManager.getAllBooks();
 }
