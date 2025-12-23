@@ -10,7 +10,6 @@ Book::Book(string title,
            string edition,
            int publicationYear,
            string category,
-           int quantity,
            bool available,
            int borrowCount)
 {

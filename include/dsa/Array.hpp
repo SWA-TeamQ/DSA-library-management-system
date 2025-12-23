@@ -98,11 +98,25 @@ public:
         return items;
     }
 
+    const T* begin() const{
+        return items;
+    }
+
     T* end(){
         return items + length;
     }
 
+    const T* end() const{
+        return items + length;
+    }
+
     T* back(){
+        if(length > 0)
+            return &items[length - 1];
+        return nullptr;
+    }
+
+    const T* back(){
         if(length > 0)
             return &items[length - 1];
         return nullptr;
