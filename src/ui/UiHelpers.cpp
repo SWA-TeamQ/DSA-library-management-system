@@ -13,15 +13,23 @@ void waitForEnter()
     getline(cin, dummy);
 }
 
-string getString(const string &prompt)
+string readString(const string &prompt, bool optional)
 {
     string input;
-    cout << prompt;
-    getline(cin, input);
+    do
+    {
+        cout << prompt;
+        getline(cin, input);
+
+        if (!optional && input.empty())
+        {
+            cout << "This field is required " << endl;
+        }
+    } while (!optional && input.empty());
     return input;
 }
 
-int getInt(const string &prompt)
+int readInt(const string &prompt)
 {
     int input;
     bool valid = true;
@@ -145,6 +153,20 @@ void tablePrint(const Array<Book> &books)
     }
 }
 
+void tablePrint(const Array<Book *> &books)
+{
+    Book temp = Book();
+    // table header
+    Array<string> fields = temp.getFields();
+    Row(fields, true); // true for the top border
+
+    // table rows
+    for (const auto &book : books)
+    {
+        Row((*book).getValues());
+    }
+}
+
 void tablePrint(const Array<Patron> &patrons)
 {
     Patron temp = Patron();
@@ -160,6 +182,21 @@ void tablePrint(const Array<Patron> &patrons)
     }
 }
 
+void tablePrint(const Array<Patron *> &patrons)
+{
+    Patron temp = Patron();
+
+    // table header
+    Array<string> fields = temp.getFields();
+    Row(fields, true); // true for the top border
+
+    // table rows
+    for (const auto &patron : patrons)
+    {
+        Row((*patron).getValues());
+    }
+}
+
 void tablePrint(const Array<Transaction> &transactions)
 {
     Transaction temp = Transaction();
@@ -172,5 +209,20 @@ void tablePrint(const Array<Transaction> &transactions)
     for (const auto &transaction : transactions)
     {
         Row(transaction.getValues());
+    }
+}
+
+void tablePrint(const Array<Transaction *> &transactions)
+{
+    Transaction temp = Transaction();
+
+    // table header
+    Array<string> fields = temp.getFields();
+    Row(fields, true); // true for the top border
+
+    // table rows
+    for (const auto &transaction : transactions)
+    {
+        Row((*transaction).getValues());
     }
 }
