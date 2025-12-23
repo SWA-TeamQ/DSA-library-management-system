@@ -34,6 +34,8 @@ void TransactionMenu::show()
 			 << "1. Borrow book\n"
 			 << "2. Return book\n"
 			 << "3. View all transactions\n"
+			 << "4. View patron transaction history\n"
+			 << "5. View patron overdue items\n"
 			 << "0. Back\n";
 
 		int choice;
@@ -62,6 +64,20 @@ void TransactionMenu::show()
 			controller.listAllTransactions();
 			waitForEnter();
 			break;
+		case 4:
+		{
+			string pid = readLine("Patron ID: ");
+			controller.listTransactionsForPatron(pid);
+			waitForEnter();
+			break;
+		}
+		case 5:
+		{
+			string pid = readLine("Patron ID: ");
+			controller.listOverdueForPatron(pid);
+			waitForEnter();
+			break;
+		}
 		case 0:
 			running = false;
 			break;

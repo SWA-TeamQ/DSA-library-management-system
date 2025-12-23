@@ -50,6 +50,7 @@ public:
     Array<Book *> findBooksByTitle(const string &title) const;
     Array<Book *> findBooksByAuthor(const string &author) const;
     Array<Book *> findBooksByCategory(const string &category) const;
+    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false);
     Array<Book *> sortBooksByTitle(bool reverse = false);
     Array<Book *> sortBooksByAuthor(bool reverse = false);
     Array<Book *> sortBooksByBorrowCount(bool reverse = false);
@@ -70,6 +71,8 @@ public:
     // Transaction operations
     bool addTransaction(const Transaction &t);
     void listAllTransactions() const;
+    void listTransactionsForPatron(const string &patronID) const;
+    void listOverdueForPatron(const string &patronID) const;
     Array<Transaction *> sortTransactionsByReturnDate(bool reverse = false);
 
     // Borrow/Return operations
