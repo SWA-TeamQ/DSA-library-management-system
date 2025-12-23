@@ -38,18 +38,18 @@ Array<Book *> LibraryController::findBooksByCategory(const string &category) con
     return bookManager.findBooks(BookSearchKey::CATEGORY, category);
 }
 
-Array<Book *> LibraryController::sortBooksByTitle(const string &title, bool reverse) {
+Array<Book *> LibraryController::sortBooksByTitle( bool reverse) {
     return bookManager.sortBooks(BookSortKey::TITLE, reverse);
 }
 
-Array<Book *> LibraryController::sortBooksByAuthor(const string &author, bool reverse) {
+Array<Book *> LibraryController::sortBooksByAuthor(bool reverse) {
     return bookManager.sortBooks(BookSortKey::AUTHOR, reverse);
 }
-Array<Book *> LibraryController::sortBooksByYear(const string &year, bool reverse){
+Array<Book *> LibraryController::sortBooksByYear(bool reverse){
     return bookManager.sortBooks(BookSortKey::YEAR, reverse);
 }
 
-Array<Book *> LibraryController::sortBooksByBorrowCount(const string &borrowCount,bool reverse){
+Array<Book *> LibraryController::sortBooksByBorrowCount(bool reverse){
     return bookManager.sortBooks(BookSortKey::BORROW_COUNT,reverse);
 }
 
