@@ -13,7 +13,7 @@ class TransactionManager
 {
 private:
     DataStore<Transaction> transactionStore;
-    HashTable<string, Transaction> transactionTable; // ID -> Transaction
+    HashTable<Transaction> transactionTable; // ID -> Transaction
     TransactionSearchMap searchMap;
 
 public:

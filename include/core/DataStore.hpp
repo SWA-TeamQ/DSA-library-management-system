@@ -12,7 +12,9 @@ private:
     string filename;
 
 public:
-    DataStore(const string &filename = "") : filename(filename) {}
+    DataStore(const string &filename){
+        this->filename = "data/" + filename;
+    }
 
     // any type of map-like object
     template <typename MapType>

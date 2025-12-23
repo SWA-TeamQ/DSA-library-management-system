@@ -4,8 +4,8 @@ Based on the comparison between the current project state and the architectural 
 
 ## 🛠️ Current Project Status
 
--   **Implemented:** Basic `Book`, `Patron`, `Transaction` classes. `LibraryController` handles basic add/find/borrow/return. `BookHashTable` used for book storage.
--   **Missing:** File persistence (saving/loading data), Advanced Search (Title/Author), Sorting (Bubble/Selection), Update/Remove logic for members, Input Validation, and modular separation.
+-   **Implemented:** Basic `Book`, `Patron`, `Transaction` models; `LibraryController` and `LoanService`; managers for books/patrons/transactions; custom DSA in `include/dsa/` (e.g., `HashTable.hpp`, `MergeSort.hpp`).
+-   **Missing/Planned:** File persistence hardening and default paths, Advanced Search (Title/Author), Sorting integrations where needed, Update/Remove flows for patrons, Input Validation, and some UI wiring.
 
 ---
 
@@ -36,11 +36,11 @@ Based on the comparison between the current project state and the architectural 
 ### 📝 Tasks:
 
 1.  **Implement Search:**
-    -   Add `findBooksByTitle(string title)` and `findBooksByAuthor(string author)`.
-    -   _Note:_ Since Books are in a Hash Table, you will need to iterate through all buckets to find matches.
-2.  **Implement Sorting (Crucial DSA Requirement):**
-    -   Add `sortBooksByTitle()` and `sortBooksByYear()`.
-    -   _Implementation:_ Extract all books from the Hash Table into a temporary `vector<Book>`, then apply **Bubble Sort** or **Selection Sort** to that vector and display the result.
+    -   Add `findBooksByTitle(string title)` and `findBooksByAuthor(string author)` in `BookManager`.
+    -   _Note:_ Books are stored in a custom `HashTable` (see `include/dsa/HashTable.hpp`); iterate buckets to collect matches.
+2.  **Implement Sorting (DSA Requirement):**
+    -   Add `sortBooksByTitle()` and `sortBooksByYear()` (display results without mutating primary index).
+    -   _Implementation:_ Extract to `Array`/`vector` and apply our **MergeSort** (`include/dsa/MergeSort.hpp`).
 3.  **Implement Update:**
     -   Add `updateBookDetails(string isbn, ...)` to modify title, author, or category of an existing book.
 
@@ -55,7 +55,7 @@ Based on the comparison between the current project state and the architectural 
 
 1.  **Implement Search:**
     -   Add `findPatronByName(string name)`.
-    -   _Implementation:_ Linear search through the `patrons` vector.
+    -   _Implementation:_ Linear search through the in-memory collection.
 2.  **Implement Update:**
     -   Add `updatePatronContact(string id, string newContact)`.
 3.  **Implement Remove:**
@@ -77,8 +77,8 @@ Based on the comparison between the current project state and the architectural 
     -   Enforce a limit (e.g., Max 3 books per user). Check this in `borrowBook`.
     -   Prevent borrowing if the user has overdue books.
 2.  **Fine Calculation:**
-    -   In `returnBook`, calculate the fine using `Transaction::calculateFine()` if the book is returned late.
-    -   Display the fine amount to the user upon return.
+    -   In `returnBook`, calculate the fine using `Transaction::calculateFine(dailyRate)` if the book is returned late (ensure `dailyRate` is honored).
+    -   Display the fine amount and set `returnDate` on return.
 3.  **History Log:**
     -   Add `getBorrowHistory(string patronID)` to show all past and current transactions for a specific user.
     -   Add `getOverdueBooks()` to list all books currently overdue.
@@ -92,8 +92,8 @@ Based on the comparison between the current project state and the architectural 
 
 ### 📝 Tasks:
 
-1.  **Create `Utils.hpp` / `Utils.cpp`:**
-    -   Move date handling logic here (e.g., `getCurrentDate()`, `calculateDaysDifference()`).
+1.  **Enhance `utils.hpp` / `utils.cpp`:**
+    -   Ensure date helpers exist (e.g., `getCurrentDate()`, `calculateDaysDifference()`), and validation helpers (ISBN/name, numeric guards).
 2.  **Input Validation:**
     -   Create functions like `isValidISBN(string)`, `isValidName(string)`.
     -   Ensure numeric inputs (like menu choices) don't crash the program if text is entered.
@@ -109,13 +109,12 @@ Based on the comparison between the current project state and the architectural 
 
 ### 📝 Tasks:
 
-1.  **Design File Formats:**
-    -   Decide on a format (e.g., `ISBN|Title|Author|Status`).
-2.  **Implement `FileHandler` Class:**
-    -   `saveBooks(const BookHashTable& books)`: Iterate and write all books to `data/books.txt`.
-    -   `loadBooks(BookHashTable& books)`: Read from file and insert into the Hash Table.
-    -   `savePatrons(const vector<Patron>& patrons)`: Write to `data/members.txt`.
-    -   `loadPatrons(vector<Patron>& patrons)`: Read from file.
-    -   `saveTransactions(...)` / `loadTransactions(...)`: Persist active loans and history to `data/logs.txt`.
-3.  **Error Handling:**
-    -   Handle cases where files don't exist (create them) or are corrupted.
+1.  **Confirm File Formats (CSV-like):**
+    -   Use model `serialize()/deserialize()`; see README for field orders.
+2.  **Use `DataStore<T>` for I/O:**
+    -   `books` → `data/books.txt`
+    -   `patrons` → `data/patrons.txt`
+    -   `transactions` → `data/transactions.txt`
+3.  **Resilience & Defaults:**
+    -   Create files if missing, handle malformed lines safely, and surface errors to UI.
+    -   Ensure `data/` folder exists or is configurable.
