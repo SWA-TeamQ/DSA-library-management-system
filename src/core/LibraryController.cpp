@@ -71,7 +71,7 @@ bool LibraryController::removePatronById(const string &patronID) {
     return patronManager.removePatron(PatronSearchKey::ID, patronID);
 }
 
-bool removePatronByName(const string &patronName) {
+bool LibraryController::removePatronByName(const string &patronName) {
     return patronManager.removePatron(PatronSearchKey::NAME, patronName);
 }
 
