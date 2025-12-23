@@ -13,7 +13,7 @@ class PatronManager
 {
 private:
     DataStore<Patron> patronStore;
-    HashTable<string, Patron> patronTable; // ID -> Patron
+    HashTable<Patron> patronTable; // ID -> Patron
     PatronSearchMap searchMap;
 
 public:
