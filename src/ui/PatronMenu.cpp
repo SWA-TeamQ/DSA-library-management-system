@@ -1,101 +1,95 @@
 #include "ui/PatronMenu.hpp"
 
-#include <iomanip>
-#include <iostream>
-#include <limits>
-
-using namespace std;
-
-string PatronMenu::readLine(const string &prompt) const
-{
-	cout << prompt;
-	string s;
-	if (!getline(cin, s))
-	{
-		cin.clear();
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		return {};
-	}
-	return s;
-}
-
-int PatronMenu::readInt(const string &prompt) const
-{
-	while (true)
-	{
-		string s = readLine(prompt);
-		try
-		{
-			return std::stoi(s);
-		}
-		catch (...)
-		{
-			cout << "Invalid number, try again.\n";
-		}
-	}
-}
-
-void PatronMenu::waitForEnter() const
-{
-	cout << "\nPress Enter to continue...";
-	string dummy;
-	getline(std::cin, dummy);
-}
-
-
 void PatronMenu::show()
 {
 	bool running = true;
 	while (running)
 	{
-		cout << "\n--- Patron Menu ---\n"
-			 << "1. List patrons\n"
+		printHeader("Patron Menu ");
+		cout << "1. List patrons\n"
 			 << "2. Add patron\n"
 			 << "3. Remove patron\n"
+			 << "4, Update Patron\n"
+			 << "5, Search Patrons\n"
+			 << "6, Sort Patons\n"
 			 << "0. Back\n";
 
-		int choice;
-		cin >> choice;
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		int choice = readInt("Choose: ");
 
 		switch (choice)
 		{
-		case 1:
-			controller.listAllPatrons();
-			waitForEnter();
-			break;
-		case 2:
-		{
-			cout << "\n=== Add Patron ===\n";
-			string id = readLine("ID: ");
-			string name = readLine("Name: ");
-			string contact = readLine("Contact: ");
-			string date = readLine("Membership date: ");
-			if (id.empty() || name.empty())
-			{
-				cout << "ID and name required.\n";
-			}
-			else
-			{
-				Patron p(id, name, contact, date);
-				if (controller.addPatron(p)) cout << "Patron added.\n"; else cout << "ID exists.\n";
-			}
-			waitForEnter();
-			break;
-		}
-		case 3:
-		{
-			string id = readLine("Enter Patron ID: ");
-			if (controller.removePatron(id)) cout << "Removed.\n"; else cout << "Cannot remove (active loans or not found).\n";
-			waitForEnter();
-			break;
-		}
 		case 0:
 			running = false;
+			break;
+		case 1:
+			listPatrons();
+			break;
+		case 2:
+			addPatron();
+			break;
+		case 3:
+			removePatron();
+			break;
+		case 4:
+			updatePatron();
+			break;
+		case 5:
+			searchPatrons();
+			break;
+		case 6:
+			sortPatrons();
 			break;
 		default:
 			cout << "Unknown choice.\n";
 			break;
 		}
 	}
+}
+
+void PatronMenu::listPatrons()
+{
+	printHeader("List Patrons");
+	controller.listAllPatrons();
+	waitForEnter();
+}
+
+void PatronMenu::addPatron()
+{
+	printHeader(" Add Patron ");
+	Patron newPatron;
+	newPatron.setID(readString("ID: "));
+	newPatron.setName(readString("Name: "));
+	newPatron.setContact(readString("Contact: "));
+	newPatron.setMembershipDate(readString("Membership date: "));
+
+	if (controller.addPatron(newPatron))
+		cout << "Patron added.\n";
+	else
+		cout << "ID exists.\n";
+	waitForEnter();
+}
+
+void PatronMenu::removePatron()
+{
+	printHeader("Remove Patron");
+	string id = readString("Enter Patron ID: ");
+	if (controller.removePatron(id))
+		cout << "Removed.\n";
+	else
+		cout << "Cannot remove (active loans or not found).\n";
+	waitForEnter();
+}
+
+void PatronMenu::updatePatron()
+{
+	printHeader("Update Patron");
+}
+
+void PatronMenu::searchPatrons(){
+	printHeader("Search Patrons");
+}
+
+void PatronMenu::sortPatrons()
+{
+	printHeader("Sort Patrons");
 }

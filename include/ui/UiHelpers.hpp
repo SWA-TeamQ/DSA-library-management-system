@@ -7,13 +7,14 @@
 #include "models/Patron.hpp"
 #include "models/Transaction.hpp"
 #include "ui/UiComponents.hpp"
+#include "ui/UiHelpers.hpp"
 
 using namespace std;
 
 void clearInput();
 void waitForEnter();
-string getString(const string &prompt);
-int getInt(const string &prompt);
+string readString(const string &prompt, bool optional = false);
+int readInt(const string &prompt);
 void clearScreen();
 void printDivider();
 void printHeader(const string &title);
@@ -24,5 +25,8 @@ void print(const Patron &patron);
 void print(const Transaction &transaction);
 
 void tablePrint(const Array<Book> &books);
+void tablePrint(const Array<Book *> &books);
 void tablePrint(const Array<Patron> &patrons);
+void tablePrint(const Array<Patron *> &patrons);
 void tablePrint(const Array<Transaction> &transactions);
+void tablePrint(const Array<Transaction *> &transactions);
