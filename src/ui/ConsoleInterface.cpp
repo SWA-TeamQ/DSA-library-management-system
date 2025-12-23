@@ -1,81 +1,4 @@
 #include "ui/ConsoleInterface.hpp"
-#include "ui/BookMenu.hpp"
-#include "ui/PatronMenu.hpp"
-#include "ui/TransactionMenu.hpp"
-#include <iostream>
-#include <cstdlib> // for system()
-#include <limits>
-using namespace std;
-
-// --- UI Helpers ---
-
-void ConsoleInterface::clearScreen() const
-{
-    system("cls");
-}
-
-void ConsoleInterface::printDivider() const
-{
-    cout << "+------------------------------------------------------------+\n";
-}
-
-void ConsoleInterface::printWelcomeBanner() const
-{
-    clearScreen();
-    cout << "  __________________________________________________________  \n";
-    cout << " /                                                          \\ \n";
-    cout << "|    ____________________________________________________    |\n";
-    cout << "|   |                                                    |   |\n";
-    cout << "|   |    WELCOME TO THE LIBRARY MANAGEMENT SYSTEM        |   |\n";
-    cout << "|   |                                                    |   |\n";
-    cout << "|   |    Developed by: Team Q (DSA Course Project)       |   |\n";
-    cout << "|   |____________________________________________________|   |\n";
-    cout << " \\__________________________________________________________/ \n";
-    cout << "\n        [ Press Enter to Start the Application ]           \n";
-    string dummy;
-    getline(cin, dummy);
-}
-
-void ConsoleInterface::printHeader(const string &title) const
-{
-    clearScreen();
-    cout << "       .--.                   .---.        \n";
-    cout << "   .---|__|                   |___|---.    \n";
-    cout << "   |---|--|                   |---|---|    \n";
-    cout << "   |---|--|    LMS PROJECT    |---|---|    \n";
-    cout << "   ^---^--^                   ^---^---^    \n";
-    printDivider();
-    cout << "|             LIBRARY MANAGEMENT SYSTEM (DSA)                |\n";
-    printDivider();
-    cout << "|  CATEGORY: " << title;
-    // Pad with spaces to keep the border aligned
-    int padding = 47 - (int)title.length();
-    for (int i = 0; i < padding; ++i)
-        cout << " ";
-    cout << "|\n";
-    printDivider();
-}
-
-void ConsoleInterface::waitForEnter() const
-{
-    cout << "\n >>> Press Enter to continue...";
-    string dummy;
-    getline(cin, dummy);
-}
-
-string ConsoleInterface::getInput(const string &prompt) const
-{
-    cout << " " << prompt;
-    string input;
-    getline(cin, input);
-    return input;
-}
-
-void clearInput()
-{
-    cin.ignore('\n');
-    cin.clear();
-}
 
 // --- Menus ---
 
@@ -95,29 +18,30 @@ void ConsoleInterface::printMainMenu() const
 
 void ConsoleInterface::run()
 {
-    printWelcomeBanner();
+    // printWelcomeBanner();
     while (running)
     {
         printMainMenu();
-        cout << " Select an option: ";
-        string choice;
-        getline(cin, choice);
-
-        if (choice == "1")
-            handleBookMenu();
-        else if (choice == "2")
-            handlePatronMenu();
-        else if (choice == "3")
-            handleTransactionMenu();
-        else if (choice == "4")
-            handleDataMenu();
-        else if (choice == "0")
+        int choice = getInt(" Select an option: ");
+        switch (choice)
         {
+        case 1:
+            handleBookMenu();
+            break;
+        case 2:
+            handlePatronMenu();
+            break;
+        case 3:
+            handleTransactionMenu();
+            break;
+        case 4:
+            handleDataMenu();
+            break;
+        case 0:
             running = false;
             cout << "\n Thank you for using the Library Management System. Goodbye!\n";
-        }
-        else
-        {
+            break;
+        default:
             cout << " [!] Invalid option. Please try again.\n";
             waitForEnter();
         }
