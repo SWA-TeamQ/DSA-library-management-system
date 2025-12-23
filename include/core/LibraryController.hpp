@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <memory>
 #include "dsa/Array.hpp"
@@ -26,8 +27,7 @@ public:
           patronsManager("patrons.txt"),
           transactionsManager("transactions.txt"),
           loanService(booksManager, patronsManager, transactionsManager)
-    {
-    }
+    {}
 
     void load()
     {

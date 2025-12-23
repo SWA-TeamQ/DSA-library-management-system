@@ -1,7 +1,4 @@
 #include "core/LibraryController.hpp"
-#include <iostream>
-
-using namespace std;
 
 // Book operations
 bool LibraryController::addBook(const Book &b) {

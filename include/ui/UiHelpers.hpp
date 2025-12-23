@@ -7,15 +7,17 @@
 #include "models/Patron.hpp"
 #include "models/Transaction.hpp"
 #include "ui/UiComponents.hpp"
-#include "utils/utils.hpp"
 
 using namespace std;
 
-void clearScreen();
-void printHeader(const string &title);
-int getInt(const string &prompt);
 void clearInput();
+void waitForEnter();
+string getString(const string &prompt);
+int getInt(const string &prompt);
+void clearScreen();
 void printDivider();
+void printHeader(const string &title);
+void printWelcomeBanner();
 
 void print(const Book &book);
 void print(const Patron &patron);
