@@ -1,216 +1,26 @@
 #include "ui/BookMenu.hpp"
 
-using namespace std;
-
-BookMenu::BookMenu(LibraryController &controller) : controller(controller) {}
-
-string BookMenu::readLine(const string &prompt) const
-{
-    cout << prompt;
-    string s;
-    if (!getline(cin, s))
-    {
-        cin.clear();
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return {};
-    }
-    return s;
-}
-
-int BookMenu::readInt(const string &prompt) const
-{
-    while (true)
-    {
-        string s = readLine(prompt);
-        try
-        {
-            return std::stoi(s);
-        }
-        catch (...)
-        {
-            cout << "Invalid number, try again.\n";
-        }
-    }
-}
-
-void BookMenu::waitForEnter() const
-{
-    cout << "\nPress Enter to continue...";
-    string dummy;
-    getline(std::cin, dummy);
-}
-
-void BookMenu::printBooksTable(const Array<Book *> &books) const
-{
-    if (books.empty())
-    {
-        cout << "No books found.\n";
-        return;
-    }
-
-    cout << std::left
-         << std::setw(18) << "ISBN"
-         << std::setw(28) << "Title"
-         << std::setw(22) << "Author"
-         << std::setw(10) << "Year"
-         << std::setw(12) << "Available"
-         << std::setw(12) << "Borrowed" << '\n';
-    cout << string(100, '-') << '\n';
-
-    for (const auto *b : books)
-    {
-        cout << std::setw(18) << b->getISBN().substr(0, 17)
-             << std::setw(28) << b->getTitle().substr(0, 27)
-             << std::setw(22) << b->getAuthor().substr(0, 21)
-             << std::setw(10) << b->getPublicationYear()
-             << std::setw(12) << (b->isAvailable() ? "Yes" : "No")
-             << std::setw(12) << b->getBorrowCount() << '\n';
-    }
-}
-
-void BookMenu::listBooks()
-{
-    printBooksTable(controller.sortBooks(BookSortKey::TITLE));
-    waitForEnter();
-}
-
-void BookMenu::addBook()
-{
-    cout << "\n=== Add Book ===\n";
-    string title = getString("Title: ");
-    string author = getString("Author: ");
-    string isbn = getString("ISBN: ");
-    string edition = getString("Edition: ");
-    int year = getInt("Publication year: ");
-    string category = getString("Category: ");
-
-    if (title.empty() || author.empty() || isbn.empty())
-    {
-        cout << "Title, author, and ISBN are required.\n";
-        return;
-    }
-
-    Book book(title, author, isbn, edition, year, category);
-    if (controller.addBook(book))
-    {
-        cout << "Book added successfully.\n";
-    }
-    else
-    {
-        cout << "A book with this ISBN already exists.\n";
-    }
-    waitForEnter();
-}
-
-void BookMenu::removeBook()
-{
-    cout << "\n=== Remove Book ===\n";
-    string isbn = readLine("Enter ISBN: ");
-    if (isbn.empty())
-    {
-        cout << "ISBN is required.\n";
-        return;
-    }
-
-    if (controller.removeBook(isbn))
-    {
-        cout << "Book removed.\n";
-    }
-    else
-    {
-        cout << "Book not found.\n";
-    }
-    waitForEnter();
-}
-
-void BookMenu::searchBooks()
-{
-    cout << "\n=== Search Books ===\n"
-         << "1. By title\n"
-         << "2. By author\n"
-         << "3. By ISBN\n"
-         << "0. Back\n";
-    int choice = readInt("Choose: ");
-
-    switch (choice)
-    {
-    case 0:
-        return;
-    case 1:
-    {
-        string title = readLine("Title contains: ");
-        printBooksTable(controller.findBooksByTitle(title));
-        break;
-    }
-    case 2:
-    {
-        string author = readLine("Author contains: ");
-        printBooksTable(controller.findBooksByAuthor(author));
-        break;
-    }
-    case 3:
-    {
-        string isbn = readLine("ISBN: ");
-        if (auto *book = controller.findBook(isbn))
-        {
-            printBooksTable(Array<Book *>{book});
-        }
-        else
-        {
-            cout << "Book not found.\n";
-        }
-        break;
-    }
-    }
-    waitForEnter();
-}
-
-void BookMenu::sortBooks()
-{
-    cout << "\n=== Sort Books ===\n"
-         << "1. Title\n"
-         << "2. Author\n"
-         << "3. Publication year\n"
-         << "4. Borrow count\n"
-         << "0. Back\n";
-    string field = readLine("Sort by: ");
-    if (field == "0")
-        return;
-
-    string order = readLine("Reverse order? (y/n): ");
-    bool reverse = (order == "y" || order == "Y");
-
-    BookSortKey key = BookSortKey::TITLE;
-    if (field == "2")
-        key = BookSortKey::AUTHOR;
-    else if (field == "3")
-        key = BookSortKey::YEAR;
-    else if (field == "4")
-        key = BookSortKey::BORROW_COUNT;
-
-    printBooksTable(controller.sortBooks(key, reverse));
-    waitForEnter();
-}
-
 void BookMenu::show()
 {
     bool running = true;
     while (running)
     {
-        cout << "\n--- Book Menu ---\n"
-             << "1. List books\n"
+        printHeader("Book Menu");
+        cout << "1. List books\n"
              << "2. Add book\n"
-             << "3. Search books\n"
-             << "4. Sort books\n"
-             << "5. Remove book\n"
+             << "3. Remove book\n"
+             << "4, Update book\n"
+             << "5. Search books\n"
+             << "6. Sort books\n"
              << "0. Back\n";
 
-        int choice;
-        cin >> choice;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        int choice = readInt("Choose: ");
 
         switch (choice)
         {
+        case 0:
+            running = false;
+            break;
         case 1:
             listBooks();
             break;
@@ -218,20 +28,149 @@ void BookMenu::show()
             addBook();
             break;
         case 3:
-            searchBooks();
-            break;
-        case 4:
-            sortBooks();
-            break;
-        case 5:
             removeBook();
             break;
-        case 0:
-            running = false;
+        case 4:
+            updateBook();
+            break;
+        case 5:
+            searchBooks();
+            break;
+        case 6:
+            sortBooks();
             break;
         default:
             cout << "Unknown choice.\n";
             break;
         }
     }
+}
+
+void BookMenu::listBooks()
+{
+    Array<Book *> books = controller.listAllBooks();
+    tablePrint(books);
+}
+
+void BookMenu::addBook()
+{
+    printHeader("Add Book");
+    Book newBook;
+    newBook.setTitle(readString("Title: "));
+    newBook.setAuthor(readString("Author: "));
+    newBook.setISBN(readString("ISBN: "));
+    newBook.setEdition(readString("Edition: "));
+    newBook.setPublicationYear(readInt("Publication year: "));
+    newBook.setCategory(readString("Category: "));
+
+    if (controller.addBook(newBook))
+        cout << "Book added successfully.\n";
+    else
+        cout << "A book with this ISBN already exists.\n";
+    waitForEnter();
+}
+
+void BookMenu::removeBook()
+{
+    printHeader("Remove Book");
+    string isbn = readString("Enter ISBN: ");
+
+    if (controller.removeBook(isbn))
+        cout << "Book removed.\n";
+    else
+        cout << "Book not found.\n";
+    waitForEnter();
+}
+
+void BookMenu::updateBook()
+{
+    printHeader("Update Book");
+    waitForEnter();
+}
+
+void BookMenu::searchBooks()
+{
+    printHeader("Search Books");
+    cout << "1. By ISBN\n"
+         << "2. By title\n"
+         << "3. By author\n"
+         << "0. Back\n";
+    int choice = readInt("Choose: ");
+
+    switch (choice)
+    {
+        case 0:
+            return;
+        case 1:
+        {
+            string isbn = readString("ISBN: ");
+            if (auto *book = controller.findBook(isbn))
+                print(*book);
+            else
+                cout << "Book not found.\n";
+            break;
+        }
+        case 2:
+        {
+            string title = readString("Title contains: ");
+            Array<Book *> books = controller.findBooksByTitle(title);
+            tablePrint(books);
+            break;
+        }
+        case 3:
+        {
+            string author = readString("Author contains: ");
+            Array<Book *> books = controller.findBooksByAuthor(author);
+            tablePrint(books);
+            break;
+        }
+        default:
+            return;
+    }
+    waitForEnter();
+}
+
+void BookMenu::sortBooks()
+{
+    printHeader("Sort Books");
+    cout << "1. Title\n"
+         << "2. Author\n"
+         << "3. Publication year\n"
+         << "4. Borrow count\n"
+         << "0. Back\n";
+    string field = readString("Sort by: ");
+    if (field == "0")
+        return;
+
+    string order = readString("Reverse order? (y/n): ");
+    bool reverse = (order == "y" || order == "Y");
+
+    Array<Book *> books;
+
+    int choice = readInt("Choose: ");
+    switch (choice)
+    {
+    case 0:
+        return;
+    case 1:
+        books = controller.sortBooksByTitle(reverse);
+        break;
+
+    case 2:
+        books = controller.sortBooksByAuthor(reverse);
+        break;
+
+    case 3:
+        books = controller.sortBooksByYear(reverse);
+        break;
+    case 4:
+        books = controller.sortBooksByBorrowCount(reverse);
+        break;
+    default:
+        cout << "Invalid inptu \n";
+        return;
+    }
+
+    tablePrint(books);
+    waitForEnter();
 }
