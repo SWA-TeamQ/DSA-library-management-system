@@ -14,19 +14,13 @@ bool BookManager::addBook(const Book &book)
         Book newBook = book;
         newBook.setBorrowCount(0);
         newBook.setTotalQuantity(newBook.getTotalQuantity());
-        newBook.setCurrentQuantity(newBook.getTotalQuantity());
-       
-
+        
         bookTable[newBook.getKey()] = newBook;
         searchMap.insert(newBook);
         bookStore.addData(newBook); // persist new book
     }
-  
- 
     return true;
 }
-
-
 
 bool BookManager::removeBook(const BookSearchKey key, const string &value)
 {
