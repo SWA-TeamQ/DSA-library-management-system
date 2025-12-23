@@ -12,7 +12,6 @@ Book::Book(string title,
            string category,
            int TotalQuantity,
            int currentQuantity,
-           bool available,
            int borrowCount)
 {
   this->title = title;
@@ -23,14 +22,14 @@ Book::Book(string title,
   this->category = category;
   this->TotalQuantity = TotalQuantity;
   this->currentQuantity = currentQuantity;
-  this->available = available;
+  
   this->borrowCount = borrowCount;
 }
 
 string Book::serialize() const
 {
   return title + "," + author + "," + isbn + "," + edition + "," +
-         to_string(publicationYear) + "," + category + "," + to_string(TotalQuantity) + "," + to_string(currentQuantity) + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
+         to_string(publicationYear) + "," + category + "," + to_string(TotalQuantity) + "," + to_string(currentQuantity) + "," + "," + to_string(borrowCount);
 }
 
 void Book::deserialize(const string &line)
@@ -58,8 +57,6 @@ void Book::deserialize(const string &line)
     currentQuantity = stoi(field);
   else
     currentQuantity = 0;
-  getline(ss, field, ',');
-  available = (field == "1");
   getline(ss, field);
   if (!field.empty())
   {
@@ -82,7 +79,6 @@ Array<string> Book::getFields() const
   fields.append("Category");
   fields.append("Total Quantity");
   fields.append("Current Quantity");
-  fields.append("Available");
   fields.append("Borrow Count");
   return fields;
 }
@@ -99,7 +95,6 @@ Array<string> Book::getValues() const
   values.append(category);
   values.append(to_string(TotalQuantity));
   values.append(to_string(currentQuantity));
-  values.append(available ? "available" : "not available");
   values.append(to_string(borrowCount));
   return values;
 }

@@ -45,18 +45,22 @@ public:
 
     // Book operations
     bool addBook(const Book &b);
-    bool removeBook(const string &isbn);
-    Book *findBook(const string &isbn) const;
+    bool removeBookById(const string &isbn);
+    bool removeBookByTitle(const string &title);
+    bool removeBookByAuthor(const string &author);
+    bool removeBookByCategory(const string &category);
+    Book *findBookById(const string &isbn) const;
     Array<Book *> findBooksByTitle(const string &title) const;
     Array<Book *> findBooksByAuthor(const string &author) const;
     Array<Book *> findBooksByCategory(const string &category) const;
-    Array<Book *> sortBooksByTitle(bool reverse = false);
-    Array<Book *> sortBooksByAuthor(bool reverse = false);
-    Array<Book *> sortBooksByBorrowCount(bool reverse = false);
+    Array<Book *> sortBooksByTitle(const string &title, bool reverse = false);
+    Array<Book *> sortBooksByAuthor(const string &author, bool reverse = false);
+    Array<Book *> sortBooksByYear(const string &year, bool reverse = false);
+    Array<Book *> sortBooksByBorrowCount(const string &borrowCount, bool reverse = false);
 
     bool updateBook(const Book &b);
-    void listAllBooks() const;
-
+    Array<Book *> listAllBooks() const;
+Z
     // Patron operations
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);

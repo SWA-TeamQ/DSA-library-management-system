@@ -30,7 +30,6 @@ private:
     string category;
     int TotalQuantity;
     int currentQuantity;
-    bool available{true};
     int borrowCount{0};
 
 public:
@@ -44,7 +43,6 @@ public:
          string category = "General",
          int TotalQuantity = 1,
          int currentQuantity = 1,
-         bool available = true,
          int borrowCount = 0);
 
     // for generic lookup
@@ -58,7 +56,7 @@ public:
     const string getCategory() const { return category; }
     const int getTotalQuantity() const { return TotalQuantity; }
     const int getCurrentQuantity() const { return currentQuantity; }
-    bool isAvailable() const { return currentQuantity > 0; }
+    const bool isAvailable() {return currentQuantity > 0;}
     int getBorrowCount() const { return borrowCount; }
 
     void setTitle(const string &title) { this->title = title; }
@@ -71,9 +69,6 @@ public:
     void incrementCurrentQuantity() { this->currentQuantity++; }
     void decrementCurrentQuantity() { this->currentQuantity--; }
     bool isAllReturned() { return currentQuantity == TotalQuantity; }
-    
-    
-    void setAvailable(bool available) { this->available = available; }
     void setBorrowCount(int bc) { borrowCount = bc; }
 
     void incrementBorrowCount() { ++borrowCount; }

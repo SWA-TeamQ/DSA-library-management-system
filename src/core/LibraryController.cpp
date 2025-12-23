@@ -2,76 +2,101 @@
 
 // Book operations
 bool LibraryController::addBook(const Book &b) {
-    booksManager.addBook(b); 
+    bookManager.addBook(b); 
     return true; 
 }
 
-bool LibraryController::removeBook(const string &isbn) { 
-    return booksManager.removeBook(BookSearchKey::ID, isbn); 
+bool LibraryController::removeBookById(const string &isbn) { 
+    return bookManager.removeBook(BookSearchKey::ID, isbn); 
 }
 
-Book *LibraryController::findBook(const string &isbn) const { 
-    return booksManager.findBook(BookSearchKey::ID, isbn); 
+bool LibraryController::removeBookByTitle(const string &title) { 
+    return bookManager.removeBook(BookSearchKey::TITLE, title); 
+}
+
+bool LibraryController::removeBookByAuthor(const string &author) { 
+    return bookManager.removeBook(BookSearchKey::AUTHOR, author); 
+}
+
+bool LibraryController::removeBookByCategory(const string &category) { 
+    return bookManager.removeBook(BookSearchKey::CATEGORY, category); 
+}
+
+Book *LibraryController::findBookById(const string &isbn) const { 
+    return bookManager.findBook(BookSearchKey::ID, isbn); 
 }
 
 Array<Book *> LibraryController::findBooksByTitle(const string &title) const { 
-    return booksManager.findBooks(BookSearchKey::TITLE, title); 
+    return bookManager.findBooks(BookSearchKey::TITLE, title); 
 }
 
 Array<Book *> LibraryController::findBooksByAuthor(const string &author) const {
-    return booksManager.findBooks(BookSearchKey::AUTHOR, author);
+    return bookManager.findBooks(BookSearchKey::AUTHOR, author);
 }
 
-Array<Book *> LibraryController::sortBooks(BookSortKey key, bool reverse) { 
-    return booksManager.sortBooks(key, reverse); 
+Array<Book *> LibraryController::findBooksByCategory(const string &category) const{
+    return bookManager.findBooks(BookSearchKey::CATEGORY, category);
 }
+
+Array<Book *> LibraryController::sortBooksByTitle(const string &title, bool reverse) {
+    return bookManager.sortBooks(BookSortKey::TITLE, reverse);
+}
+
+Array<Book *> LibraryController::sortBooksByAuthor(const string &author, bool reverse) {
+    return bookManager.sortBooks(BookSortKey::AUTHOR, reverse);
+}
+Array<Book *> LibraryController::sortBooksByYear(const string &year, bool reverse){
+    return bookManager.sortBooks(BookSortKey::YEAR, reverse);
+}
+
+Array<Book *> LibraryController::sortBooksByBorrowCount(const string &borrowCount,bool reverse){
+    return bookManager.sortBooks(BookSortKey::BORROW_COUNT,reverse);
+}
+
 
 bool LibraryController::updateBook(const Book &b) { 
-    return booksManager.updateBook(b); 
+    return bookManager.updateBook(b); 
 }
 
-void LibraryController::listAllBooks() const { 
-    for (auto *b : bookManager.sortBooks(BookSortKey::TITLE)) {
-        cout << b->getTitle() << " | " << b->getAuthor() << " | " << b->getISBN() << "\n";
-    }
+
+
+Array<Book *> LibraryController::listAllBooks() const { 
+    return bookManager.getAllBooks();
 }
 
 bool LibraryController::removePatron(const string &patronID) {
-    return patronsManager.removePatron(PatronSearchKey::ID, patronID);
+    return patronManager.removePatron(PatronSearchKey::ID, patronID);
 }
 
 Patron *LibraryController::findPatron(const string &patronID) const {
-    return patronsManager.findPatron(PatronSearchKey::ID, patronID);
+    return patronManager.findPatron(PatronSearchKey::ID, patronID);
 }
 
 void LibraryController::listAllPatrons() const {
-    for (auto *p : patronsManager.sortPatrons(PatronSortKey::NAME)) {
+    for (auto *p : patronManager.sortPatrons(PatronSortKey::NAME)) {
         cout << p->getID() << " | " << p->getName() << " | " << p->getMembershipDate() << "\n";
     }
 }
 
 Array<Patron *> LibraryController::sortPatrons(PatronSortKey key, bool reverse) { 
-    return patronsManager.sortPatrons(key, reverse); 
+    return patronManager.sortPatrons(key, reverse); 
 }
 
 bool LibraryController::updatePatron(const Patron &p) { 
-    return patronsManager.updatePatron(p); 
+    return patronManager.updatePatron(p); 
 }
 
 // Transaction operations
 
 bool LibraryController::addTransaction(const Transaction &t) { 
-    return transactionsManager.addTransaction(t); 
+    return transactionManager.addTransaction(t); 
 }
 
 void LibraryController::listAllTransactions() const {
-    for (auto *t : transactionsManager.getAllTransactions()) {
+    for (auto *t : transactionManager.getAllTransactions()) {
         cout << t->getID() << " | " << t->getBookID() << " | " << t->getPatronID() << " | returned:" << (t->isReturned() ? "yes" : "no") << "\n";
     }
 }
-
-
-
 
 // Borrow/Return operations
 bool LibraryController::borrowBook(const string &patronID, const string &isbn) {
