@@ -1,11 +1,5 @@
 #include "ui/BookMenu.hpp"
 
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-#include <string>
-
 using namespace std;
 
 BookMenu::BookMenu(LibraryController &controller) : controller(controller) {}
@@ -83,12 +77,12 @@ void BookMenu::listBooks()
 void BookMenu::addBook()
 {
     cout << "\n=== Add Book ===\n";
-    string title = readLine("Title: ");
-    string author = readLine("Author: ");
-    string isbn = readLine("ISBN: ");
-    string edition = readLine("Edition: ");
-    int year = readInt("Publication year: ");
-    string category = readLine("Category: ");
+    string title = getString("Title: ");
+    string author = getString("Author: ");
+    string isbn = getString("ISBN: ");
+    string edition = getString("Edition: ");
+    int year = getInt("Publication year: ");
+    string category = getString("Category: ");
 
     if (title.empty() || author.empty() || isbn.empty())
     {

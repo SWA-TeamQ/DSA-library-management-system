@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <memory>
 #include "dsa/Array.hpp"
 #include "models/Book.hpp"
 #include "models/Patron.hpp"
@@ -16,31 +15,32 @@ using namespace std;
 class LibraryController
 {
 private:
-    BookManager booksManager;
-    PatronManager patronsManager;
-    TransactionManager transactionsManager;
+    BookManager bookManager;
+    PatronManager patronManager;
+    TransactionManager transactionManager;
     LoanService loanService;
 
 public:
     LibraryController()
-        : booksManager("books.txt"),
-          patronsManager("patrons.txt"),
-          transactionsManager("transactions.txt"),
-          loanService(booksManager, patronsManager, transactionsManager)
-    {}
+        : bookManager("books.txt"),
+          patronManager("patrons.txt"),
+          transactionManager("transactions.txt"),
+          loanService(bookManager, patronManager, transactionManager)
+    {
+    }
 
     void load()
     {
-        booksManager.loadBooks();
-        patronsManager.loadPatrons();
-        transactionsManager.loadTransactions();
+        bookManager.loadBooks();
+        patronManager.loadPatrons();
+        transactionManager.loadTransactions();
     }
 
     void save()
     {
-        booksManager.saveBooks();
-        patronsManager.savePatrons();
-        transactionsManager.saveTransactions();
+        bookManager.saveBooks();
+        patronManager.savePatrons();
+        transactionManager.saveTransactions();
     }
 
     // Book operations
@@ -49,8 +49,11 @@ public:
     Book *findBook(const string &isbn) const;
     Array<Book *> findBooksByTitle(const string &title) const;
     Array<Book *> findBooksByAuthor(const string &author) const;
+    Array<Book *> findBooksByCategory(const string &category) const;
     Array<Book *> sortBooksByTitle(bool reverse = false);
     Array<Book *> sortBooksByAuthor(bool reverse = false);
+    Array<Book *> sortBooksByBorrowCount(bool reverse = false);
+
     bool updateBook(const Book &b);
     void listAllBooks() const;
 
@@ -67,6 +70,7 @@ public:
     // Transaction operations
     bool addTransaction(const Transaction &t);
     void listAllTransactions() const;
+    Array<Transaction *> sortTransactionsByReturnDate(bool reverse = false);
 
     // Borrow/Return operations
     bool borrowBook(const string &patronID, const string &isbn);
