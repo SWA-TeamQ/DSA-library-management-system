@@ -91,7 +91,6 @@ void ConsoleInterface::printMainMenu() const
     cout << "|  0. [ Exit System ]                                        |\n";
     cout << "|                                                            |\n";
     printDivider();
-    cout << " Select an option: ";
 }
 
 void ConsoleInterface::run()
@@ -100,6 +99,7 @@ void ConsoleInterface::run()
     while (running)
     {
         printMainMenu();
+        cout << " Select an option: ";
         string choice;
         getline(cin, choice);
 

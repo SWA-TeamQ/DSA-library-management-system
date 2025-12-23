@@ -24,7 +24,6 @@ string generateId(const string& prefix) {
     return ss.str();
 }
 
-
 void clearInput(){
     cin.ignore();
     cin.clear();

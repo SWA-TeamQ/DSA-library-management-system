@@ -51,7 +51,7 @@ void print(const Transaction &transaction){
     cout << endl;
 }
 
-void printAll(const Array<Book> books){
+void print(const Array<Book> &books){
     Book temp = Book();
 
     Array<string> fields = temp.getFields();
@@ -67,6 +67,22 @@ void printAll(const Array<Book> books){
             cout << "-";
         }
     }
+}
 
+void print(const Array<Patron> &patrons){
+    Patron temp = Patron();
 
+    Array<string> fields = temp.getFields();
+    for(int i = 0; i < fields.size(); i++){
+        for(int j = 0; j < fields.size() * 15; j++){
+            cout << "-";
+        }
+        cout << setw(15) << fields[i];
+        if( i != fields.size() - 1){
+            cout << "|";
+        }
+        for(int j = 0; j < fields.size() * 15; j++){
+            cout << "-";
+        }
+    }
 }
