@@ -7,7 +7,7 @@ using namespace std;
 
 string Patron::serialize() const
 {
-    return patronID + "," + name + "," + contact + "," + membershipDate.serialize() + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
+    return patronID + "," + name + "," + contact + "," + membershipDate + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Patron::deserialize(const string &line)
@@ -18,8 +18,7 @@ void Patron::deserialize(const string &line)
     getline(ss, patronID, ',');
     getline(ss, name, ',');
     getline(ss, contact, ',');
-    getline(ss, field, ',');
-    membershipDate.deserialize(field);
+    getline(ss, membershipDate, ',');
     // borrowed flag
     getline(ss, field, ',');
     borrowed = (field == "1");
@@ -53,7 +52,7 @@ Array<string> Patron::getValues() const
     values.append(patronID);
     values.append(name);
     values.append(contact);
-    values.append(membershipDate.serialize());
+    values.append(membershipDate);
     values.append(borrowed ? "borrowed" : "available");
     values.append(to_string(borrowCount));
     return values;
