@@ -13,7 +13,7 @@ bool BookManager::addBook(const Book &book)
         // New book
         Book newBook = book;
         newBook.setBorrowCount(0);
-        newBook.setTotalQuantity(newBook.getTotalQuantity());
+        newBook.setTotalQuantity(book.getTotalQuantity());
         
         bookTable[newBook.getKey()] = newBook;
         searchMap.insert(newBook);
