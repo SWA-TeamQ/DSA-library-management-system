@@ -60,7 +60,7 @@ public:
 
     bool updateBook(const Book &b);
     Array<Book *> listAllBooks() const;
-Z
+
     // Patron operations
     bool addPatron(const Patron &p);
     bool removePatron(const string &patronID);
