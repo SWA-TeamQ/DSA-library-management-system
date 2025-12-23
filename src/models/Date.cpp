@@ -1,12 +1,9 @@
 #include <iostream>
 #include <string>
+#include "models/Date.hpp"
 
 using namespace std;
 
-
-void Date::print() const {
-    cout << serialize() << endl;
-}
 
 string Date::serialize() const {
     return to_string(year) + "-" + to_string(month) + "-" + to_string(day);
@@ -17,7 +14,7 @@ void Date::deserialize(const string &line){
     
     string temp = "";
     int i = 0;
-    for(char &c : line){
+    for(const char &c : line){
         if(c == '-'){
             values[i++] = stoi(temp);
             temp = "";

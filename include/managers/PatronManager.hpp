@@ -28,6 +28,7 @@ public:
 
         if(!patronStore.loadData(patronTable)){
             cout << "Warning: Failed to load patrons from file\n";
+            return;
         }
         buildSearchMap();
     }

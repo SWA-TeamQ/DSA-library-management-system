@@ -16,8 +16,7 @@ bool Transaction::isOverdue() const
 void Transaction::markReturned()
 {
     returned = true;
-    // Set returnDate to current date, but since string, assume set externally or leave
-    // For simplicity, set to borrowDate or something, but better to set externally
+    returnDate = getCurrentDate();
 }
 
 double Transaction::calculateFine(double dailyRate) const

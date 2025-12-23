@@ -40,7 +40,6 @@ public:
          string edition,
          int publicationYear,
          string category = "General",
-         int quantity = 1,
          bool available = true,
          int borrowCount = 0);
 
