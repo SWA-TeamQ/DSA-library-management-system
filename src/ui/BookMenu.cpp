@@ -73,18 +73,70 @@ void BookMenu::addBook()
 void BookMenu::removeBook()
 {
     printHeader("Remove Book");
-    string isbn = readString("Enter ISBN: ");
-
-    if (controller.removeBook(isbn))
-        cout << "Book removed.\n";
-    else
-        cout << "Book not found.\n";
+    cout << "1. By ISBN\n"
+         << "2. By title\n"
+         << "3. By author\n"
+         << "0. Back\n";
+    int choice = readInt("Choose: ");
+    switch (choice)
+    {
+    case 0:
+        return;
+    case 1:
+    {
+        string isbn = readString("Enter ISBN: ");
+        if (controller.removeBookById(isbn))
+            cout << "Book removed.\n";
+        else
+            cout << "Book not found.\n";
+        break;
+    }
+    case 2:
+    {
+        string title = readString("Enter title: ");
+        if (controller.removeBookByTitle(title))
+            cout << "Book removed.\n";
+        else
+            cout << "Book not found.\n";
+        break;
+    }
+    case 3:
+    {
+        string author = readString("Enter author: ");
+        if (controller.removeBookByAuthor(author))
+            cout << "Book removed.\n";
+        else
+            cout << "Book not found.\n";
+        break;
+    }
+    default:
+        cout << "Invalid choice.\n";
+        break;
+    }
     waitForEnter();
 }
 
 void BookMenu::updateBook()
 {
     printHeader("Update Book");
+    cout << "Enter the ISBN of the book to update:\n";
+    string isbn = readString("Enter ISBN: ");
+        if (auto *book = controller.findBookById(isbn))
+        {
+        cout << "Current details:\n";
+        print(*book);
+        cout << "Enter new details:\n";
+        book->setTitle(readString("Title: "));
+        book->setAuthor(readString("Author: "));
+        book->setEdition(readString("Edition: "));
+        book->setPublicationYear(readInt("Publication year: "));
+        book->setCategory(readString("Category: "));
+        controller.updateBook(*book);
+        cout << "Book updated.\n";
+        }
+        else
+            cout << "Book not found.\n";
+    
     waitForEnter();
 }
 
@@ -94,38 +146,46 @@ void BookMenu::searchBooks()
     cout << "1. By ISBN\n"
          << "2. By title\n"
          << "3. By author\n"
+         << "4. By category\n"
          << "0. Back\n";
     int choice = readInt("Choose: ");
 
     switch (choice)
     {
-        case 0:
-            return;
-        case 1:
-        {
-            string isbn = readString("ISBN: ");
-            if (auto *book = controller.findBook(isbn))
-                print(*book);
-            else
-                cout << "Book not found.\n";
-            break;
-        }
-        case 2:
-        {
-            string title = readString("Title contains: ");
-            Array<Book *> books = controller.findBooksByTitle(title);
-            tablePrint(books);
-            break;
-        }
-        case 3:
-        {
-            string author = readString("Author contains: ");
-            Array<Book *> books = controller.findBooksByAuthor(author);
-            tablePrint(books);
-            break;
-        }
-        default:
-            return;
+    case 0:
+        return;
+    case 1:
+    {
+        string isbn = readString("ISBN: ");
+        if (auto *book = controller.findBookById(isbn))
+            print(*book);
+        else
+            cout << "Book not found.\n";
+        break;
+    }
+    case 2:
+    {
+        string title = readString("Title contains: ");
+        Array<Book *> books = controller.findBooksByTitle(title);
+        tablePrint(books);
+        break;
+    }
+    case 3:
+    {
+        string author = readString("Author contains: ");
+        Array<Book *> books = controller.findBooksByAuthor(author);
+        tablePrint(books);
+        break;
+    }
+    case 4:
+    {
+        string category = readString("Category: ");
+        Array<Book *> books = controller.findBooksByCategory(category);
+        tablePrint(books);
+        break;
+    }
+    default:
+        return;
     }
     waitForEnter();
 }
