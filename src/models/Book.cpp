@@ -10,6 +10,8 @@ Book::Book(string title,
            string edition,
            int publicationYear,
            string category,
+           int TotalQuantity,
+           int currentQuantity,
            bool available,
            int borrowCount)
 {
@@ -19,6 +21,8 @@ Book::Book(string title,
   this->edition = edition;
   this->publicationYear = publicationYear;
   this->category = category;
+  this->TotalQuantity = TotalQuantity;
+  this->currentQuantity = currentQuantity;
   this->available = available;
   this->borrowCount = borrowCount;
 }
@@ -26,7 +30,7 @@ Book::Book(string title,
 string Book::serialize() const
 {
   return title + "," + author + "," + isbn + "," + edition + "," +
-         to_string(publicationYear) + "," + category + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
+         to_string(publicationYear) + "," + category + "," + to_string(TotalQuantity) + "," + to_string(currentQuantity) + "," + (available ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Book::deserialize(const string &line)
@@ -44,6 +48,16 @@ void Book::deserialize(const string &line)
   else
     publicationYear = -1;
   getline(ss, category, ',');
+  getline(ss, field, ',');
+  if (!field.empty())
+    TotalQuantity = stoi(field);
+  else
+    TotalQuantity = 0;
+  getline(ss, field, ',');
+  if (!field.empty())
+    currentQuantity = stoi(field);
+  else
+    currentQuantity = 0;
   getline(ss, field, ',');
   available = (field == "1");
   getline(ss, field);
@@ -66,6 +80,8 @@ Array<string> Book::getFields() const
   fields.append("Edition");
   fields.append("Publication Year");
   fields.append("Category");
+  fields.append("Total Quantity");
+  fields.append("Current Quantity");
   fields.append("Available");
   fields.append("Borrow Count");
   return fields;
@@ -81,6 +97,8 @@ Array<string> Book::getValues() const
   values.append(edition);
   values.append(to_string(publicationYear));
   values.append(category);
+  values.append(to_string(TotalQuantity));
+  values.append(to_string(currentQuantity));
   values.append(available ? "available" : "not available");
   values.append(to_string(borrowCount));
   return values;
