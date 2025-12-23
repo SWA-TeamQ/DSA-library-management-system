@@ -42,7 +42,7 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
         Book *b = bookTable.find(id);
         if (!b)
             continue;
-        if (!b->isAvailable())
+        if (!b->isAllReturned())
         {
             cout << "Book " << b->getKey() << " is already borrowed so it couldn't be removed" << endl;
             continue;
