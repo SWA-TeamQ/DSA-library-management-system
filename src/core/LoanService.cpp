@@ -4,9 +4,9 @@
 #include "models/Transaction.hpp"
 
 bool LoanService::borrowBook(const std::string& patronID, const std::string& isbn) {
-    Book* book = bookManager.findBookByISBN(isbn);
+    Book* book = booksManager.findBook(BookSearchKey::ID, isbn);
     if (!book || !book->isAvailable()) return false;
-    Patron* patron = patronManager.findPatron(patronID);
+    Patron* patron = patronsManager.findPatron(PatronSearchKey::ID, patronID);
     if (!patron) return false;
     std::string transactionID = "T" + std::to_string(std::time(nullptr));
     std::string borrowDate = getCurrentDate();
@@ -20,9 +20,9 @@ bool LoanService::borrowBook(const std::string& patronID, const std::string& isb
 }
 
 bool LoanService::returnBook(const std::string& patronID, const std::string& isbn) {
-    Book* book = bookManager.findBookByISBN(isbn);
+    Book* book = booksManager.findBook(BookSearchKey::ID, isbn);
     if (!book || book->isAvailable()) return false;
-    Patron* patron = patronManager.findPatron(patronID);
+    Patron* patron = patronsManager.findPatron(PatronSearchKey::ID, patronID);
     if (!patron) return false;
     
     Transaction* trans = nullptr;

@@ -14,7 +14,7 @@ class BookManager
 {
 private:
     // file store
-    DataStore<string, Book> bookStore;
+    DataStore<Book> bookStore;
     HashTable<string, Book> bookTable; // id -> book
     BookSearchMap searchMap;
 

@@ -4,8 +4,8 @@
 #include "dsa/Array.hpp"
 using namespace std;
 
-enum PatronSearchKey { NAME, ID };
-enum PatronSortKey { NAME, MEMBERSHIP_DATE, BORROW_COUNT };
+enum class PatronSearchKey { NAME, ID };
+enum class PatronSortKey { NAME, MEMBERSHIP_DATE, BORROW_COUNT };
 
 class Patron
 {

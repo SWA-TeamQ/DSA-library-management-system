@@ -1,14 +1,19 @@
 #pragma once
+
 #include <string>
-#include <iostream>
-using namespace std;
+#include "core/LibraryController.hpp"
 
 class PatronMenu
 {
-    void handlePatronMenu();
-    // --- Member Operations ---
-    void handleAddPatron();
-    void handleListPatrons();
-    void handleSearchPatrons(); // Placeholder for Member 3
-    void handleRemovePatron();  // Placeholder for Member 3
+public:
+    explicit PatronMenu(LibraryController &controller) : controller(controller) {}
+    void show();
+
+private:
+    LibraryController &controller;
+
+    std::string readLine(const std::string &prompt) const;
+    int readInt(const std::string &prompt) const;
+    void waitForEnter() const;
 };
+

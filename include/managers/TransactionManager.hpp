@@ -12,7 +12,7 @@ using namespace std;
 class TransactionManager
 {
 private:
-    DataStore<string, Transaction> transactionStore;
+    DataStore<Transaction> transactionStore;
     HashTable<string, Transaction> transactionTable; // ID -> Transaction
     TransactionSearchMap searchMap;
 

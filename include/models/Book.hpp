@@ -4,14 +4,14 @@
 #include "dsa/Array.hpp"
 using namespace std;
 
-enum BookSearchKey
+enum class BookSearchKey
 {
     ID,
     TITLE,
     AUTHOR,
     CATEGORY
 };
-enum BookSortKey
+enum class BookSortKey
 {
     TITLE,
     AUTHOR,

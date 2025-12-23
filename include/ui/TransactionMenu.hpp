@@ -1,12 +1,17 @@
 #pragma once
+
 #include <string>
-#include <iostream>
-using namespace std;
+#include "core/LibraryController.hpp"
 
 class TransactionMenu
 {
-    // --- Transaction Operations ---
-    void handleBorrow();
-    void handleReturn();
-    void handleViewHistory(); // Placeholder for Member 4
+public:
+    explicit TransactionMenu(LibraryController &controller) : controller(controller) {}
+    void show();
+
+private:
+    LibraryController &controller;
+
+    std::string readLine(const std::string &prompt) const;
+    void waitForEnter() const;
 };
