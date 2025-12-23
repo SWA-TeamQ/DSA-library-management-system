@@ -28,6 +28,8 @@ private:
     string edition;
     int publicationYear;
     string category;
+    int TotalQuantity;
+    int currentQuantity;
     bool available{true};
     int borrowCount{0};
 
@@ -40,6 +42,8 @@ public:
          string edition,
          int publicationYear,
          string category = "General",
+         int TotalQuantity = 1,
+         int currentQuantity = 1,
          bool available = true,
          int borrowCount = 0);
 
@@ -52,7 +56,9 @@ public:
     const string getEdition() const { return edition; }
     const int getPublicationYear() const { return publicationYear; }
     const string getCategory() const { return category; }
-    bool isAvailable() const { return available; }
+    const int getTotalQuantity() const { return TotalQuantity; }
+    const int getCurrentQuantity() const { return currentQuantity; }
+    bool isAvailable() const { return currentQuantity > 0; }
     int getBorrowCount() const { return borrowCount; }
 
     void setTitle(const string &title) { this->title = title; }
@@ -61,6 +67,12 @@ public:
     void setEdition(const string &edition) { this->edition = edition; }
     void setPublicationYear(const int &publicationYear) { this->publicationYear = publicationYear; }
     void setCategory(const string &category) { this->category = category; }
+    void setTotalQuantity(const int &TotalQuantity) { this->TotalQuantity = TotalQuantity; }
+    void incrementCurrentQuantity() { this->currentQuantity++; }
+    void decrementCurrentQuantity() { this->currentQuantity--; }
+    bool isAllReturned() { return currentQuantity == TotalQuantity; }
+    
+    
     void setAvailable(bool available) { this->available = available; }
     void setBorrowCount(int bc) { borrowCount = bc; }
 
