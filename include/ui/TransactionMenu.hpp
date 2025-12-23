@@ -17,4 +17,6 @@ private:
     void addTransaction();
     void searchTransactions();
     void sortTransactions();
+    std::string readLine(const std::string &prompt) const;
+    void waitForEnter() const;
 };

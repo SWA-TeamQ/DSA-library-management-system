@@ -166,8 +166,7 @@ bool BookManager::updateBook(const Book& newBook)
     return true;
 }
 
-
-Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse)
+Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse) const
 {
     Array<Book *> sortedBooks = bookTable.all();
 
