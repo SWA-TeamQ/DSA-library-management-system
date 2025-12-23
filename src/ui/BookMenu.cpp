@@ -161,7 +161,7 @@ void BookMenu::sortBooks()
         break;
 
     case 3:
-        books = controller.sortBooksByPublicationYear(reverse);
+        books = controller.sortBooksByYear(reverse);
         break;
     case 4:
         books = controller.sortBooksByBorrowCount(reverse);
