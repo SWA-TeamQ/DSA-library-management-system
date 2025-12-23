@@ -53,10 +53,10 @@ public:
     Array<Book *> findBooksByTitle(const string &title) const;
     Array<Book *> findBooksByAuthor(const string &author) const;
     Array<Book *> findBooksByCategory(const string &category) const;
-    Array<Book *> sortBooksByTitle(const string &title, bool reverse = false);
-    Array<Book *> sortBooksByAuthor(const string &author, bool reverse = false);
-    Array<Book *> sortBooksByYear(const string &year, bool reverse = false);
-    Array<Book *> sortBooksByBorrowCount(const string &borrowCount, bool reverse = false);
+    Array<Book *> sortBooksByTitle(bool reverse = false);
+    Array<Book *> sortBooksByAuthor(bool reverse = false);
+    Array<Book *> sortBooksByYear(bool reverse = false);
+    Array<Book *> sortBooksByBorrowCount(bool reverse = false);
 
     bool updateBook(const Book &b);
     Array<Book *> listAllBooks() const;
