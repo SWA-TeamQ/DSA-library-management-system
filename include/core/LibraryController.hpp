@@ -53,23 +53,27 @@ public:
     Array<Book *> findBooksByTitle(const string &title) const;
     Array<Book *> findBooksByAuthor(const string &author) const;
     Array<Book *> findBooksByCategory(const string &category) const;
-    Array<Book *> sortBooksByTitle(const string &title, bool reverse = false);
-    Array<Book *> sortBooksByAuthor(const string &author, bool reverse = false);
-    Array<Book *> sortBooksByYear(const string &year, bool reverse = false);
-    Array<Book *> sortBooksByBorrowCount(const string &borrowCount, bool reverse = false);
+    Array<Book *> sortBooksByTitle(bool reverse = false);
+    Array<Book *> sortBooksByAuthor(bool reverse = false);
+    Array<Book *> sortBooksByYear(bool reverse = false);
+    Array<Book *> sortBooksByBorrowCount(bool reverse = false);
 
     bool updateBook(const Book &b);
     Array<Book *> listAllBooks() const;
-Z
+
     // Patron operations
     bool addPatron(const Patron &p);
-    bool removePatron(const string &patronID);
-    Patron *findPatron(const string &patronID) const;
+    bool removePatronById(const string &patronID);
+    bool removePatronByName(const string &patronName);
+    Patron *findPatronById(const string &patronID) const;
+    Patron *findPatronByName(const string &patronName) const;
+    Array<Patron *> findPatronsById(const string &patronID) const;
+    Array<Patron *> findPatronsByName(const string &patronName) const;
     Array<Patron *> sortPatronsByName(bool reverse = false);
     Array<Patron *> sortPatronsByMembershipDate(bool reverse = false);
     Array<Patron *> sortPatronsByBorrowCount(bool reverse = false);
     bool updatePatron(const Patron &p);
-    void listAllPatrons() const;
+    Array<Patron *> listAllPatrons() const;
 
     // Transaction operations
     bool addTransaction(const Transaction &t);

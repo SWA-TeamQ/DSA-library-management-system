@@ -10,7 +10,7 @@ bool LoanService::borrowBook(const string& patronID, const string& isbn) {
     string dueDate = "2023-01-15"; // TODO: calculate proper due date
     Transaction t(transactionID, isbn, patronID, borrowDate, dueDate, "", false);
     if (!transactionManager.addTransaction(t)) return false;
-    book->setAvailable(false);
+    book->isAvailable();
     book->incrementBorrowCount();
     patron->setBorrowCount(patron->getBorrowCount() + 1);
     return true;
@@ -32,7 +32,7 @@ bool LoanService::returnBook(const string& patronID, const string& isbn) {
     if (!trans) return false;
     trans->setReturnDate(getCurrentDate());
     trans->setReturned(true);
-    book->setAvailable(true);
+    book->isAvailable();
     patron->setBorrowCount(patron->getBorrowCount() - 1);
     return true;
 }
