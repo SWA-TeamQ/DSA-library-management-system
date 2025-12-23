@@ -1,13 +1,13 @@
 #include "models/Patron.hpp"
 #include <sstream>
 #include <iostream>
-#include <vector>
+#include "dsa/Array.hpp"
 
 using namespace std;
 
 string Patron::serialize() const
 {
-    return patronID + "," + name + "," + contact + "," + membershipDate + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
+    return patronID + "," + name + "," + contact + "," + membershipDate.serialize() + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
 }
 
 void Patron::deserialize(const string &line)
@@ -18,7 +18,8 @@ void Patron::deserialize(const string &line)
     getline(ss, patronID, ',');
     getline(ss, name, ',');
     getline(ss, contact, ',');
-    getline(ss, membershipDate, ',');
+    getline(ss, field, ',');
+    membershipDate.deserialize(field);
     // borrowed flag
     getline(ss, field, ',');
     borrowed = (field == "1");
@@ -36,22 +37,24 @@ void Patron::deserialize(const string &line)
 
 Array<string> Patron::getFields() const
 {
-    return {
-        "ID", 
-        "Name", 
-        "Contact", 
-        "Membership Date", 
-        "Borrowed", 
-        "Borrow Count"};
+    Array<string> fields;
+    fields.append("ID");
+    fields.append("Name");
+    fields.append("Contact");
+    fields.append("Membership Date");
+    fields.append("Borrowed");
+    fields.append("Borrow Count");
+    return fields;
 }
 
-    Array<string> Patron::getValues() const
+Array<string> Patron::getValues() const
 {
-    return {
-        patronID, 
-        name, 
-        contact, 
-        membershipDate, 
-        borrowed ? "borrowed" : "available", 
-        to_string(borrowCount)};
+    Array<string> values;
+    values.append(patronID);
+    values.append(name);
+    values.append(contact);
+    values.append(membershipDate.serialize());
+    values.append(borrowed ? "borrowed" : "available");
+    values.append(to_string(borrowCount));
+    return values;
 }

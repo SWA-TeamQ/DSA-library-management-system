@@ -1,4 +1,5 @@
 #include "models/Transaction.hpp"
+#include "utils/utils.hpp"
 #include <sstream>
 
 using namespace std;
@@ -27,17 +28,6 @@ double Transaction::calculateFine(double dailyRate) const
     return 5.0; // fixed fine
 }
 
-void Transaction::displayDetails() const
-{
-    cout << "Transaction ID: " << transactionID
-         << " | Book ID: " << bookID
-         << " | Patron ID: " << patronID
-         << " | Borrow Date: " << borrowDate
-         << " | Due Date: " << dueDate
-         << " | Return Date: " << returnDate
-         << " | Returned: " << (returned ? "Yes" : "No") << '\n';
-}
-
 string Transaction::serialize() const
 {
     return transactionID + "," + bookID + "," + patronID + "," + borrowDate + "," + dueDate + "," + returnDate + "," + (returned ? "1" : "0");
@@ -60,10 +50,26 @@ void Transaction::deserialize(const string &line)
 
 Array<string> Transaction::getFields() const
 {
-    return {"Transaction ID", "Book ID", "Patron ID", "Borrow Date", "Due Date", "Return Date", "Returned"};
+    Array<string> fields;
+    fields.append("Transaction ID");
+    fields.append("Book ID");
+    fields.append("Patron ID");
+    fields.append("Borrow Date");
+    fields.append("Due Date");
+    fields.append("Return Date");
+    fields.append("Returned");
+    return fields;
 }
 
 Array<string> Transaction::getValues() const
 {
-    return {transactionID, bookID, patronID, borrowDate, dueDate, returnDate, returned ? "Yes" : "No"};
+    Array<string> values;
+    values.append(transactionID);
+    values.append(bookID);
+    values.append(patronID);
+    values.append(borrowDate);
+    values.append(dueDate);
+    values.append(returnDate);
+    values.append(returned ? "Yes" : "No");
+    return values;
 }

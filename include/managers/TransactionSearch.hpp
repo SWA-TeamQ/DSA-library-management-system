@@ -24,9 +24,7 @@ public:
         patronIdIndex.clear();
     }
 
-    // Build indices from any container of Transactions (e.g., vector, HashTable)
-    template <typename Container>
-    void buildIndices(const Container &transactions)
+    void buildIndices(const HashTable<string, Transaction> &transactions)
     {
         clear();
         for (const auto &entry : transactions)

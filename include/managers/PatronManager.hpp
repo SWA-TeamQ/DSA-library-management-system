@@ -12,7 +12,7 @@ using namespace std;
 class PatronManager
 {
 private:
-    DataStore<string, Patron> patronStore;
+    DataStore<Patron> patronStore;
     HashTable<string, Patron> patronTable; // ID -> Patron
     PatronSearchMap searchMap;
 

@@ -51,7 +51,6 @@ void print(const Transaction &transaction){
     cout << endl;
 }
 
-
 void printAll(const Array<Book> books){
     Book temp = Book();
 

@@ -5,8 +5,8 @@
 
 using namespace std;
 
-enum TransactionSearchKey { ID, BOOK_ID, PATRON_ID };
-enum TransactionSortKey { BORROW_DATE, DUE_DATE, RETURN_DATE };
+enum class TransactionSearchKey { ID, BOOK_ID, PATRON_ID };
+enum class TransactionSortKey { BORROW_DATE, DUE_DATE, RETURN_DATE };
 
 class Transaction
 {

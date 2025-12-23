@@ -47,7 +47,11 @@ Patron *LibraryController::findPatron(const string &patronID) const {
     return patronsManager.findPatron(PatronSearchKey::ID, patronID);
 }
 
-void LibraryController::listAllPatrons() const { patronsManager.displayAll(); }
+void LibraryController::listAllPatrons() const {
+    for (auto *p : patronsManager.sortPatrons(PatronSortKey::NAME)) {
+        cout << p->getID() << " | " << p->getName() << " | " << p->getMembershipDate() << "\n";
+    }
+}
 
 Array<Patron *> LibraryController::sortPatrons(PatronSortKey key, bool reverse) { 
     return patronsManager.sortPatrons(key, reverse); 

@@ -60,26 +60,28 @@ void Book::deserialize(const string &line)
 
 Array<string> Book::getFields() const
 {
-  return {
-    "Title", 
-    "Author", 
-    "ISBN", 
-    "Edition", 
-    "Publication Year", 
-    "Category", 
-    "Available", 
-    "Borrow Count"};
+  Array<string> fields;
+  fields.append("Title");
+  fields.append("Author");
+  fields.append("ISBN");
+  fields.append("Edition");
+  fields.append("Publication Year");
+  fields.append("Category");
+  fields.append("Available");
+  fields.append("Borrow Count");
+  return fields;
 }
 
 Array<string> Book::getValues() const
 {
-  return {
-    title, 
-    author, 
-    isbn, 
-    edition, 
-    to_string(publicationYear), 
-    category, 
-    available ? "available" : "not available", 
-    to_string(borrowCount)};
+  Array<string> values;
+  values.append(title);
+  values.append(author);
+  values.append(isbn);
+  values.append(edition);
+  values.append(to_string(publicationYear));
+  values.append(category);
+  values.append(available ? "available" : "not available");
+  values.append(to_string(borrowCount));
+  return values;
 }

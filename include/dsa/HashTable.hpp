@@ -4,11 +4,11 @@
 #include <unordered_map>
 #include "dsa/Array.hpp"
 
-template <typename U, typename T>
+template <typename T>
 class HashTable
 {
 private:
-    unordered_map<U, T> table;
+    unordered_map<string, T> table;
 
 public:
     HashTable() = default;
@@ -24,18 +24,18 @@ public:
         return table.size();
     }
 
-    bool insert(const U &key, const T &item)
+    bool insert(const string &key, const T &item)
     {
         auto [it, inserted] = table.emplace(key, item);
         return inserted;
     }
 
-    T &operator[](const U &key)
+    T &operator[](const string &key)
     {
         return table[key];
     }
 
-    const T &operator[](const U &key) const
+    const T &operator[](const string &key) const
     {
         return table.at(key);
     }
@@ -45,7 +45,8 @@ public:
     auto begin() const { return table.begin(); }
     auto end() const { return table.end(); }
 
-    T *find(const U &key) const
+    // Find returns pointer to value; const version returns non-const for compatibility
+    T *find(const string &key)
     {
         auto it = table.find(key);
         if (it != table.end())
@@ -53,7 +54,19 @@ public:
         return nullptr;
     }
 
-    bool remove(const U &key)
+    T *operator[](const string ){
+
+    }
+
+    T *find(const string &key) const
+    {
+        auto it = table.find(key);
+        if (it != table.end())
+            return &it->second;
+        return nullptr;
+    }
+
+    bool remove(const string &key)
     {
         auto removed = table.erase(key);
         return removed > 0;
@@ -64,12 +77,21 @@ public:
         table.clear();
     }
 
-    Array<T *> all() const
+    Array<T *> all()
     {
         Array<T *> result = Array<T *>(table.size());
         
         for (auto &[key, value] : table)
-            result.push_back(&value);
+            result.append(&value);
+        return result;
+    }
+
+    Array<T *> all() const
+    {
+        Array<T *> result = Array<T *>(static_cast<int>(table.size()));
+        for (auto it = table.begin(); it != table.end(); ++it) {
+            result.append(const_cast<T*>(&it->second));
+        }
         return result;
     }
 };

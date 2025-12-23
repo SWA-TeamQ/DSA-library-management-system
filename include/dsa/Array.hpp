@@ -1,18 +1,21 @@
+#pragma once
 #include <initializer_list>
 #include <stdexcept>
 #include <utility>
 #include <iterator>
 #include <algorithm>
 
+using namespace std;
+
 template <typename T>
 class Array{
 public:
-    int capacity, intialCapacity, length;
+    int capacity, initialCapacity, length;
     T *items;
 
     Array(int capacity = 1000){
         this->length = 0;
-        this->intialCapacity = capacity;
+        this->initialCapacity = capacity;
         this->capacity = capacity;
         this->items = new T[capacity];
     };

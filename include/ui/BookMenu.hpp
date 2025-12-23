@@ -2,14 +2,12 @@
 
 #include <string>
 #include "dsa/Array.hpp"
-
 #include "core/LibraryController.hpp"
 
 class BookMenu
 {
 public:
     explicit BookMenu(LibraryController &controller);
-
     void show();
 
 private:
