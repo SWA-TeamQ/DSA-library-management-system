@@ -111,7 +111,6 @@ void PatronMenu::updatePatron()
 {
 	printHeader("Update Patron");
 	controller.updatePatron(Patron());
-	
 	waitForEnter();
 }
 
