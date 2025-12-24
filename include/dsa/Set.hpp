@@ -19,29 +19,25 @@ public:
     static constexpr std::size_t bucketCount = 201241;
     Array<T>* buckets;
 
-    Set() {
+    unordered_set() {
         buckets = new Array<T>[bucketCount];
     }
 
-    ~Set() {
+    ~unordered_set() {
         delete[] buckets;
     }
 
     void insert(const T& key) {
         if (contains(key)) return; 
-
         std::size_t index = getIndex(key);
         buckets[index].append(key);
     }
 
     bool contains(const T& key) const {
         std::size_t index = getIndex(key);
-        Array<T>& bucket = buckets[index];
-
+        const Array<T>& bucket = buckets[index];
         for (std::size_t i = 0; i < bucket.size(); i++) {
-            if (bucket[i] == key) {
-                return true;
-            }
+            if (bucket[i] == key) return true;
         }
         return false;
     }
@@ -59,6 +55,16 @@ public:
         return false;
     }
 
+    bool isEmpty() const{
+       for(int i=0;i<bucketCount;i++){
+            Array<T>& bucket =buckets[i];
+            if(!bucket.empty()){
+                return false;
+            }
+        }
+        return true; 
+    }
+
     void clear(){
         for(int i=0;i<bucketCount;i++){
             Array<T>& bucket =buckets[i];
@@ -66,8 +72,18 @@ public:
         }
     }
 
+    Array<T> getAllItems() const {
+        Array<T> all;
+        for (std::size_t i = 0; i < bucketCount; i++) {
+            for (std::size_t j = 0; j < buckets[i].size(); j++) {
+                all.append(buckets[i][j]);
+            }
+        }
+        return all;
+    }
+
 private:
-    std::size_t getIndex(const string& key) const {
+    std::size_t getIndex(const T& key) const {
         return hash(key) % bucketCount;
     }
 };

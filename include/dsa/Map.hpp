@@ -26,10 +26,14 @@ template <typename T>
 class unordered_map{
 public:
     static constexpr std::size_t bucketCount = 201241; // prime number
-    Array<Entry<T>> buckets[bucketCount];
+    Array<Entry<T>>* buckets;
 
-    Map() = default;
-    ~Map() = default;
+    unordered_map(){
+        buckets = new Array<Entry<T>>[bucketCount];
+    }
+    ~unordered_map(){
+        delete[] buckets;
+    }
 
     void insert(const string& key, const T& value) {
         std::size_t index = getIndex(key);
@@ -70,6 +74,16 @@ public:
         return false;
     }
 
+    Array<Entry<T>> getAllEntries() const {
+        Array<Entry<T>> all;
+        for (std::size_t i = 0; i < bucketCount; i++) {
+            for (std::size_t j = 0; j < buckets[i].size(); j++) {
+                all.append(buckets[i][j]);
+            }
+        }
+        return all;
+    }
+
     T& operator[](const string& key) {
         T* existing = find(key);
         if (existing) return *existing;
@@ -100,6 +114,16 @@ public:
             }
         }
         throw std::out_of_range("Map::at() : key not found in const map");
+    }
+
+    bool isEmpty() const{
+        for(int i=0;i<bucketCount;i++){
+            Array<Entry<T>>& bucket = buckets[i];
+            if(!bucket.empty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     void clear(){
