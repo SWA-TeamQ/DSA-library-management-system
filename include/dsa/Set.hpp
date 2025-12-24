@@ -31,7 +31,7 @@ public:
         if (contains(key)) return; 
 
         std::size_t index = getIndex(key);
-        buckets[index].push_back(key);
+        buckets[index].append(key);
     }
 
     bool contains(const T& key) const {

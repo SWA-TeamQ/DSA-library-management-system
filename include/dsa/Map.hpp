@@ -41,7 +41,7 @@ public:
                 return;
             }
         }
-        bucket.push_back({key, value});
+        bucket.append({key, value});
     }
 
     T* find(const string& key){
