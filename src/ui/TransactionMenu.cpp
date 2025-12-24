@@ -61,7 +61,11 @@ void TransactionMenu::show()
 			break;
 		}
 		case 3:
-			controller.listAllTransactions();
+		{
+			Array<Transaction *> txs = controller.listAllTransactions();
+			tablePrint(txs);
+			break;
+		}
 			waitForEnter();
 			break;
 		case 4:

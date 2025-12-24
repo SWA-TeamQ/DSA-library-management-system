@@ -66,9 +66,9 @@ public:
     void setPublicationYear(const int &publicationYear) { this->publicationYear = publicationYear; }
     void setCategory(const string &category) { this->category = category; }
     void setTotalQuantity(const int &TotalQuantity) { this->TotalQuantity = TotalQuantity; }
-    void incrementCurrentQuantity() { this->currentQuantity++; }
-    void decrementCurrentQuantity() { this->currentQuantity--; }
-    bool isAllReturned() { return currentQuantity == TotalQuantity; }
+    void incrementCurrentQuantity() { if (currentQuantity < TotalQuantity) ++currentQuantity; }
+    void decrementCurrentQuantity() { if (currentQuantity > 0) --currentQuantity; }
+    bool isAllReturned() const { return currentQuantity == TotalQuantity; }
     void setBorrowCount(int bc) { borrowCount = bc; }
 
     void incrementBorrowCount() { ++borrowCount; }
