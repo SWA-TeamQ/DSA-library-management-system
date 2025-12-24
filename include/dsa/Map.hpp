@@ -102,6 +102,13 @@ public:
         throw std::out_of_range("Map::at() : key not found in const map");
     }
 
+    void clear(){
+        for(int i=0;i<bucketCount;i++){
+            Array<Entry<T>>& bucket = buckets[i];
+            bucket.clear();
+        }
+    }
+
 private:
     std::size_t getIndex(const string& key) const {
         return hash(key) % bucketCount;

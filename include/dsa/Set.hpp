@@ -59,6 +59,13 @@ public:
         return false;
     }
 
+    void clear(){
+        for(int i=0;i<bucketCount;i++){
+            Array<T>& bucket =buckets[i];
+            bucket.clear();
+        }
+    }
+
 private:
     std::size_t getIndex(const string& key) const {
         return hash(key) % bucketCount;
