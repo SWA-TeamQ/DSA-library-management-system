@@ -23,7 +23,7 @@ struct Entry{
 };
 
 template <typename T>
-class Map{
+class unordered_map{
 public:
     static constexpr std::size_t bucketCount = 201241; // prime number
     Array<Entry<T>> buckets[bucketCount];
