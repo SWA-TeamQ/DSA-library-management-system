@@ -104,7 +104,7 @@ void printHeader(const string &title)
  * tablePrint (overloaded) - to print the list of objects in a table view
  */
 
-void print(const Book &book)
+void print( Book &book)
 {
     const auto fields = book.getFields();
     const auto values = book.getValues();
@@ -116,7 +116,7 @@ void print(const Book &book)
     cout << endl;
 }
 
-void print(const Patron &patron)
+void print( Patron &patron)
 {
     const auto fields = patron.getFields();
     const auto values = patron.getValues();
@@ -128,7 +128,7 @@ void print(const Patron &patron)
     cout << endl;
 }
 
-void print(const Transaction &transaction)
+void print( Transaction &transaction)
 {
     const auto fields = transaction.getFields();
     const auto values = transaction.getValues();
@@ -140,7 +140,7 @@ void print(const Transaction &transaction)
     cout << endl;
 }
 
-void tablePrint(const Array<Book> &books)
+void tablePrint( Array<Book> &books)
 {
     Book temp = Book();
     // table header
@@ -148,13 +148,13 @@ void tablePrint(const Array<Book> &books)
     Row(fields, true); // true for the top border
 
     // table rows
-    for (const auto &book : books)
+    for ( auto &book : books)
     {
         Row(book.getValues());
     }
 }
 
-void tablePrint(const Array<Book *> &books)
+void tablePrint( Array<Book *> &books)
 {
     Book temp = Book();
     // table header
@@ -168,7 +168,7 @@ void tablePrint(const Array<Book *> &books)
     }
 }
 
-void tablePrint(const Array<Patron> &patrons)
+void tablePrint( Array<Patron> &patrons)
 {
     Patron temp = Patron();
 
@@ -177,13 +177,13 @@ void tablePrint(const Array<Patron> &patrons)
     Row(fields, true); // true for the top border
 
     // table rows
-    for (const auto &book : patrons)
+    for ( auto &book : patrons)
     {
         Row(book.getValues());
     }
 }
 
-void tablePrint(const Array<Patron *> &patrons)
+void tablePrint( Array<Patron *> &patrons)
 {
     Patron temp = Patron();
 
@@ -192,13 +192,13 @@ void tablePrint(const Array<Patron *> &patrons)
     Row(fields, true); // true for the top border
 
     // table rows
-    for (const auto &patron : patrons)
+    for ( auto &patron : patrons)
     {
         Row((*patron).getValues());
     }
 }
 
-void tablePrint(const Array<Transaction> &transactions)
+void tablePrint( Array<Transaction> &transactions)
 {
     Transaction temp = Transaction();
 
@@ -207,13 +207,13 @@ void tablePrint(const Array<Transaction> &transactions)
     Row(fields, true); // true for the top border
 
     // table rows
-    for (const auto &transaction : transactions)
+    for ( auto &transaction : transactions)
     {
         Row(transaction.getValues());
     }
 }
 
-void tablePrint(const Array<Transaction *> &transactions)
+void tablePrint( Array<Transaction *> &transactions)
 {
     Transaction temp = Transaction();
 
@@ -222,7 +222,7 @@ void tablePrint(const Array<Transaction *> &transactions)
     Row(fields, true); // true for the top border
 
     // table rows
-    for (const auto &transaction : transactions)
+    for ( auto &transaction : transactions)
     {
         Row((*transaction).getValues());
     }

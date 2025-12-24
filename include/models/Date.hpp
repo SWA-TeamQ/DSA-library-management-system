@@ -18,13 +18,13 @@ public:
         this->year = year;
     }
 
-    int getDay() const {
+    int getDay() {
         return day; 
     }
-    int getMonth() const { 
+    int getMonth() { 
         return month; 
     }
-    int getYear() const { 
+    int getYear() { 
         return year; 
     }
 
@@ -52,7 +52,7 @@ public:
         this->year = year;
     }
 
-    void print() const;
-    string serialize() const;
+    void print();
+    string serialize();
     void deserialize(const string &line);
 };

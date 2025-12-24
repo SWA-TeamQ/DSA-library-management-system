@@ -2,7 +2,7 @@
 
 // --- Menus ---
 
-void ConsoleInterface::printMainMenu() const
+void ConsoleInterface::printMainMenu() 
 {
     printHeader("Main Menu");
     cout << "|                                                            |\n";

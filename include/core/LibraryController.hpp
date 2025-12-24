@@ -44,42 +44,42 @@ public:
     }
 
     // Book operations
-    bool addBook(const Book &b);
+    bool addBook( Book &b);
     bool removeBookById(const string &isbn);
     bool removeBookByTitle(const string &title);
     bool removeBookByAuthor(const string &author);
     bool removeBookByCategory(const string &category);
-    Book *findBookById(const string &isbn) const;
-    Array<Book *> findBooksByTitle(const string &title) const;
-    Array<Book *> findBooksByAuthor(const string &author) const;
-    Array<Book *> findBooksByCategory(const string &category) const;
+    Book *findBookById(const string &isbn);
+    Array<Book *> findBooksByTitle(const string &title);
+    Array<Book *> findBooksByAuthor(const string &author);
+    Array<Book *> findBooksByCategory(const string &category);
     Array<Book *> sortBooksByTitle(bool reverse = false);
     Array<Book *> sortBooksByAuthor(bool reverse = false);
     Array<Book *> sortBooksByYear(bool reverse = false);
     Array<Book *> sortBooksByBorrowCount(bool reverse = false);
 
     bool updateBook(const Book &b);
-    Array<Book *> listAllBooks() const;
+    Array<Book *> listAllBooks();
 
     // Patron operations
     bool addPatron(const Patron &p);
     bool removePatronById(const string &patronID);
     bool removePatronByName(const string &patronName);
-    Patron *findPatronById(const string &patronID) const;
-    Patron *findPatronByName(const string &patronName) const;
-    Array<Patron *> findPatronsById(const string &patronID) const;
-    Array<Patron *> findPatronsByName(const string &patronName) const;
+    Patron *findPatronById(const string &patronID);
+    Patron *findPatronByName(const string &patronName);
+    Array<Patron *> findPatronsById(const string &patronID);
+    Array<Patron *> findPatronsByName(const string &patronName);
     Array<Patron *> sortPatronsByName(bool reverse = false);
     Array<Patron *> sortPatronsByMembershipDate(bool reverse = false);
     Array<Patron *> sortPatronsByBorrowCount(bool reverse = false);
     bool updatePatron(const Patron &p);
-    Array<Patron *> listAllPatrons() const;
+    Array<Patron *> listAllPatrons() ;
 
     // Transaction operations
     bool addTransaction(const Transaction &t);
-    Array<Transaction *> listAllTransactions() const;
-    void listTransactionsForPatron(const string &patronID) const;
-    void listOverdueForPatron(const string &patronID) const;
+    Array<Transaction *> listAllTransactions() ;
+    void listTransactionsForPatron(const string &patronID) ;
+    void listOverdueForPatron(const string &patronID);
     Array<Transaction *> sortTransactionsByReturnDate(bool reverse = false);
 
     // Borrow/Return operations

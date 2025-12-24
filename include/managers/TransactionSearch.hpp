@@ -65,7 +65,7 @@ public:
     }
 
     // Search transactions by bookId
-    Array<string> findByBookId(const string &bookId) const
+    Array<string> findByBookId(const string &bookId)
     {
         auto it = bookIdIndex.find(bookId);
         if (it != bookIdIndex.end())
@@ -82,7 +82,7 @@ public:
     }
 
     // Search transactions by patronId
-    Array<string> findByPatronId(const string &patronId) const
+    Array<string> findByPatronId(const string &patronId)
     {
         auto it = patronIdIndex.find(patronId);
         if (it != patronIdIndex.end())

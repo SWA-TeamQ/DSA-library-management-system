@@ -17,7 +17,7 @@ public:
 
     // any type of map-like object
     template <typename MapType>
-    bool saveData(const MapType &dataMap) const
+    bool saveData(const MapType &dataMap) 
     {
         ofstream file(filename, ios::out | ios::trunc);
         if (!file.is_open()) return false;
@@ -33,7 +33,7 @@ public:
         return true;
     }
 
-    bool addData(const T &item) const
+    bool addData(const T &item)
     {
         ofstream file(filename, ios::app);
         if (!file.is_open()) return false;

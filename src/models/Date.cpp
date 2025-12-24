@@ -5,7 +5,7 @@
 using namespace std;
 
 
-string Date::serialize() const {
+string Date::serialize()  {
     return to_string(year) + "-" + to_string(month) + "-" + to_string(day);
 }
 

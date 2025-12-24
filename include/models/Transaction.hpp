@@ -40,15 +40,15 @@ public:
     }
 
     // for generic lookup
-    const string &getKey() const { return transactionID; }
+    const string &getKey()  { return transactionID; }
 
-    const string &getID() const { return transactionID; }
-    const string &getBookID() const { return bookID; }
-    const string &getPatronID() const { return patronID; }
-    const string &getBorrowDate() const { return borrowDate; }
-    const string &getDueDate() const { return dueDate; }
-    const string &getReturnDate() const { return returnDate; }
-    bool isReturned() const { return returned; }
+    const string &getID()  { return transactionID; }
+    const string &getBookID()  { return bookID; }
+    const string &getPatronID()  { return patronID; }
+    const string &getBorrowDate()  { return borrowDate; }
+    const string &getDueDate()  { return dueDate; }
+    const string &getReturnDate()  { return returnDate; }
+    bool isReturned()  { return returned; }
 
     void setId(const string &id) { transactionID = id; }
     void setBookID(const string &id) { bookID = id; }
@@ -58,13 +58,13 @@ public:
     void setReturnDate(const string &date) { returnDate = date; }
     void setReturned(bool r) { returned = r; }
 
-    bool isOverdue() const;
+    bool isOverdue() ;
     void markReturned();
-    double calculateFine(double dailyRate = 0.50) const;
+    double calculateFine(double dailyRate = 0.50) ;
 
-    string serialize() const;
+    string serialize() ;
     void deserialize(const string &line);
 
-    Array<string> getFields() const;
-    Array<string> getValues() const;
+    Array<string> getFields() ;
+    Array<string> getValues() ;
 };

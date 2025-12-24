@@ -48,11 +48,11 @@ public:
         searchMap.buildIndices(patronTable);
     }
 
-    bool addPatron(const Patron &p);
+    bool addPatron( Patron &p);
     bool removePatron(const PatronSearchKey key, const string &value);
-    Patron *findPatron(const PatronSearchKey key, const string &value) const;
-    Array<Patron *> findPatrons(const PatronSearchKey key, const string &value) const;
+    Patron *findPatron(const PatronSearchKey key, const string &value);
+    Array<Patron *> findPatrons(const PatronSearchKey key, const string &value);
     Array<Patron *> sortPatrons(const PatronSortKey key, bool reverse = false);
-    bool updatePatron(const Patron &p);
-    Array<Patron *> getAllPatrons() const;
+    bool updatePatron( Patron &p);
+    Array<Patron *> getAllPatrons();
 };

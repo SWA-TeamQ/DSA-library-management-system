@@ -51,7 +51,7 @@ public:
     }
 
     // Search patrons by name
-    Array<string> findByName(const string &name) const
+    Array<string> findByName(const string &name)
     {
         auto it = nameIndex.find(name);
         if (it != nameIndex.end())

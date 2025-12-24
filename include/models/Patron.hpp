@@ -35,14 +35,14 @@ public:
     }
 
     // for generic lookup
-    const string getKey() const { return patronID; }
+    const string getKey() { return patronID; }
 
-    const string getID() const { return patronID; }
-    const string getName() const { return name; }
-    const string getContact() const { return contact; }
-    const string getMembershipDate() const { return membershipDate; }
-    int getBorrowCount() const { return borrowCount; }
-    bool isBorrowed() const { return borrowed; }
+    const string getID() { return patronID; }
+    const string getName() { return name; }
+    const string getContact() { return contact; }
+    const string getMembershipDate() { return membershipDate; }
+    int getBorrowCount() { return borrowCount; }
+    bool isBorrowed() { return borrowed; }
 
     void setID(const string &id) { patronID = id; }
     void setName(const string &n) { name = n; }
@@ -53,9 +53,9 @@ public:
 
     void incrementBorrowCount() { ++borrowCount; }
 
-    string serialize() const;
+    string serialize();
     void deserialize(const string &line);
     
-    Array<string> getFields() const;
-    Array<string> getValues() const;
+    Array<string> getFields();
+    Array<string> getValues();
 };

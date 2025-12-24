@@ -16,7 +16,7 @@ private:
     bool running{true};
 
     // --- Menus ---
-    void printMainMenu() const;
+    void printMainMenu() ;
 
     // --- Category Delegation ---
     void handleBookMenu();

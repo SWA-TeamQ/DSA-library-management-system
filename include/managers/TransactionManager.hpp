@@ -48,11 +48,11 @@ public:
         searchMap.buildIndices(transactionTable);
     }
 
-    bool addTransaction(const Transaction &t);
+    bool addTransaction( Transaction &t);
     bool removeTransaction(const TransactionSearchKey key, const string &value);
-    Transaction *findTransaction(const TransactionSearchKey key, const string &value) const;
-    Array<Transaction *> findTransactions(const TransactionSearchKey key, const string &value) const;
+    Transaction *findTransaction(const TransactionSearchKey key, const string &value);
+    Array<Transaction *> findTransactions(const TransactionSearchKey key, const string &value);
     Array<Transaction *> sortTransactions(const TransactionSortKey key, bool reverse = false);
 
-    Array<Transaction *> getAllTransactions() const;
+    Array<Transaction *> getAllTransactions();
 };

@@ -1,4 +1,4 @@
-#include "utils/utils.hpp"
+#include "include/utils/utils.hpp"
 
 string getCurrentDate() {
     time_t t = time(nullptr);
@@ -52,13 +52,13 @@ int daysBetween(const string &from, const string &to)
 }
 
 
-string trim(const string& s)
+string trim(string& s)
 {
-    size_t start = 0;
+    std::size_t start = 0;
     while (start < s.size() && isspace(s[start]))
         ++start;
 
-    size_t end = s.size();
+    std::size_t end = s.size();
     while (end > start && isspace(s[end - 1]))
         --end;
 
