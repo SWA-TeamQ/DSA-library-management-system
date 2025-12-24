@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <Array.hpp>
+#include <stdexcept>
 
 using std::string;
 
@@ -75,6 +76,30 @@ public:
 
         insert(key, T());
         return *find(key);
+    }
+
+    T& at(const string& key) {
+        T* result = find(key);
+
+        if (result == nullptr) {
+        throw std::out_of_range("Map::at() : key not found in map");
+        }
+
+        return *result;
+    }
+
+    //I added this function because you have a read-only function in the Array.hpp
+
+    const T& at(const string& key) const {
+        std::size_t index = getIndex(key);
+        const Array<Entry<T>>& bucket = buckets[index];
+    
+        for(std::size_t i = 0; i < bucket.size(); i++){
+            if (bucket[i].key == key){
+                return bucket[i].value;
+            }
+        }
+        throw std::out_of_range("Map::at() : key not found in const map");
     }
 
 private:
