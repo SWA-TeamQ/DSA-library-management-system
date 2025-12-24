@@ -1,3 +1,6 @@
+#pragma once
+#ifndef UNORDERED_MAP_HPP
+#define UNORDERED_MAP_HPP
 #include <iostream>
 #include <string>
 #include <Array.hpp>
@@ -53,7 +56,10 @@ public:
                 bIdx++;
                 eIdx = 0;
             }
-        }
+        public:
+            Iterator(const unordered_map* m, size_t b, size_t e) : mapPtr(m), bIdx(b), eIdx(e){
+                if(bIdx < mapPtr->bucketCount && (mapPtr->buckets[bIdx].empty())){
+                    advance();
 
     public:
         Iterator(const unordered_map *m, , size_t b, size_t e) : mapPtr(m), bIdx(b), eIdx(e)
@@ -78,15 +84,9 @@ public:
             return *this;
         }
 
-        const Entry<T> &operator*() const
-        {
-            return mapPtr->buckets[bIdx][eIdx];
-        }
-
-        const Entry<T> *operator->() const
-        {
-            return &(mapPtr->buckets[bIdx][eIdx])
-        }
+            const Entry<T>* operator->() const{
+                return &(mapPtr->buckets[bIdx][eIdx]);
+            }
     };
 
     Iterator begin() const
@@ -131,8 +131,7 @@ public:
         return nullptr;
     }
 
-    bool remove(const string &key)
-    {
+    bool erase(const string& key) {
         std::size_t index = getIndex(key);
         Array<Entry<T>> &bucket = buckets[index];
 
@@ -227,3 +226,4 @@ private:
         return hash(key) % bucketCount;
     }
 };
+#endif
