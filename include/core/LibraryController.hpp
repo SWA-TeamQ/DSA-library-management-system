@@ -58,11 +58,11 @@ public:
     Array<Book *> sortBooksByYear(bool reverse = false);
     Array<Book *> sortBooksByBorrowCount(bool reverse = false);
 
-    bool updateBook(const Book &b);
+    bool updateBook( Book &b);
     Array<Book *> listAllBooks();
 
     // Patron operations
-    bool addPatron(const Patron &p);
+    bool addPatron( Patron &p);
     bool removePatronById(const string &patronID);
     bool removePatronByName(const string &patronName);
     Patron *findPatronById(const string &patronID);
@@ -72,11 +72,11 @@ public:
     Array<Patron *> sortPatronsByName(bool reverse = false);
     Array<Patron *> sortPatronsByMembershipDate(bool reverse = false);
     Array<Patron *> sortPatronsByBorrowCount(bool reverse = false);
-    bool updatePatron(const Patron &p);
+    bool updatePatron( Patron &p);
     Array<Patron *> listAllPatrons() ;
 
     // Transaction operations
-    bool addTransaction(const Transaction &t);
+    bool addTransaction( Transaction &t);
     Array<Transaction *> listAllTransactions() ;
     void listTransactionsForPatron(const string &patronID) ;
     void listOverdueForPatron(const string &patronID);

@@ -40,14 +40,14 @@ public:
     }
 
     // for generic lookup
-    const string &getKey()  { return transactionID; }
+    const string& getKey() const { return transactionID; }
 
-    const string &getID()  { return transactionID; }
-    const string &getBookID()  { return bookID; }
-    const string &getPatronID()  { return patronID; }
-    const string &getBorrowDate()  { return borrowDate; }
-    const string &getDueDate()  { return dueDate; }
-    const string &getReturnDate()  { return returnDate; }
+    string &getID()  { return transactionID; }
+    const string& getBookID() const { return bookID; }
+    const string& getPatronID() const { return patronID; }
+    string &getBorrowDate()  { return borrowDate; }
+    string &getDueDate()  { return dueDate; }
+    string &getReturnDate()  { return returnDate; }
     bool isReturned()  { return returned; }
 
     void setId(const string &id) { transactionID = id; }
@@ -62,7 +62,7 @@ public:
     void markReturned();
     double calculateFine(double dailyRate = 0.50) ;
 
-    string serialize() ;
+    string serialize() const ;
     void deserialize(const string &line);
 
     Array<string> getFields() ;

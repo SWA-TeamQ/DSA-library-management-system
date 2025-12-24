@@ -5,7 +5,7 @@
 
 using namespace std;
 
-string Patron::serialize() 
+string Patron::serialize() const 
 {
     return patronID + "," + name + "," + contact + "," + membershipDate + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
 }

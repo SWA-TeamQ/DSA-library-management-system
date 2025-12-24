@@ -46,17 +46,15 @@ public:
          int borrowCount = 0);
 
     // for generic lookup
-    const string getKey() { return isbn; }
-
-    const string getTitle() { return title; }
-    const string getAuthor() { return author; }
-    const string getISBN() { return isbn; }
+    const string& getKey() const { return isbn; }
+    const string& getTitle() const { return title; }
+    const string& getAuthor() const { return author; }
     const string getEdition() { return edition; }
-    const int getPublicationYear() { return publicationYear; }
-    const string getCategory()  { return category; }
-    const int getTotalQuantity()  { return TotalQuantity; }
-    const int getCurrentQuantity()  { return currentQuantity; }
-    const bool isAvailable() {return currentQuantity > 0;}
+    const int getPublicationYear() const { return publicationYear; }
+    const string& getCategory() const { return category; }
+    int getTotalQuantity() const { return TotalQuantity; }
+    int getCurrentQuantity() const { return currentQuantity; }
+    bool isAvailable() const { return currentQuantity > 0; }
     int getBorrowCount()  { return borrowCount; }
 
     void setTitle(const string &title) { this->title = title; }
@@ -73,7 +71,7 @@ public:
 
     void incrementBorrowCount() { ++borrowCount; }
 
-    string serialize();
+    string serialize() const;
     void deserialize(const string &line);
 
     Array<string> getFields();

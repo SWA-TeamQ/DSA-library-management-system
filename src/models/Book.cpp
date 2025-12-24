@@ -26,7 +26,7 @@ Book::Book(string title,
   this->borrowCount = borrowCount;
 }
 
-string Book::serialize() 
+string Book::serialize() const 
 {
   return title + "," + author + "," + isbn + "," + edition + "," +
          to_string(publicationYear) + "," + category + "," + to_string(TotalQuantity) + "," + to_string(currentQuantity) + "," + "," + to_string(borrowCount);

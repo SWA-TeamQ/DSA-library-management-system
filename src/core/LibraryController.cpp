@@ -66,7 +66,7 @@ Array<Book *> LibraryController::sortBooksByBorrowCount(bool reverse)
     return bookManager.sortBooks(BookSortKey::BORROW_COUNT, reverse);
 }
 
-bool LibraryController::updateBook(const Book &b)
+bool LibraryController::updateBook( Book &b)
 {
     return bookManager.updateBook(b);
 }
@@ -76,7 +76,7 @@ Array<Book *> LibraryController::listAllBooks()
     return bookManager.getAllBooks();
 }
 
-bool LibraryController::addPatron(const Patron &p)
+bool LibraryController::addPatron( Patron &p) 
 {
     return patronManager.addPatron(p);
 }
@@ -91,7 +91,7 @@ bool LibraryController::removePatronByName(const string &patronName)
     return patronManager.removePatron(PatronSearchKey::NAME, patronName);
 }
 
-Patron *LibraryController::findPatronById(const string &patronID)
+Patron* LibraryController::findPatronById(const string &patronID)
 {
     return patronManager.findPatron(PatronSearchKey::ID, patronID);
 }
@@ -126,7 +126,7 @@ Array<Patron *> LibraryController::sortPatronsByBorrowCount(bool reverse)
     return patronManager.sortPatrons(PatronSortKey::BORROW_COUNT, reverse);
 }
 
-bool LibraryController::updatePatron(const Patron &p)
+bool LibraryController::updatePatron( Patron &p)
 {
     return patronManager.updatePatron(p);
 }
@@ -138,7 +138,7 @@ Array<Patron *> LibraryController::listAllPatrons()
 
 // Transaction operations
 
-bool LibraryController::addTransaction(const Transaction &t)
+bool LibraryController::addTransaction( Transaction &t)
 {
     return transactionManager.addTransaction(t);
 }

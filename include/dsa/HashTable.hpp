@@ -8,7 +8,7 @@ template <typename T>
 class HashTable
 {
 private:
-    unordered_map<string, T> table;
+    std::unordered_map<string, T> table;
 
 public:
     HashTable() = default;
