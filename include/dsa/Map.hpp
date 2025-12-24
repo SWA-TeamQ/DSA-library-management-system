@@ -34,6 +34,53 @@ public:
     ~unordered_map(){
         delete[] buckets;
     }
+    class Iterator{
+        private:
+            const unordered_map* mapPtr;
+            size_t bIdx;//current_bucket_index
+            size_t eIdx;//current_element_index_inside_bucket
+            //helper method
+            void advance(){
+                eIdx++;
+                while(bIdx < mapPtr->bucketCount && eIdx >= mapPtr->buckets[bIdx].size()){
+                    bIdx++;
+                    eIdx=0;
+                }
+            }
+        public:
+            Iterator(const unordered_map* m, , size_t b, size_t e) : mapPtr(m), bIdx(b), eIdx(e){
+                if(bIdx < mapPtr->bucketCount && (mapPtr->buckets[bIdx].empty())){
+                    advance();
+
+                    if(bIdx >= mapPtr->bucketCount ) eIdx=0;
+                }
+            }
+
+            bool operator!=(const Iterator& other) const{
+                return bIdx != other.bIdx || eIdx != other.eIdx;
+            }
+
+            Iterator& operator++(){
+                advance();
+                return *this;
+            }
+
+            const Entry<T>& operator*() const{
+                return mapPtr->buckets[bIdx][eIdx];
+            }
+
+            const Entry<T>* operator->() const{
+                return &(mapPtr->buckets[bIdx][eIdx])
+            }
+    };
+
+    Iterator begin() const{
+        return Iterator(this,0,0);
+    }
+
+    Iterator end() const{
+        return Iterator(this,bucketCount,0);
+    }
 
     void insert(const string& key, const T& value) {
         std::size_t index = getIndex(key);
@@ -125,6 +172,7 @@ public:
         }
         return true;
     }
+
 
     void clear(){
         for(int i=0;i<bucketCount;i++){

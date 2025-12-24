@@ -26,6 +26,51 @@ public:
     ~unordered_set() {
         delete[] buckets;
     }
+class Iterator {
+    private:
+        const unordered_set* setPtr;
+        size_t bIdx;
+        size_t eIdx;
+
+        void advance() {
+            eIdx++;
+            while (bIdx < setPtr->bucketCount && eIdx >= setPtr->buckets[bIdx].size()) {
+                bIdx++;
+                eIdx = 0;
+            }
+        }
+
+    public:
+        Iterator(const unordered_set* s, size_t b, size_t e) 
+            : setPtr(s), bIdx(b), eIdx(e) {
+            if (bIdx < setPtr->bucketCount && setPtr->buckets[bIdx].empty()) {
+                advance();
+                if (bIdx >= setPtr->bucketCount) eIdx = 0;
+            }
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return bIdx != other.bIdx || eIdx != other.eIdx;
+        }
+
+        Iterator& operator++() {
+            advance();
+            return *this;
+        }
+
+        
+        const T& operator*() const {
+            return setPtr->buckets[bIdx][eIdx];
+        }
+    };
+
+    Iterator begin() const {
+         return Iterator(this, 0, 0); 
+        }
+
+    Iterator end() const {
+         return Iterator(this, bucketCount, 0); 
+        }
 
     void insert(const T& key) {
         if (contains(key)) return; 
