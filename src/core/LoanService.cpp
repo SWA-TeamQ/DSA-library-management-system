@@ -57,7 +57,6 @@ bool LoanService::returnBook(const string& patronID, const string& isbn) {
     }
     // persist transaction changes
     transactionManager.saveTransactions();
-    book->setAvailable(true);
     patron->setBorrowCount(patron->getBorrowCount() - 1);
     return true;
 }

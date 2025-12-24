@@ -45,19 +45,6 @@ public:
     auto begin() const { return table.begin(); }
     auto end() const { return table.end(); }
 
-    // Find returns pointer to value; const version returns non-const for compatibility
-    T *find(const string &key)
-    {
-        auto it = table.find(key);
-        if (it != table.end())
-            return &it->second;
-        return nullptr;
-    }
-
-    // T *operator[](const string ){
-
-    // }
-
     T *find(const string &key) const
     {
         auto it = table.find(key);
@@ -95,3 +82,4 @@ public:
         return result;
     }
 };
+
