@@ -45,6 +45,15 @@ public:
     auto begin() const { return table.begin(); }
     auto end() const { return table.end(); }
 
+    T* find(const std::string &key)
+    {
+    auto it = table.find(key);
+    if (it != table.end())
+        return &it->second;
+    return nullptr;
+    }
+
+
     T *find(const string &key) const
     {
         auto it = table.find(key);
