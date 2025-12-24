@@ -22,7 +22,10 @@ public:
         ofstream file(filename, ios::out | ios::trunc);
         if (!file.is_open()) return false;
 
-        for (const auto &[key, item] : dataMap)
+        //Need fix: if you are using a key and value ,
+        //then u are already setting what type of data container
+        // it is, for this case a map
+        for (const auto &[key, item] : dataMap) 
         {
             file << item.serialize() << '\n';
         }
@@ -53,6 +56,8 @@ public:
             if (line.empty()) continue;
             T item;
             item.deserialize(line);
+            //NOTE: if a template for the MapType is needed then consider 
+            //the use of [] operator as it isn't available in sets
             dataMap[item.getKey()] = item;
         }
         file.close();

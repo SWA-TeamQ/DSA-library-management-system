@@ -18,8 +18,9 @@ bool BookManager::addBook(const Book &book)
         bookTable[newBook.getKey()] = newBook;
         searchMap.insert(newBook);
         bookStore.addData(newBook); // persist new book
+        return true;
     }
-    return true;
+    return false;
 }
 
 bool BookManager::removeBook(const BookSearchKey key, const string &value)
