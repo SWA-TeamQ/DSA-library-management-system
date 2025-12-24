@@ -1,7 +1,4 @@
 #include "utils/utils.hpp"
-#include <cstdio>
-
-using namespace std;
 
 string getCurrentDate() {
     time_t t = time(nullptr);
@@ -52,6 +49,20 @@ int daysBetween(const string &from, const string &to)
     time_t tto = mktime(&tt);
     double diff = difftime(tto, tfrom);
     return static_cast<int>(diff / (24 * 60 * 60));
+}
+
+
+string trim(const string& s)
+{
+    size_t start = 0;
+    while (start < s.size() && isspace(s[start]))
+        ++start;
+
+    size_t end = s.size();
+    while (end > start && isspace(s[end - 1]))
+        --end;
+
+    return s.substr(start, end - start);
 }
 
 

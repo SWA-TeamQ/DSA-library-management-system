@@ -20,6 +20,7 @@ string readString(const string &prompt, bool optional)
     {
         cout << prompt;
         getline(cin, input);
+        input = trim(input);
 
         if (!optional && input.empty())
         {
