@@ -108,7 +108,7 @@ public:
         return nullptr;
     }
 
-    bool remove(const string& key) {
+    bool erase(const string& key) {
         std::size_t index = getIndex(key);
         Array<Entry<T>>& bucket = buckets[index];
 
