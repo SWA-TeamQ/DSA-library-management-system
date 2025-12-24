@@ -50,7 +50,7 @@ public:
     const string& getTitle() const { return title; }
     const string& getAuthor() const { return author; }
     const string getEdition() { return edition; }
-    const int getPublicationYear() const { return publicationYear; }
+    int getPublicationYear() const { return publicationYear; }
     const string& getCategory() const { return category; }
     int getTotalQuantity() const { return TotalQuantity; }
     int getCurrentQuantity() const { return currentQuantity; }
