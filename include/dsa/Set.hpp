@@ -14,7 +14,7 @@ inline std::size_t hash(const string &key) {
 }
 
 template <typename T>
-class Set {
+class unordered_set {
 public:
     static constexpr std::size_t bucketCount = 201241;
     Array<T>* buckets;
