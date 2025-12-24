@@ -25,9 +25,9 @@ public:
         //Need fix: if you are using a key and value ,
         //then u are already setting what type of data container
         // it is, for this case a map
-        for (const auto &[key, item] : dataMap) 
+        for (const auto &[key, item] : dataMap)
         {
-            file << item.serialize() << '\n';
+            file << item.serialize() << "\n";
         }
         file.close();
         return true;

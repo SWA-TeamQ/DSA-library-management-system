@@ -22,24 +22,29 @@ public:
         loadPatrons();
     }
 
-    void loadPatrons(){
+    void loadPatrons()
+    {
         patronTable.clear();
         searchMap.clear();
 
-        if(!patronStore.loadData(patronTable)){
+        if (!patronStore.loadData(patronTable))
+        {
             cout << "Warning: Failed to load patrons from file\n";
             return;
         }
         buildSearchMap();
     }
 
-    void savePatrons(){
-        if(!patronStore.saveData(patronTable)){
+    void savePatrons()
+    {
+        if (!patronStore.saveData(patronTable))
+        {
             cout << "Warning: Failed to save patrons to file\n";
         }
     }
 
-    void buildSearchMap(){
+    void buildSearchMap()
+    {
         searchMap.buildIndices(patronTable);
     }
 
@@ -51,4 +56,3 @@ public:
     bool updatePatron(const Patron &p);
     Array<Patron *> getAllPatrons() const;
 };
-

@@ -24,7 +24,7 @@ public:
         patronIdIndex.clear();
     }
 
-    void buildIndices(const HashTable<string, Transaction> &transactions)
+    void buildIndices(const HashTable<Transaction> &transactions)
     {
         clear();
         for (const auto &entry : transactions)

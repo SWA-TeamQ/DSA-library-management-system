@@ -4,95 +4,118 @@
 
 using std::string;
 
-inline std::size_t hash(const string &key) {
+inline std::size_t hash(const string &key)
+{
     const std::size_t BASE = 31;
     std::size_t h = 0;
-    for (unsigned char c : key) {
+    for (unsigned char c : key)
+    {
         h = h * BASE + c;
     }
     return h;
 }
 
 template <typename T>
-class unordered_set {
+class unordered_set
+{
 public:
     static constexpr std::size_t bucketCount = 201241;
-    Array<T>* buckets;
+    Array<T> *buckets;
 
-    unordered_set() {
+    unordered_set()
+    {
         buckets = new Array<T>[bucketCount];
     }
 
-    ~unordered_set() {
+    ~unordered_set()
+    {
         delete[] buckets;
     }
-class Iterator {
+    class Iterator
+    {
     private:
-        const unordered_set* setPtr;
+        const unordered_set *setPtr;
         size_t bIdx;
         size_t eIdx;
 
-        void advance() {
+        void advance()
+        {
             eIdx++;
-            while (bIdx < setPtr->bucketCount && eIdx >= setPtr->buckets[bIdx].size()) {
+            while (bIdx < setPtr->bucketCount && eIdx >= setPtr->buckets[bIdx].size())
+            {
                 bIdx++;
                 eIdx = 0;
             }
         }
 
     public:
-        Iterator(const unordered_set* s, size_t b, size_t e) 
-            : setPtr(s), bIdx(b), eIdx(e) {
-            if (bIdx < setPtr->bucketCount && setPtr->buckets[bIdx].empty()) {
+        Iterator(const unordered_set *s, size_t b, size_t e)
+            : setPtr(s), bIdx(b), eIdx(e)
+        {
+            if (bIdx < setPtr->bucketCount && setPtr->buckets[bIdx].empty())
+            {
                 advance();
-                if (bIdx >= setPtr->bucketCount) eIdx = 0;
+                if (bIdx >= setPtr->bucketCount)
+                    eIdx = 0;
             }
         }
 
-        bool operator!=(const Iterator& other) const {
+        bool operator!=(const Iterator &other) const
+        {
             return bIdx != other.bIdx || eIdx != other.eIdx;
         }
 
-        Iterator& operator++() {
+        Iterator &operator++()
+        {
             advance();
             return *this;
         }
 
-        
-        const T& operator*() const {
+        const T &operator*() const
+        {
             return setPtr->buckets[bIdx][eIdx];
         }
     };
 
-    Iterator begin() const {
-         return Iterator(this, 0, 0); 
-        }
+    Iterator begin() const
+    {
+        return Iterator(this, 0, 0);
+    }
 
-    Iterator end() const {
-         return Iterator(this, bucketCount, 0); 
-        }
+    Iterator end() const
+    {
+        return Iterator(this, bucketCount, 0);
+    }
 
-    void insert(const T& key) {
-        if (contains(key)) return; 
+    void insert(const T &key)
+    {
+        if (contains(key))
+            return;
         std::size_t index = getIndex(key);
         buckets[index].append(key);
     }
 
-    bool contains(const T& key) const {
+    bool contains(const T &key) const
+    {
         std::size_t index = getIndex(key);
-        const Array<T>& bucket = buckets[index];
-        for (std::size_t i = 0; i < bucket.size(); i++) {
-            if (bucket[i] == key) return true;
+        const Array<T> &bucket = buckets[index];
+        for (std::size_t i = 0; i < bucket.size(); i++)
+        {
+            if (bucket[i] == key)
+                return true;
         }
         return false;
     }
 
-    bool remove(const T& key) {
+    bool remove(const T &key)
+    {
         std::size_t index = getIndex(key);
-        Array<T>& bucket = buckets[index];
+        Array<T> &bucket = buckets[index];
 
-        for (std::size_t i = 0; i < bucket.size(); i++) {
-            if (bucket[i] == key) {
+        for (std::size_t i = 0; i < bucket.size(); i++)
+        {
+            if (bucket[i] == key)
+            {
                 bucket.removeAt(i);
                 return true;
             }
@@ -100,27 +123,35 @@ class Iterator {
         return false;
     }
 
-    bool isEmpty() const{
-       for(int i=0;i<bucketCount;i++){
-            Array<T>& bucket =buckets[i];
-            if(!bucket.empty()){
+    bool isEmpty() const
+    {
+        for (int i = 0; i < bucketCount; i++)
+        {
+            Array<T> &bucket = buckets[i];
+            if (!bucket.empty())
+            {
                 return false;
             }
         }
-        return true; 
+        return true;
     }
 
-    void clear(){
-        for(int i=0;i<bucketCount;i++){
-            Array<T>& bucket =buckets[i];
-            bucket.clear();
+    void clear()
+    {
+        for (int i = 0; i < bucketCount; i++)
+        buckets[i].clear();
+        {
+            
         }
     }
 
-    Array<T> getAllItems() const {
+    Array<T> getAllItems() const
+    {
         Array<T> all;
-        for (std::size_t i = 0; i < bucketCount; i++) {
-            for (std::size_t j = 0; j < buckets[i].size(); j++) {
+        for (std::size_t i = 0; i < bucketCount; i++)
+        {
+            for (std::size_t j = 0; j < buckets[i].size(); j++)
+            {
                 all.append(buckets[i][j]);
             }
         }
@@ -128,7 +159,8 @@ class Iterator {
     }
 
 private:
-    std::size_t getIndex(const T& key) const {
+    std::size_t getIndex(const T &key) const
+    {
         return hash(key) % bucketCount;
     }
 };

@@ -9,6 +9,7 @@
 #include "models/Transaction.hpp"
 #include "ui/UiComponents.hpp"
 #include "ui/UiHelpers.hpp"
+#include "utils/utils.hpp"
 
 using namespace std;
 

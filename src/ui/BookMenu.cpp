@@ -121,8 +121,8 @@ void BookMenu::updateBook()
     printHeader("Update Book");
     cout << "Enter the ISBN of the book to update:\n";
     string isbn = readString("Enter ISBN: ");
-        if (auto *book = controller.findBookById(isbn))
-        {
+    if (auto *book = controller.findBookById(isbn))
+    {
         cout << "Current details:\n";
         print(*book);
         cout << "Enter new details:\n";
@@ -133,10 +133,10 @@ void BookMenu::updateBook()
         book->setCategory(readString("Category: "));
         controller.updateBook(*book);
         cout << "Book updated.\n";
-        }
-        else
-            cout << "Book not found.\n";
-    
+    }
+    else
+        cout << "Book not found.\n";
+
     waitForEnter();
 }
 
