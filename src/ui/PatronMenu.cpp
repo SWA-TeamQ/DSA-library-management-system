@@ -144,15 +144,15 @@ void PatronMenu::updatePatron()
 	printHeader("Update Patron");
 	controller.updatePatron(Patron());
 	cout<<"Enter the Patron Id: \n";
-	string id = readString("Enter Patron ID: ");
+	string id = trim(readString("Enter Patron ID: "));
 	if (auto *patron = controller.findPatronById(id))
 	{
 		cout << "Current details:\n";
 		print(*patron);
 		cout << "Enter new details:\n";
-		patron->setName(readString("Name: "));
-		patron->setContact(readString("Contact: "));
-		patron->setMembershipDate(readString("Membership date: "));
+		patron->setName(trim(readString("Name: ")));
+		patron->setContact(trim(readString("Contact: ")));
+		patron->setMembershipDate(trim(readString("Membership date: ")));
 		controller.updatePatron(*patron);
 		cout << "Patron updated.\n";
 	}
@@ -240,4 +240,24 @@ void PatronMenu::sortPatrons()
 					break;
 				}
 			case 2:
+				{
+					string order = readString("Reverse order? (y/n): ");
+					bool reverse = (order == "y" || order == "Y");
+					Array<Patron *> patrons = controller.sortPatronsByMembershipDate(reverse);
+					tablePrint(patrons);
+					break;
+				}
+			case 3:
+				{
+					string order = readString("Reverse order? (y/n): ");
+					bool reverse = (order == "y" || order == "Y");
+					Array<Patron *> patrons = controller.sortPatronsByBorrowCount(reverse);
+					tablePrint(patrons);
+					break;
+				}
+			default:
+				cout << "Invalid choice.\n";
+				break;
+		 }
+		waitForEnter();
 }
