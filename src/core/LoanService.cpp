@@ -2,109 +2,124 @@
 #include <iomanip>
 #include <algorithm>
 
-const int n= 15;
+const int LOAN_DAYS = 15;
 
-
-bool LoanService::borrowBook(const string& patronID, const string& isbn) {
+bool LoanService::borrowBook(const string& patronID, const string& isbn)
+{
     Book* book = bookManager.findBook(BookSearchKey::ID, isbn);
-    if (!book) return false;
-    // ensure at least one copy is available
+    if (!book) {
+        cout << "Book not found.\n";
+        return false;
+    }
+
+    // Ensure at least one copy is available
     if (book->getCurrentQuantity() <= 0) {
         cout << "No copies available for book " << isbn << "\n";
         return false;
     }
 
-
     Patron* patron = patronManager.findPatron(PatronSearchKey::ID, patronID);
-    if (!patron) return false;
-
-
-    //  maximum active loans per patron
-    const int MAX_ACTIVE_LOANS = 5;
-    if (patron->getBorrowCount() >= MAX_ACTIVE_LOANS) {
-        cout << "Patron has reached maximum active loans (" << MAX_ACTIVE_LOANS << ")\n";
+    if (!patron) {
+        cout << "Patron not found.\n";
         return false;
     }
 
+    // Maximum active loans per patron
+    const int MAX_ACTIVE_LOANS = 5;
+    if (patron->getActiveBorrowCount() >= MAX_ACTIVE_LOANS) {
+        cout << "Patron has reached maximum active loans (" 
+             << MAX_ACTIVE_LOANS << ")\n";
+        return false;
+    }
 
+    // Block patrons with overdue transactions
+    Array<Transaction*> patronTx =
+        transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
 
-    // Block patrons with any outstanding overdue transactions
-    Array<Transaction *> patronTx = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
-    for (auto *tptr : patronTx) {
-        if (tptr && tptr->isOverdue()) {
+    for (auto* t : patronTx) {
+        if (t && t->isOverdue()) {
             cout << "Patron has overdue items; cannot borrow until resolved.\n";
             return false;
         }
     }
 
-    // perform in-memory updates
-        book->decrementCurrentQuantity();
-        book->incrementBorrowCount(); // lifetime borrow counter for the book
-        patron->incrementBorrowCount(); // active borrow counter for the patron
 
+    book->decrementCurrentQuantity();
+    book->incrementBorrowCount();          // lifetime (never decreases)
+    patron->incrementActiveBorrowCount();  // active
+    patron->incrementBorrowCount();        // lifetime
 
+    // create transaction
+    string transactionID = generateId("TXN");
+    string borrowDate = getCurrentDate();
+    string dueDate = addDays(borrowDate, LOAN_DAYS);
+
+    Transaction t(transactionID, isbn, patronID, borrowDate, dueDate, "", false);
+
+    if (!transactionManager.addTransaction(t)) {
         
-        // create and persist transaction
+        // Rollback ONLY active state
 
-        string transactionID = generateId("TXN");
-        string borrowDate = getCurrentDate();
-        string dueDate = addDays(borrowDate,n); 
-       
-        Transaction t(transactionID, isbn, patronID, borrowDate, dueDate, "", false);
-        if (!transactionManager.addTransaction(t)) {
-
-     // rollback in-memory changes on failure
         book->incrementCurrentQuantity();
-        patron->setBorrowCount(std::max(0, patron->getBorrowCount() - 1));
+        patron->decrementActiveBorrowCount();
+        // NO rollback of lifetime counters
         return false;
-        }
+    }
 
-
-        // persist book state
-        bookManager.saveBooks();
-        return true;
+    // Persist book state
+    bookManager.saveBooks();
+    return true;
 }
 
-
-bool LoanService::returnBook(const string& patronID, const string& isbn) {
+bool LoanService::returnBook(const string& patronID, const string& isbn)
+{
     Book* book = bookManager.findBook(BookSearchKey::ID, isbn);
-    if (!book) return false;
-    Patron* patron = patronManager.findPatron(PatronSearchKey::ID, patronID);
-    if (!patron) return false;
+    if (!book) {
+        cout << "Book not found.\n";
+        return false;
+    }
 
-    
+    Patron* patron = patronManager.findPatron(PatronSearchKey::ID, patronID);
+    if (!patron) {
+        cout << "Patron not found.\n";
+        return false;
+    }
+
     Transaction* trans = nullptr;
     for (auto* t : transactionManager.getAllTransactions()) {
-        if (t->getBookID() == isbn && t->getPatronID() == patronID && !t->isReturned()) {
+        if (t->getBookID() == isbn &&
+            t->getPatronID() == patronID &&
+            !t->isReturned()) {
             trans = t;
             break;
         }
-
     }
 
-    if (!trans) return false;
+    if (!trans) {
+        cout << "Active transaction not found.\n";
+        return false;
+    }
+
     trans->setReturnDate(getCurrentDate());
     trans->setReturned(true);
 
-    
-    // compute fine if any and notify
+    // Compute fine if any
     double fine = trans->calculateFine();
     if (fine > 0.0) {
-        cout << "Return processed. Overdue fine: $" << fixed << setprecision(2) << fine << "\n";
+        cout << "Return processed. Overdue fine: $"
+             << fixed << setprecision(2) << fine << "\n";
     }
 
-
-    // persist transaction changes
+    // Persist transaction changes
     transactionManager.saveTransactions();
-    // restore book copy (doesn't exceed total quantity)
+
+    // Restore book copy (multi-copy safe)
     if (book->getCurrentQuantity() < book->getTotalQuantity()) {
         book->incrementCurrentQuantity();
     }
     bookManager.saveBooks();
 
-
-
-    // decrement patron active borrow count safely
-    patron->setBorrowCount(std::max(0, patron->getBorrowCount() - 1));
+    // Decrement active borrow count
+    patron->decrementActiveBorrowCount();
     return true;
 }

@@ -14,7 +14,8 @@ private:
     string name;
     string contact;
     string membershipDate;
-    int borrowCount;
+    int activeBorrowCount{0};
+    int lifetimeBorrowCount{0};
     bool borrowed;
 public:
     Patron() = default;
@@ -23,14 +24,16 @@ public:
            string name,
            string contact,
            string membershipDate,
-           int borrowCount = 0,
+           int lifetimeBorrowCount = 0,
+           int activeBorrowCount = 0,
            bool borrowed = false)
     {
         this->patronID = patronID;
         this->name = name;
         this->contact = contact;
         this->membershipDate = membershipDate;
-        this->borrowCount = borrowCount;
+        this->lifetimeBorrowCount = lifetimeBorrowCount;
+        this->activeBorrowCount = activeBorrowCount;
         this->borrowed = borrowed;
     }
 
@@ -41,17 +44,23 @@ public:
     const string getName() const { return name; }
     const string getContact() const { return contact; }
     const string getMembershipDate() const { return membershipDate; }
-    int getBorrowCount() const { return borrowCount; }
+    // lifetime borrow count (total times patron borrowed any book)
+    int getBorrowCount() const { return lifetimeBorrowCount; }
+    // active borrow count (currently checked-out items)
+    int getActiveBorrowCount() const { return activeBorrowCount; }
     bool isBorrowed() const { return borrowed; }
 
     void setID(const string &id) { patronID = id; }
     void setName(const string &n) { name = n; }
     void setContact(const string &c) { contact = c; }
     void setMembershipDate(const string &date) { membershipDate = date; }
-    void setBorrowCount(int bc) { borrowCount = bc; }
+    void setBorrowCount(int bc) { lifetimeBorrowCount = bc; }
+    void setActiveBorrowCount(int bc) { activeBorrowCount = bc; }
     void setBorrowed(bool b) { borrowed = b; }
 
-    void incrementBorrowCount() { ++borrowCount; }
+    void incrementBorrowCount() { ++lifetimeBorrowCount; }
+    void incrementActiveBorrowCount() { ++activeBorrowCount; }
+    void decrementActiveBorrowCount() { if (activeBorrowCount > 0) --activeBorrowCount; }
 
     string serialize() const;
     void deserialize(const string &line);
