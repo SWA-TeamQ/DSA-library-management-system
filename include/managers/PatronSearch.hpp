@@ -21,7 +21,7 @@ public:
         nameIndex.clear();
     }
 
-    void buildIndices(const HashTable<Patron> &patrons)
+    void buildIndices(HashTable<Patron> &patrons)
     {
         clear();
         for (const auto &[id, p] : patrons)
@@ -30,12 +30,12 @@ public:
         }
     }
 
-    void insert(const Patron &p)
+    void insert(Patron &p)
     {
         nameIndex[p.getName()].insert(p.getKey());
     }
 
-    void remove(const Patron &p)
+    void remove(Patron &p)
     {
         string id = p.getKey(), name = p.getName();
 

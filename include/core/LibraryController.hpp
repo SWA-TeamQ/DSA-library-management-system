@@ -26,8 +26,7 @@ public:
           patronManager("patrons.txt"),
           transactionManager("transactions.txt"),
           loanService(bookManager, patronManager, transactionManager)
-    {
-    }
+    {}
 
     void load()
     {
@@ -78,7 +77,7 @@ public:
     // Transaction operations
     bool addTransaction( Transaction &t);
     Array<Transaction *> listAllTransactions() ;
-    void listTransactionsForPatron(const string &patronID) ;
+    void listTransactionsForPatron(const string &patronID);
     void listOverdueForPatron(const string &patronID);
     Array<Transaction *> sortTransactionsByReturnDate(bool reverse = false);
 

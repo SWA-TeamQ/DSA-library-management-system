@@ -59,18 +59,18 @@ public:
     bool isAvailable() const { return currentQuantity > 0; }
     int getBorrowCount()  { return borrowCount; }
 
-    void setTitle(const string &title) { this->title = title; }
-    void setAuthor(const string &author) { this->author = author; }
-    void setISBN(const string &isbn) { this->isbn = isbn; }
-    void setEdition(const string &edition) { this->edition = edition; }
-    void setPublicationYear(const int &publicationYear) { this->publicationYear = publicationYear; }
-    void setCategory(const string &category) { this->category = category; }
-    void setTotalQuantity(const int &totalQuantity) { this->totalQuantity = totalQuantity; }
-    void incrementCurrentQuantity() { this->currentQuantity++; }
-    void decrementCurrentQuantity() { this->currentQuantity--; }
+    void setTitle(const string &t) { this->title = t; }
+    void setAuthor(const string &a) { this->author = a; }
+    void setISBN(const string &i) { this->isbn = i; }
+    void setEdition(const string &e) { this->edition = e; }
+    void setPublicationYear(const int &p) { this->publicationYear = p; }
+    void setCategory(const string &c) { this->category = c; }
+    void setTotalQuantity(const int &t) { this->totalQuantity = t; }
+    void incrementCurrentQuantity() { if(currentQuantity < totalQuantity) this->currentQuantity++; }
+    void decrementCurrentQuantity() { if(currentQuantity > 0) this->currentQuantity--; }
 
     bool isAllReturned() { return currentQuantity == totalQuantity; }
-    void setBorrowCount(int borrowCount) { this->borrowCount = borrowCount; }
+    void setBorrowCount(int b) { this->borrowCount = b; }
     void incrementBorrowCount() { this->borrowCount++; }
 
     string serialize() const;
