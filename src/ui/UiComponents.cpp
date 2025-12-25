@@ -1,6 +1,6 @@
 #include "ui/UiComponents.hpp"
 
-void Row(Array<string> values, bool borderTop = false, int width = 15){
+void Row(Array<string> values, bool borderTop, int width){
     size_t totalWidth = values.size() * (width + 3) + 1;
     // border top
     if(borderTop){

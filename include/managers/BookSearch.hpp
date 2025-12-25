@@ -43,7 +43,7 @@ public:
 
     void remove(Book &b)
     {
-        string &key = b.getKey(), &title = b.getTitle(), &author = b.getAuthor(), &category = b.getCategory();
+        string key = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
         auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string value)
         {
             auto it = index.find(value);

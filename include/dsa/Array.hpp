@@ -1,9 +1,4 @@
 #pragma once
-#include <initializer_list>
-#include <stdexcept>
-#include <utility>
-#include <iterator>
-#include <algorithm>
 
 using namespace std;
 
@@ -188,7 +183,7 @@ public:
 
     void validateIndex(size_t index) const
     {
-        if(!(0 <= index && index <= length - 1)){
+        if (index >= length) {
             throw out_of_range("Index out of range");
         }
     }
