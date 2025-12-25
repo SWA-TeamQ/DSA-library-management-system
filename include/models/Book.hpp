@@ -11,6 +11,7 @@ enum class BookSearchKey
     AUTHOR,
     CATEGORY
 };
+
 enum class BookSortKey
 {
     TITLE,
@@ -28,9 +29,9 @@ private:
     string edition;
     int publicationYear;
     string category;
-    int TotalQuantity;
+    int totalQuantity;
     int currentQuantity;
-    int borrowCount{0};
+    int borrowCount;
 
 public:
     Book() = default;
@@ -41,7 +42,7 @@ public:
          string edition,
          int publicationYear,
          string category = "General",
-         int TotalQuantity = 1,
+         int totalQuantity = 1,
          int currentQuantity = 1,
          int borrowCount = 0);
 
@@ -54,9 +55,9 @@ public:
     const string getEdition() const { return edition; }
     const int getPublicationYear() const { return publicationYear; }
     const string getCategory() const { return category; }
-    const int getTotalQuantity() const { return TotalQuantity; }
+    const int getTotalQuantity() const { return totalQuantity; }
     const int getCurrentQuantity() const { return currentQuantity; }
-    const bool isAvailable() {return currentQuantity > 0;}
+    const bool isAvailable() { return currentQuantity > 0; }
     int getBorrowCount() const { return borrowCount; }
 
     void setTitle(const string &title) { this->title = title; }
@@ -65,13 +66,13 @@ public:
     void setEdition(const string &edition) { this->edition = edition; }
     void setPublicationYear(const int &publicationYear) { this->publicationYear = publicationYear; }
     void setCategory(const string &category) { this->category = category; }
-    void setTotalQuantity(const int &TotalQuantity) { this->TotalQuantity = TotalQuantity; }
+    void setTotalQuantity(const int &totalQuantity) { this->totalQuantity = totalQuantity; }
     void incrementCurrentQuantity() { this->currentQuantity++; }
     void decrementCurrentQuantity() { this->currentQuantity--; }
-    bool isAllReturned() { return currentQuantity == TotalQuantity; }
-    void setBorrowCount(int bc) { borrowCount = bc; }
 
-    void incrementBorrowCount() { ++borrowCount; }
+    bool isAllReturned() { return currentQuantity == totalQuantity; }
+    void setBorrowCount(int borrowCount) { this->borrowCount = borrowCount; }
+    void incrementBorrowCount() { this->borrowCount++; }
 
     string serialize() const;
     void deserialize(const string &line);

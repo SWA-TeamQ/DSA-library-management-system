@@ -85,7 +85,6 @@ Array<string> Book::getFields() const
 
 Array<string> Book::getValues() const
 {
-
   Array<string> values;
   values.append(title);
   values.append(author);

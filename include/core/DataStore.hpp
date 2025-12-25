@@ -15,9 +15,7 @@ public:
         this->filename = "data/" + filename;
     }
 
-    // any type of map-like object
-    template <typename MapType>
-    bool saveData(const MapType &dataMap) const
+    bool saveData(const HashTable<T> &dataMap) const
     {
         ofstream file(filename, ios::out | ios::trunc);
         if (!file.is_open()) return false;
@@ -43,8 +41,7 @@ public:
         return true;
     }
 
-    template <typename MapType>
-    bool loadData(MapType &dataMap)
+    bool loadData(HashTable<T> &dataMap)
     {
         dataMap.clear();
         ifstream file(filename, ios::in);
