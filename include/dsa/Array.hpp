@@ -21,7 +21,7 @@ public:
     };
 
     // Copy Constructor (for deep copy)
-    Array(Array &other) {
+    Array(const Array &other) {
         this->length = other.length;
         this->initialCapacity = other.initialCapacity;
         this->capacity = other.capacity;
@@ -32,7 +32,7 @@ public:
     }
 
     // Copy Assignment Operator ( '=' operator overloading) // to make it work with out class objects
-    Array &operator=(Array &other) {
+    Array &operator=(const Array &other) {
         if (this != &other) {
             delete[] items;
             this->length = other.length;

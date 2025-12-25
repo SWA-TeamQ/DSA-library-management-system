@@ -77,72 +77,40 @@ void PatronMenu::removePatron()
 	cout << "1. By ID\n"
 		 << "2. By Name\n"
 		 << "0. Back\n";
-		 int choice = readInt("Choose: ");
-		 switch (choice)
-		 {
-		 case 0:
-			return;
-		 case 1:
-			{
-				string id = readString("Enter Patron ID: ");
-				if (controller.removePatronById(id))
-					cout << "Patron removed.\n";
-				else
-					cout << "can not remove (active loans or Patron not found.)\n";
-				break;
-			}
-		 case 2:
-			{
-				string name = readString("Enter Patron Name: ");
-				if (controller.removePatronByName(name))
-					cout << "Patron removed.\n";
-				else
-					cout << "can not remove (active loans or Patron not found.)\n";
-				break;
-			}
-		 default:
-			cout << "Invalid choice.\n";
-			break;
-		 }
-		waitForEnter();
-
-	cout << "1. By ID\n"
-		 << "2. By Name\n"
-		 << "0. Back\n";
-		 int choice = readInt("Choose: ");
-		 switch (choice)
-		 {
-		 case 0:
-			return;
-		 case 1:
-			{
-				string id = readString("Enter Patron ID: ");
-				if (controller.removePatronById(id))
-					cout << "Patron removed.\n";
-				else
-					cout << "can not remove (active loans or Patron not found.)\n";
-				break;
-			}
-		 case 2:
-			{
-				string name = readString("Enter Patron Name: ");
-				if (controller.removePatronByName(name))
-					cout << "Patron removed.\n";
-				else
-					cout << "can not remove (active loans or Patron not found.)\n";
-				break;
-			}
-		 default:
-			cout << "Invalid choice.\n";
-			break;
-		 }
-		waitForEnter();
+	int choice = readInt("Choose: ");
+	switch (choice)
+	{
+	case 0:
+		return;
+	case 1:
+	{
+		string id = readString("Enter Patron ID: ");
+		if (controller.removePatronById(id))
+			cout << "Patron removed.\n";
+		else
+			cout << "can not remove (active loans or Patron not found.)\n";
+		break;
+	}
+	case 2:
+	{
+		string name = readString("Enter Patron Name: ");
+		if (controller.removePatronByName(name))
+			cout << "Patron removed.\n";
+		else
+			cout << "can not remove (active loans or Patron not found.)\n";
+		break;
+	}
+	default:
+		cout << "Invalid choice.\n";
+		break;
+	}
+	waitForEnter();
 }
 
 void PatronMenu::updatePatron()
 {
 	printHeader("Update Patron");
-	cout<<"Enter the Patron Id: \n";
+	cout << "Enter the Patron Id: \n";
 	string id = trim(readString("Enter Patron ID: "));
 	auto *patron = controller.findPatronById(id);
 	if (patron)
@@ -158,65 +126,66 @@ void PatronMenu::updatePatron()
 	}
 	else
 		cout << "Patron not found.\n";
-	
+
 	waitForEnter();
 }
 
-void PatronMenu::searchPatrons(){
+void PatronMenu::searchPatrons()
+{
 	printHeader("Search Patrons");
-	cout<<"1. By ID(single)\n"
-		<< "2. By Name(single)\n"
-		<< "3. By Id(multiple)\n"
-		<< "4. By Name(multiple)\n"
-		<< "0. Back\n";
-		int choice = readInt("Choose: ");
-		switch (choice)
+	cout << "1. By ID(single)\n"
+		 << "2. By Name(single)\n"
+		 << "3. By Id(multiple)\n"
+		 << "4. By Name(multiple)\n"
+		 << "0. Back\n";
+	int choice = readInt("Choose: ");
+	switch (choice)
+	{
+	case 0:
+		return;
+	case 1:
+	{
+		string id = readString("Enter Patron ID: ");
+		if (auto *patron = controller.findPatronById(id))
 		{
-			case 0:
-				return;
-			case 1:
-				{
-					string id = readString("Enter Patron ID: ");
-					if (auto *patron = controller.findPatronById(id))
-					{
-						cout << "Patron found:\n";
-						print(*patron);
-					}
-					else
-						cout << "Patron not found.\n";
-					break;
-				}
-			case 2:
-				{
-					string name = readString("Enter Patron Name: ");
-					if (auto *patron = controller.findPatronByName(name))
-					{
-						cout << "Patron found:\n";
-						print(*patron);
-					}
-					else
-						cout << "Patron not found.\n";
-					break;
-				}
-			case 3:
-				{
-					string id = readString("Enter Patron ID: ");
-					Array<Patron *> patrons = controller.findPatronsById(id);
-					tablePrint(patrons);
-					break;
-				}
-			case 4:
-				{
-					string name = readString("Enter Patron Name: ");
-					Array<Patron *> patrons = controller.findPatronsByName(name);
-					tablePrint(patrons);
-					break;
-				}
-			default:
-				cout << "Invalid choice.\n";
-				break;
+			cout << "Patron found:\n";
+			print(*patron);
 		}
-		waitForEnter();
+		else
+			cout << "Patron not found.\n";
+		break;
+	}
+	case 2:
+	{
+		string name = readString("Enter Patron Name: ");
+		if (auto *patron = controller.findPatronByName(name))
+		{
+			cout << "Patron found:\n";
+			print(*patron);
+		}
+		else
+			cout << "Patron not found.\n";
+		break;
+	}
+	case 3:
+	{
+		string id = readString("Enter Patron ID: ");
+		Array<Patron *> patrons = controller.findPatronsById(id);
+		tablePrint(patrons);
+		break;
+	}
+	case 4:
+	{
+		string name = readString("Enter Patron Name: ");
+		Array<Patron *> patrons = controller.findPatronsByName(name);
+		tablePrint(patrons);
+		break;
+	}
+	default:
+		cout << "Invalid choice.\n";
+		break;
+	}
+	waitForEnter();
 }
 
 void PatronMenu::sortPatrons()
@@ -226,38 +195,38 @@ void PatronMenu::sortPatrons()
 		 << "2. Membership date\n"
 		 << "3. Borrow count\n"
 		 << "0. Back\n";
-		 int choice =readInt("Choose: ");
-		 switch (choice)
-		 {	
-			case 0:
-				return;
-			case 1:
-				{
-					string order = readString("Reverse order? (y/n): ");
-					bool reverse = (order == "y" || order == "Y");
-					Array<Patron *> patrons = controller.sortPatronsByName(reverse);
-					tablePrint(patrons);
-					break;
-				}
-			case 2:
-				{
-					string order = readString("Reverse order? (y/n): ");
-					bool reverse = (order == "y" || order == "Y");
-					Array<Patron *> patrons = controller.sortPatronsByMembershipDate(reverse);
-					tablePrint(patrons);
-					break;
-				}
-			case 3:
-				{
-					string order = readString("Reverse order? (y/n): ");
-					bool reverse = (order == "y" || order == "Y");
-					Array<Patron *> patrons = controller.sortPatronsByBorrowCount(reverse);
-					tablePrint(patrons);
-					break;
-				}
-			default:
-				cout << "Invalid choice.\n";
-				break;
-		 }
-		waitForEnter();
+	int choice = readInt("Choose: ");
+	switch (choice)
+	{
+	case 0:
+		return;
+	case 1:
+	{
+		string order = readString("Reverse order? (y/n): ");
+		bool reverse = (order == "y" || order == "Y");
+		Array<Patron *> patrons = controller.sortPatronsByName(reverse);
+		tablePrint(patrons);
+		break;
+	}
+	case 2:
+	{
+		string order = readString("Reverse order? (y/n): ");
+		bool reverse = (order == "y" || order == "Y");
+		Array<Patron *> patrons = controller.sortPatronsByMembershipDate(reverse);
+		tablePrint(patrons);
+		break;
+	}
+	case 3:
+	{
+		string order = readString("Reverse order? (y/n): ");
+		bool reverse = (order == "y" || order == "Y");
+		Array<Patron *> patrons = controller.sortPatronsByBorrowCount(reverse);
+		tablePrint(patrons);
+		break;
+	}
+	default:
+		cout << "Invalid choice.\n";
+		break;
+	}
+	waitForEnter();
 }
