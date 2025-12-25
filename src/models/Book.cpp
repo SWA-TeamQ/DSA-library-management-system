@@ -20,7 +20,7 @@ Book::Book(string title,
   this->edition = edition;
   this->publicationYear = publicationYear;
   this->category = category;
-  this->TotalQuantity = TotalQuantity;
+  this->totalQuantity = TotalQuantity;
   this->currentQuantity = currentQuantity;
   
   this->borrowCount = borrowCount;
@@ -28,8 +28,8 @@ Book::Book(string title,
 
 string Book::serialize() const 
 {
-  return title + "," + author + "," + isbn + "," + edition + "," +
-         to_string(publicationYear) + "," + category + "," + to_string(TotalQuantity) + "," + to_string(currentQuantity) + "," + "," + to_string(borrowCount);
+  return title + "|" + author + "|" + isbn + "|" + edition + "|" +
+         to_string(publicationYear) + "|" + category + "|" + to_string(totalQuantity) + "|" + to_string(currentQuantity) + "|" + to_string(borrowCount);
 }
 
 void Book::deserialize(const string &line)
@@ -37,35 +37,19 @@ void Book::deserialize(const string &line)
   std::stringstream ss(line);
   string field;
 
-  getline(ss, title, ',');
-  getline(ss, author, ',');
-  getline(ss, isbn, ',');
-  getline(ss, edition, ',');
-  getline(ss, field, ',');
-  if (!field.empty())
-    publicationYear = stoi(field);
-  else
-    publicationYear = -1;
-  getline(ss, category, ',');
-  getline(ss, field, ',');
-  if (!field.empty())
-    TotalQuantity = stoi(field);
-  else
-    TotalQuantity = 0;
-  getline(ss, field, ',');
-  if (!field.empty())
-    currentQuantity = stoi(field);
-  else
-    currentQuantity = 0;
+  getline(ss, title, '|');
+  getline(ss, author, '|');
+  getline(ss, isbn, '|');
+  getline(ss, edition, '|');
+  getline(ss, field, '|');
+  publicationYear = stoi(field);
+  getline(ss, category, '|');
+  getline(ss, field, '|');
+  totalQuantity = stoi(field);
+  getline(ss, field, '|');
+  currentQuantity = stoi(field);
   getline(ss, field);
-  if (!field.empty())
-  {
-    borrowCount = stoi(field);
-  }
-  else
-  {
-    borrowCount = 0;
-  }
+  borrowCount = stoi(field);
 }
 
 Array<string> Book::getFields() 
@@ -92,7 +76,7 @@ Array<string> Book::getValues()
   values.append(edition);
   values.append(to_string(publicationYear));
   values.append(category);
-  values.append(to_string(TotalQuantity));
+  values.append(to_string(totalQuantity));
   values.append(to_string(currentQuantity));
   values.append(to_string(borrowCount));
   return values;

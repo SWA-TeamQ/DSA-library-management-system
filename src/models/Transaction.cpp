@@ -32,7 +32,7 @@ double Transaction::calculateFine(double dailyRate)
 
 string Transaction::serialize() const
 {
-    return transactionID + "," + bookID + "," + patronID + "," + borrowDate + "," + dueDate + "," + returnDate + "," + (returned ? "1" : "0");
+    return transactionID + "|" + bookID + "|" + patronID + "|" + borrowDate + "|" + dueDate + "|" + returnDate + "|" + (returned ? "1" : "0");
 }
 
 void Transaction::deserialize(const string &line)
@@ -40,12 +40,12 @@ void Transaction::deserialize(const string &line)
     stringstream ss(line);
     string field;
 
-    getline(ss, transactionID, ',');
-    getline(ss, bookID, ',');
-    getline(ss, patronID, ',');
-    getline(ss, borrowDate, ',');
-    getline(ss, dueDate, ',');
-    getline(ss, returnDate, ',');
+    getline(ss, transactionID, '|');
+    getline(ss, bookID, '|');
+    getline(ss, patronID, '|');
+    getline(ss, borrowDate, '|');
+    getline(ss, dueDate, '|');
+    getline(ss, returnDate, '|');
     getline(ss, field);
     returned = (field == "1");
 }

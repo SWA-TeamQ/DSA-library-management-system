@@ -14,8 +14,9 @@ private:
     string name;
     string contact;
     string membershipDate;
-    int borrowCount;
-    bool borrowed;
+    int activeBorrowCount{0};
+    int lifetimeBorrowCount{0};
+    bool borrowed{false};
 public:
     Patron() = default;
 
@@ -23,35 +24,44 @@ public:
            string name,
            string contact,
            string membershipDate,
-           int borrowCount = 0,
+           int lifetimeBorrowCount = 0,
+           int activeBorrowCount = 0,
            bool borrowed = false)
-    {
-        this->patronID = patronID;
-        this->name = name;
-        this->contact = contact;
-        this->membershipDate = membershipDate;
-        this->borrowCount = borrowCount;
-        this->borrowed = borrowed;
-    }
+        : patronID(std::move(patronID)),
+          name(std::move(name)),
+          contact(std::move(contact)),
+          membershipDate(std::move(membershipDate)),
+          activeBorrowCount(activeBorrowCount),
+          lifetimeBorrowCount(lifetimeBorrowCount),
+          borrowed(borrowed)
+    {}
 
     // for generic lookup
     const string& getKey() const { return patronID; }
 
     string getID() { return patronID; }
-    const string& getName() const { return name; }
+    string& getName() { return name; }
     string getContact() { return contact; }
     string getMembershipDate() { return membershipDate; }
-    int getBorrowCount() { return borrowCount; }
-    bool isBorrowed() { return borrowed; }
+    int getBorrowCount() { return lifetimeBorrowCount; }
+    bool hasBorrowed() { return borrowed; }
+    
+    // lifetime borrow count (total times patron borrowed any book)
+    int getBorrowCount() const { return lifetimeBorrowCount; }
+    // active borrow count (currently checked-out items)
+    int getActiveBorrowCount() const { return activeBorrowCount; }
 
     void setID(const string &id) { patronID = id; }
     void setName(const string &n) { name = n; }
     void setContact(const string &c) { contact = c; }
     void setMembershipDate(const string &date) { membershipDate = date; }
-    void setBorrowCount(int bc) { borrowCount = bc; }
+    void setBorrowCount(int bc) { lifetimeBorrowCount = bc; }
+    void setActiveBorrowCount(int bc) { activeBorrowCount = bc; }
     void setBorrowed(bool b) { borrowed = b; }
 
-    void incrementBorrowCount() { ++borrowCount; }
+    void incrementBorrowCount() { ++lifetimeBorrowCount; }
+    void incrementActiveBorrowCount() { ++activeBorrowCount; }
+    void decrementActiveBorrowCount() { if (activeBorrowCount > 0) --activeBorrowCount; }
 
     string serialize() const;
     void deserialize(const string &line);

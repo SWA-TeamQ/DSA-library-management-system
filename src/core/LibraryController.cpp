@@ -1,4 +1,5 @@
 #include "core/LibraryController.hpp"
+#include "ui/UiHelpers.hpp"
 
 // Book operations
 bool LibraryController::addBook( Book &b)
@@ -146,6 +147,34 @@ bool LibraryController::addTransaction( Transaction &t)
 Array<Transaction *> LibraryController::listAllTransactions() 
 {
     return transactionManager.getAllTransactions();
+}
+
+void LibraryController::listTransactionsForPatron(const string &patronID) const
+{
+    Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
+    if (txs.empty())
+    {
+        cout << "No transactions found for patron: " << patronID << "\n";
+        return;
+    }
+    tablePrint(txs);
+}
+
+void LibraryController::listOverdueForPatron(const string &patronID) const
+{
+    Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
+    Array<Transaction *> overdue;
+    for (auto *t : txs)
+    {
+        if (t && t->isOverdue())
+            overdue.append(t);
+    }
+    if (overdue.empty())
+    {
+        cout << "No overdue items for patron: " << patronID << "\n";
+        return;
+    }
+    tablePrint(overdue);
 }
 
 // Borrow/Return operations
