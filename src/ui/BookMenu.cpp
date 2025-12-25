@@ -50,6 +50,7 @@ void BookMenu::listBooks()
 {
     Array<Book *> books = controller.listAllBooks();
     tablePrint(books);
+    waitForEnter();
 }
 
 void BookMenu::addBook()

@@ -1,7 +1,6 @@
 #include "ui/TransactionMenu.hpp"
 
 #include <iostream>
-#include <limits>
 
 using namespace std;
 
@@ -20,7 +19,7 @@ void TransactionMenu::show()
 
 		int choice;
 		cin >> choice;
-		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		cin.ignore(INT_MAX, '\n');
 
 		switch (choice)
 		{
