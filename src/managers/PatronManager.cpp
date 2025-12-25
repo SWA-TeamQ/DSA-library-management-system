@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool PatronManager::addPatron( Patron &p)
+bool PatronManager::addPatron(Patron &p)
 {
     patronTable[p.getKey()] = p;
     searchMap.insert(p);
@@ -12,29 +12,34 @@ bool PatronManager::addPatron( Patron &p)
     return true;
 }
 
-bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
+bool PatronManager::removePatron(PatronSearchKey key, string value)
 {
     Array<string> ids;
-    switch(key){
-        case PatronSearchKey::ID:
-            ids.append(value);
-            break;
-        case PatronSearchKey::NAME:
-            ids = searchMap.findByName(value);
-            break;
+    switch (key)
+    {
+    case PatronSearchKey::ID:
+        ids.append(value);
+        break;
+    case PatronSearchKey::NAME:
+        ids = searchMap.findByName(value);
+        break;
     }
 
-    if(ids.empty()){
+    if (ids.empty())
+    {
         return false;
     }
 
     bool deleted = false;
-    for(const auto &id : ids){
+    for (auto &id : ids)
+    {
         Patron *p = patronTable.find(id);
-        if(!p) continue;
-        
+        if (!p)
+            continue;
+
         // Prevent deletion if patron still has an active borrow
-        if(p->isBorrowed()){
+        if (p->isBorrowed())
+        {
             cout << "Patron " << p->getKey() << " has active borrows and cannot be removed" << endl;
             continue;
         }
@@ -44,63 +49,70 @@ bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
         patronTable.remove(id);
     }
 
-    if (deleted) {
+    if (deleted)
+    {
         savePatrons();
     }
     return deleted;
 }
 
-Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value) 
+Patron *PatronManager::findPatron(PatronSearchKey key, string value)
 {
     Array<string> ids;
-    switch(key){
-        case PatronSearchKey::ID:
-            ids.append(value);
-            break;
-        case PatronSearchKey::NAME:
-            ids = searchMap.findByName(value);
-            break;
+    switch (key)
+    {
+    case PatronSearchKey::ID:
+        ids.append(value);
+        break;
+    case PatronSearchKey::NAME:
+        ids = searchMap.findByName(value);
+        break;
     }
 
-    if(ids.empty()){
+    if (ids.empty())
+    {
         return nullptr;
     }
 
     return patronTable.find(ids[0]);
 }
 
-Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) 
+Array<Patron *> PatronManager::findPatrons(PatronSearchKey key, string value)
 {
     Array<string> ids;
-    switch(key){
-        case PatronSearchKey::ID:
-            ids.append(value);
-            break;
-        case PatronSearchKey::NAME:
-            ids = searchMap.findByName(value);
-            break;
+    switch (key)
+    {
+    case PatronSearchKey::ID:
+        ids.append(value);
+        break;
+    case PatronSearchKey::NAME:
+        ids = searchMap.findByName(value);
+        break;
     }
 
     Array<Patron *> patrons;
-    for(const auto &id : ids){
+    for (auto &id : ids)
+    {
         Patron *p = patronTable.find(id);
-        if (p) {
+        if (p)
+        {
             patrons.append(p);
         }
     }
     return patrons;
 }
 
-bool PatronManager::updatePatron( Patron &newPatron)
+bool PatronManager::updatePatron(Patron &newPatron)
 {
     Patron *oldPatron = patronTable.find(newPatron.getKey());
-    if(oldPatron == nullptr){
+    if (oldPatron == nullptr)
+    {
         return false;
     }
 
     bool changed = false;
 
-    if (newPatron.getName() != oldPatron->getName() || 
+    if (newPatron.getName() != oldPatron->getName() ||
         newPatron.getContact() != oldPatron->getContact() ||
         newPatron.getMembershipDate() != oldPatron->getMembershipDate())
     {
@@ -120,31 +132,29 @@ bool PatronManager::updatePatron( Patron &newPatron)
     return changed;
 }
 
-Array<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse)
+Array<Patron *> PatronManager::sortPatrons(PatronSortKey key, bool reverse)
 {
     Array<Patron *> sortedPatrons = patronTable.all();
 
-    switch(key){
-        case PatronSortKey::NAME:
-            mergeSort(sortedPatrons, []( Patron *p){
-                return p->getName();
-            }, reverse);
-            break;
-        case PatronSortKey::MEMBERSHIP_DATE:
-            mergeSort(sortedPatrons, []( Patron *p){
-                return p->getMembershipDate();
-            }, reverse);
-            break;
-        case PatronSortKey::BORROW_COUNT:
-            mergeSort(sortedPatrons, []( Patron *p){
-                return p->getBorrowCount();
-            }, reverse);
-            break;
+    switch (key)
+    {
+    case PatronSortKey::NAME:
+        mergeSort(sortedPatrons, [](Patron *p)
+                  { return p->getName(); }, reverse);
+        break;
+    case PatronSortKey::MEMBERSHIP_DATE:
+        mergeSort(sortedPatrons, [](Patron *p)
+                  { return p->getMembershipDate(); }, reverse);
+        break;
+    case PatronSortKey::BORROW_COUNT:
+        mergeSort(sortedPatrons, [](Patron *p)
+                  { return p->getBorrowCount(); }, reverse);
+        break;
     }
     return sortedPatrons;
 }
 
-Array<Patron *> PatronManager::getAllPatrons() 
+Array<Patron *> PatronManager::getAllPatrons()
 {
     return patronTable.all();
 }

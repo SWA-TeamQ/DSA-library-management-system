@@ -4,11 +4,13 @@
 #include <unordered_map>
 #include "dsa/Array.hpp"
 
+using namespace std;
+
 template <typename T>
 class HashTable
 {
 private:
-    std::unordered_map<string, T> table;
+    unordered_map<string, T> table;
 
 public:
     HashTable() = default;
@@ -24,28 +26,21 @@ public:
         return table.size();
     }
 
-    bool insert(const string &key, const T &item)
+    bool insert(string key, T item)
     {
         auto [it, inserted] = table.emplace(key, item);
         return inserted;
     }
 
-    T &operator[](const string &key)
+    T &operator[](string key)
     {
         return table[key];
     }
 
-    const T &operator[](const string &key) const
-    {
-        return table.at(key);
-    }
-
     auto begin() { return table.begin(); }
     auto end() { return table.end(); }
-    auto begin() const { return table.begin(); }
-    auto end() const { return table.end(); }
 
-    T* find(const std::string &key)
+    T* find(string key)
     {
     auto it = table.find(key);
     if (it != table.end())
@@ -53,16 +48,7 @@ public:
     return nullptr;
     }
 
-
-    T *find(const string &key) const
-    {
-        auto it = table.find(key);
-        if (it != table.end())
-            return &it->second;
-        return nullptr;
-    }
-
-    bool remove(const string &key)
+    bool remove(string key)
     {
         auto removed = table.erase(key);
         return removed > 0;
@@ -79,15 +65,6 @@ public:
         
         for (auto &[key, value] : table)
             result.append(&value);
-        return result;
-    }
-
-    Array<T *> all() const
-    {
-        Array<T *> result = Array<T *>(static_cast<int>(table.size()));
-        for (auto it = table.begin(); it != table.end(); ++it) {
-            result.append(const_cast<T*>(&it->second));
-        }
         return result;
     }
 };

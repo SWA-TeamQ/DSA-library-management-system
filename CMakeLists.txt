@@ -21,11 +21,16 @@ add_executable(lms
     src/models/Transaction.cpp
     src/core/LibraryController.cpp
     src/core/LoanService.cpp
-    src/ui/ConsoleInterface.cpp
     src/managers/BookManager.cpp
     src/managers/PatronManager.cpp
     src/managers/TransactionManager.cpp
     src/utils/utils.cpp
+    src/ui/ConsoleInterface.cpp
+    src/ui/BookMenu.cpp
+    src/ui/PatronMenu.cpp
+    src/ui/TransactionMenu.cpp
+    src/ui/UiHelpers.cpp
+    src/ui/UiComponents.cpp
 )
 
 # Future: tests target

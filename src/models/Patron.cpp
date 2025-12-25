@@ -5,13 +5,13 @@
 
 using namespace std;
 
-string Patron::serialize() const 
+string Patron::serialize() 
 {
     // Format: id|name|contact|membershipDate|borrowedFlag|activeCount|lifetimeCount
     return patronID + "|" + name + "|" + contact + "|" + membershipDate + "|" + (borrowed ? "1" : "0") + "|" + to_string(activeBorrowCount) + "|" + to_string(lifetimeBorrowCount);
 }
 
-void Patron::deserialize(const string &line)
+void Patron::deserialize(string line)
 {
     stringstream ss(line);
     string field;

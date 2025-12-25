@@ -44,37 +44,55 @@ public:
          string category = "General",
          int totalQuantity = 1,
          int currentQuantity = 1,
-         int borrowCount = 0);
+         int borrowCount = 0) : title(title),
+                                author(author),
+                                isbn(isbn),
+                                edition(edition),
+                                publicationYear(publicationYear),
+                                category(category),
+                                totalQuantity(totalQuantity),
+                                currentQuantity(currentQuantity),
+                                borrowCount(borrowCount)
+
+    {};
 
     // for generic lookup
-    const string& getKey() const { return isbn; }
-    
-    const string& getTitle() const { return title; }
-    const string& getAuthor() const { return author; }
-    const string getEdition() { return edition; }
-    int getPublicationYear() const { return publicationYear; }
-    const string& getCategory() const { return category; }
-    int getTotalQuantity() const { return totalQuantity; }
-    int getCurrentQuantity() const { return currentQuantity; }
-    bool isAvailable() const { return currentQuantity > 0; }
-    int getBorrowCount()  { return borrowCount; }
+    string &getKey() { return isbn; }
 
-    void setTitle(const string &t) { this->title = t; }
-    void setAuthor(const string &a) { this->author = a; }
-    void setISBN(const string &i) { this->isbn = i; }
-    void setEdition(const string &e) { this->edition = e; }
-    void setPublicationYear(const int &p) { this->publicationYear = p; }
-    void setCategory(const string &c) { this->category = c; }
-    void setTotalQuantity(const int &t) { this->totalQuantity = t; }
-    void incrementCurrentQuantity() { if(currentQuantity < totalQuantity) this->currentQuantity++; }
-    void decrementCurrentQuantity() { if(currentQuantity > 0) this->currentQuantity--; }
+    string &getTitle() { return title; }
+    string &getAuthor() { return author; }
+    string getEdition() { return edition; }
+    int getPublicationYear() { return publicationYear; }
+    string &getCategory() { return category; }
+    int getTotalQuantity() { return totalQuantity; }
+    int getCurrentQuantity() { return currentQuantity; }
+    bool isAvailable() { return currentQuantity > 0; }
+    int getBorrowCount() { return borrowCount; }
+
+    void setTitle(string t) { this->title = t; }
+    void setAuthor(string a) { this->author = a; }
+    void setISBN(string i) { this->isbn = i; }
+    void setEdition(string e) { this->edition = e; }
+    void setPublicationYear(int p) { this->publicationYear = p; }
+    void setCategory(string c) { this->category = c; }
+    void setTotalQuantity(int t) { this->totalQuantity = t; }
+    void incrementCurrentQuantity()
+    {
+        if (currentQuantity < totalQuantity)
+            this->currentQuantity++;
+    }
+    void decrementCurrentQuantity()
+    {
+        if (currentQuantity > 0)
+            this->currentQuantity--;
+    }
 
     bool isAllReturned() { return currentQuantity == totalQuantity; }
     void setBorrowCount(int b) { this->borrowCount = b; }
     void incrementBorrowCount() { this->borrowCount++; }
 
-    string serialize() const;
-    void deserialize(const string &line);
+    string serialize();
+    void deserialize(string line);
 
     Array<string> getFields();
     Array<string> getValues();

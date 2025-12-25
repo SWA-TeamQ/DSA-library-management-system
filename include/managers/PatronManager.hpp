@@ -17,7 +17,7 @@ private:
     PatronSearchMap searchMap;
 
 public:
-    PatronManager(const string &filename) : patronStore(filename)
+    PatronManager(string filename) : patronStore(filename)
     {
         loadPatrons();
     }
@@ -48,11 +48,11 @@ public:
         searchMap.buildIndices(patronTable);
     }
 
-    bool addPatron( Patron &p);
-    bool removePatron(const PatronSearchKey key, const string &value);
-    Patron *findPatron(const PatronSearchKey key, const string &value);
-    Array<Patron *> findPatrons(const PatronSearchKey key, const string &value);
-    Array<Patron *> sortPatrons(const PatronSortKey key, bool reverse = false);
-    bool updatePatron( Patron &p);
+    bool addPatron(Patron &p);
+    bool removePatron(PatronSearchKey key, string value);
+    Patron *findPatron(PatronSearchKey key, string value);
+    Array<Patron *> findPatrons(PatronSearchKey key, string value);
+    Array<Patron *> sortPatrons(PatronSortKey key, bool reverse = false);
+    bool updatePatron(Patron &p);
     Array<Patron *> getAllPatrons();
 };

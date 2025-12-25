@@ -4,13 +4,13 @@
 
 using namespace std;
 
-string Book::serialize() const 
+string Book::serialize() 
 {
   return title + "|" + author + "|" + isbn + "|" + edition + "|" +
          to_string(publicationYear) + "|" + category + "|" + to_string(totalQuantity) + "|" + to_string(currentQuantity) + "|" + to_string(borrowCount);
 }
 
-void Book::deserialize(const string &line)
+void Book::deserialize(string line)
 {
   std::stringstream ss(line);
   string field;

@@ -9,7 +9,7 @@ struct Node
     T data;
     Node *next;
     Node *prev;
-    Node(const T &data)
+    Node(T &data)
     {
         this->data = data;
         next = nullptr;
@@ -63,7 +63,7 @@ public:
         return &tail->data;
     }
 
-    void push_front(const T &value)
+    void push_front(T &value)
     {
         Node<T> *node = new Node<T>(value);
         if (isEmpty())
@@ -79,7 +79,7 @@ public:
         length++;
     }
 
-    void push_back(const T &value)
+    void push_back(T &value)
     {
         Node<T> *node = new Node<T>(value);
         if (isEmpty())

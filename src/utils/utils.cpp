@@ -1,15 +1,17 @@
 #include "utils/utils.hpp"
 
-string getCurrentDate() {
+string getCurrentDate()
+{
     time_t t = time(nullptr);
-    tm* tm = localtime(&t);
+    tm *tm = localtime(&t);
     stringstream ss;
     ss << put_time(tm, "%Y-%m-%d");
     return ss.str();
 }
 
-string generateId(const string& prefix) {
-    // simple id generator using random (srand) 
+string generateId(string prefix)
+{
+    // simple id generator using random (srand)
     srand(time(nullptr));
     int randomNum = rand() % 100000; // random number between 0 and 99999
     stringstream ss;
@@ -18,7 +20,7 @@ string generateId(const string& prefix) {
 }
 
 // parse YYYY-MM-DD into tm (local)
-static tm parseDate(const string &date)
+static tm parseDate(string date)
 {
     tm t{};
     sscanf(date.c_str(), "%d-%d-%d", &t.tm_year, &t.tm_mon, &t.tm_mday);
@@ -30,7 +32,7 @@ static tm parseDate(const string &date)
     return t;
 }
 
-string addDays(const string &date, int days)
+string addDays(string date, int days)
 {
     tm t = parseDate(date);
     time_t tt = mktime(&t);
@@ -41,7 +43,7 @@ string addDays(const string &date, int days)
     return ss.str();
 }
 
-int daysBetween(const string &from, const string &to)
+int daysBetween(string from, string to)
 {
     tm tf = parseDate(from);
     tm tt = parseDate(to);
@@ -51,18 +53,85 @@ int daysBetween(const string &from, const string &to)
     return static_cast<int>(diff / (24 * 60 * 60));
 }
 
-
-string trim(string& s)
+string trim(string s)
 {
     std::size_t start = 0;
-    while (start < s.size() && isspace(s[start]))
+    while (start < s.size() && isspace(static_cast<unsigned char>(s[start])))
         ++start;
 
     std::size_t end = s.size();
-    while (end > start && isspace(s[end - 1]))
+    while (end > start && isspace(static_cast<unsigned char>(s[end - 1])))
         --end;
 
     return s.substr(start, end - start);
 }
 
+// Escape/unescape functions for pipe-delimited persistence
+// Rules:
+//  - '\\' -> "\\\\"
+//  - '|'  -> "\\|"
+//  - '\n' -> "\\n"
+string escapeField(string s)
+{
+    string result;
+    result.reserve(s.size());
+    for (char c : s)
+    {
+        switch (c)
+        {
+        case '\\':
+            result += "\\\\";
+            break;
+        case '|':
+            result += "\\|";
+            break;
+        case '\n':
+            result += "\\n";
+            break;
+        default:
+            result += c;
+            break;
+        }
+    }
+    return result;
+}
 
+string unescapeField(string s)
+{
+    string result;
+    result.reserve(s.size());
+    for (size_t i = 0; i < s.size(); ++i)
+    {
+        char c = s[i];
+        if (c == '\\' && i + 1 < s.size())
+        {
+            char n = s[i + 1];
+            if (n == '\\')
+            {
+                result += '\\';
+                ++i;
+            }
+            else if (n == '|')
+            {
+                result += '|';
+                ++i;
+            }
+            else if (n == 'n')
+            {
+                result += '\n';
+                ++i;
+            }
+            else
+            {
+                // unknown escape, keep both
+                result += n;
+                ++i;
+            }
+        }
+        else
+        {
+            result += c;
+        }
+    }
+    return result;
+}

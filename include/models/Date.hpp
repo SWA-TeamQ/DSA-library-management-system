@@ -64,5 +64,5 @@ public:
     }
 
     string serialize();
-    void deserialize(const string &line);
+    void deserialize(string line);
 };

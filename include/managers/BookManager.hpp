@@ -19,7 +19,7 @@ private:
     BookSearchMap searchMap;
 
 public:
-    BookManager(const string &filename) : bookStore(filename)
+    BookManager(string filename) : bookStore(filename)
     {
         loadBooks();
     }
@@ -51,10 +51,10 @@ public:
 
     // Book operations
     bool addBook(Book &b);
-    bool updateBook( Book &b);
-    bool removeBook(const BookSearchKey key, const string &value);
-    Book *findBook(const BookSearchKey key, const string &value);
-    Array<Book *> findBooks(const BookSearchKey key, const string &value);
-    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false);
+    bool updateBook(Book &b);
+    bool removeBook(BookSearchKey key, string value);
+    Book *findBook(BookSearchKey key, string value);
+    Array<Book *> findBooks(BookSearchKey key, string value);
+    Array<Book *> sortBooks(BookSortKey key, bool reverse = false);
     Array<Book *> getAllBooks();
 };

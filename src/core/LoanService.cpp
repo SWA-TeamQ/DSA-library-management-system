@@ -4,7 +4,7 @@
 
 const int LOAN_DAYS = 15;
 
-bool LoanService::borrowBook(const string &patronID, const string &isbn)
+bool LoanService::borrowBook(string patronID, string isbn)
 {
     Book *book = bookManager.findBook(BookSearchKey::ID, isbn);
     if (!book)
@@ -77,7 +77,7 @@ bool LoanService::borrowBook(const string &patronID, const string &isbn)
     return true;
 }
 
-bool LoanService::returnBook(const string &patronID, const string &isbn)
+bool LoanService::returnBook(string patronID, string isbn)
 {
     Book *book = bookManager.findBook(BookSearchKey::ID, isbn);
     if (!book)

@@ -6,7 +6,7 @@ using namespace std;
 
 bool BookManager::addBook(Book &book)
 {
-    Book* existing = bookTable.find(book.getKey());
+    Book *existing = bookTable.find(book.getKey());
 
     if (!existing)
     {
@@ -14,7 +14,7 @@ bool BookManager::addBook(Book &book)
         Book newBook = book;
         newBook.setBorrowCount(0);
         newBook.setTotalQuantity(book.getTotalQuantity());
-        
+
         bookTable[newBook.getKey()] = newBook;
         searchMap.insert(newBook);
         bookStore.addData(newBook); // persist new book
@@ -23,7 +23,7 @@ bool BookManager::addBook(Book &book)
     return false;
 }
 
-bool BookManager::removeBook(const BookSearchKey key, const string &value)
+bool BookManager::removeBook(BookSearchKey key, string value)
 {
     Array<string> ids;
     switch (key)
@@ -48,7 +48,7 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
     }
 
     bool deleted = false;
-    for (const auto &id : ids)
+    for (auto &id : ids)
     {
         Book *b = bookTable.find(id);
         if (!b)
@@ -72,7 +72,7 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
 }
 
 // Search a Book by its searchable keys
-Book *BookManager::findBook(const BookSearchKey key, const string &value) 
+Book *BookManager::findBook(BookSearchKey key, string value)
 {
     Array<string> ids;
     switch (key)
@@ -105,7 +105,7 @@ Book *BookManager::findBook(const BookSearchKey key, const string &value)
 }
 
 // Search Books by a specific key
-Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &value) 
+Array<Book *> BookManager::findBooks(BookSearchKey key, string value)
 {
     Array<string> ids;
     switch (key)
@@ -125,7 +125,7 @@ Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &valu
     }
 
     Array<Book *> books;
-    for (const auto &id : ids)
+    for (auto &id : ids)
     {
         Book *book = bookTable.find(id);
         if (book)
@@ -137,9 +137,9 @@ Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &valu
 }
 
 // Update a book details
-bool BookManager::updateBook( Book& newBook)
+bool BookManager::updateBook(Book &newBook)
 {
-    Book* oldBook = bookTable.find(newBook.getKey());
+    Book *oldBook = bookTable.find(newBook.getKey());
     if (!oldBook)
         return false;
 
@@ -149,7 +149,7 @@ bool BookManager::updateBook( Book& newBook)
         newBook.getEdition() != oldBook->getEdition() ||
         newBook.getPublicationYear() != oldBook->getPublicationYear() ||
         newBook.getCategory() != oldBook->getCategory();
-        if (!changed)
+    if (!changed)
         return false;
 
     // Update search index (title, author, etc.)
@@ -163,38 +163,38 @@ bool BookManager::updateBook( Book& newBook)
 
     searchMap.insert(*oldBook);
 
-    saveBooks();  // persist once
+    saveBooks(); // persist once
 
     return true;
 }
 
-Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse) 
+Array<Book *> BookManager::sortBooks(BookSortKey key, bool reverse)
 {
     Array<Book *> sortedBooks = bookTable.all();
 
     switch (key)
     {
     case BookSortKey::TITLE:
-        mergeSort(sortedBooks, []( Book *b)
+        mergeSort(sortedBooks, [](Book *b)
                   { return b->getTitle(); }, reverse);
         break;
     case BookSortKey::AUTHOR:
-        mergeSort(sortedBooks, []( Book *b)
+        mergeSort(sortedBooks, [](Book *b)
                   { return b->getAuthor(); }, reverse);
         break;
     case BookSortKey::YEAR:
-        mergeSort(sortedBooks, []( Book *b)
+        mergeSort(sortedBooks, [](Book *b)
                   { return b->getPublicationYear(); }, reverse);
         break;
     case BookSortKey::BORROW_COUNT:
-        mergeSort(sortedBooks, []( Book *b)
+        mergeSort(sortedBooks, [](Book *b)
                   { return b->getBorrowCount(); }, reverse);
         break;
     }
     return sortedBooks;
 }
 
-Array<Book *> BookManager::getAllBooks() 
+Array<Book *> BookManager::getAllBooks()
 {
     return bookTable.all();
 }

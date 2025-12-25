@@ -24,7 +24,7 @@ public:
     void buildIndices(HashTable<Patron> &patrons)
     {
         clear();
-        for (const auto &[id, p] : patrons)
+        for (auto &[id, p] : patrons)
         {
             insert(p);
         }
@@ -51,7 +51,7 @@ public:
     }
 
     // Search patrons by name
-    Array<string> findByName(const string &name)
+    Array<string> findByName(string name)
     {
         auto it = nameIndex.find(name);
         if (it != nameIndex.end())

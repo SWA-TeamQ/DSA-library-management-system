@@ -9,12 +9,12 @@ string Date::serialize()  {
     return to_string(year) + "-" + to_string(month) + "-" + to_string(day);
 }
 
-void Date::deserialize(const string &line){
+void Date::deserialize(string line){
     int values[2];
     
     string temp = "";
     int i = 0;
-    for(const char &c : line){
+    for(char &c : line){
         if(c == '-'){
             values[i++] = stoi(temp);
             temp = "";

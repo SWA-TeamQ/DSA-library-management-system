@@ -22,7 +22,7 @@ public:
         return deque.size();
     }
 
-    void enqueue(const T &value)
+    void enqueue(T value)
     {
         deque.push_back(value);
     }
