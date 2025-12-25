@@ -20,6 +20,6 @@ public:
     LoanService(BookManager &bm, PatronManager &pm, TransactionManager &tm)
         : bookManager(bm), patronManager(pm), transactionManager(tm) {}
 
-    bool borrowBook(const string &patronID, const string &isbn);
-    bool returnBook(const string &patronID, const string &isbn);
+    bool borrowBook(string patronID, string isbn);
+    bool returnBook(string patronID, string isbn);
 };

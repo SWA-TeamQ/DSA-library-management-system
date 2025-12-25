@@ -142,10 +142,10 @@ void PatronMenu::removePatron()
 void PatronMenu::updatePatron()
 {
 	printHeader("Update Patron");
-	controller.updatePatron(Patron());
 	cout<<"Enter the Patron Id: \n";
 	string id = trim(readString("Enter Patron ID: "));
-	if (auto *patron = controller.findPatronById(id))
+	auto *patron = controller.findPatronById(id);
+	if (patron)
 	{
 		cout << "Current details:\n";
 		print(*patron);

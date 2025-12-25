@@ -39,40 +39,40 @@ public:
                 string dueDate,
                 string returnDate,
                 bool returned = false) : transactionID(transactionID),
-                                               bookID(bookID),
-                                               patronID(patronID),
-                                               borrowDate(borrowDate),
-                                               dueDate(dueDate),
-                                               returnDate(returnDate),
-                                               returned(returned)
+                                         bookID(bookID),
+                                         patronID(patronID),
+                                         borrowDate(borrowDate),
+                                         dueDate(dueDate),
+                                         returnDate(returnDate),
+                                         returned(returned)
     {
     }
 
     // for generic lookup
-    const string &getKey() { return transactionID; }
+    string getKey() { return transactionID; }
 
-    string &getID() { return transactionID; }
-    const string &getBookID() { return bookID; }
-    const string &getPatronID() { return patronID; }
-    string &getBorrowDate() { return borrowDate; }
-    string &getDueDate() { return dueDate; }
-    string &getReturnDate() { return returnDate; }
+    string getID() { return transactionID; }
+    string getBookID() { return bookID; }
+    string getPatronID() { return patronID; }
+    string getBorrowDate() { return borrowDate; }
+    string getDueDate() { return dueDate; }
+    string getReturnDate() { return returnDate; }
     bool isReturned() { return returned; }
 
-    void setId(const string &id) { transactionID = id; }
-    void setBookID(const string &id) { bookID = id; }
-    void setPatronID(const string &id) { patronID = id; }
-    void setBorrowDate(const string &date) { borrowDate = date; }
-    void setDueDate(const string &date) { dueDate = date; }
-    void setReturnDate(const string &date) { returnDate = date; }
-    void setReturned(const bool &r) { returned = r; }
+    void setId(string id) { transactionID = id; }
+    void setBookID(string id) { bookID = id; }
+    void setPatronID(string id) { patronID = id; }
+    void setBorrowDate(string date) { borrowDate = date; }
+    void setDueDate(string date) { dueDate = date; }
+    void setReturnDate(string date) { returnDate = date; }
+    void setReturned(bool r) { returned = r; }
 
     bool isOverdue();
     void markReturned();
     double calculateFine(double dailyRate = 0.50);
 
     string serialize();
-    void deserialize(const string &line);
+    void deserialize(string line);
 
     Array<string> getFields();
     Array<string> getValues();

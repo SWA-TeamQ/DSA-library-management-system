@@ -24,22 +24,22 @@ public:
         patronIdIndex.clear();
     }
 
-    void buildIndices(const HashTable<Transaction> &transactions)
+    void buildIndices(HashTable<Transaction> &transactions)
     {
         clear();
-        for (const auto &entry : transactions)
+        for (auto &entry : transactions)
         {
             insert(entry.second);
         }
     }
 
-    void insert(const Transaction &t)
+    void insert(Transaction &t)
     {
         bookIdIndex[t.getBookID()].insert(t.getKey());
         patronIdIndex[t.getPatronID()].insert(t.getKey());
     }
 
-    void remove(const Transaction &t)
+    void remove(Transaction &t)
     {
         string id = t.getKey(), bookId = t.getBookID(), patronId = t.getPatronID();
 
@@ -65,7 +65,7 @@ public:
     }
 
     // Search transactions by bookId
-    Array<string> findByBookId(const string &bookId)
+    Array<string> findByBookId(string bookId)
     {
         auto it = bookIdIndex.find(bookId);
         if (it != bookIdIndex.end())
@@ -82,7 +82,7 @@ public:
     }
 
     // Search transactions by patronId
-    Array<string> findByPatronId(const string &patronId)
+    Array<string> findByPatronId(string patronId)
     {
         auto it = patronIdIndex.find(patronId);
         if (it != patronIdIndex.end())

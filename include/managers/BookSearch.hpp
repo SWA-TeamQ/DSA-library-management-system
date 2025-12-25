@@ -43,7 +43,7 @@ public:
 
     void remove(Book &b)
     {
-        auto removeFromIndex = [&](unordered_map<string, Array<string>> &index, const string &key)
+        auto removeFromIndex = [&](unordered_map<string, Array<string>> &index, string key)
         {
             auto it = index.find(key);
             if (it != index.end())
@@ -69,17 +69,17 @@ public:
         removeFromIndex(categoryIndex, b.getCategory());
     }
 
-    Array<string> findByTitle(const string &title)
+    Array<string> findByTitle(string title)
     {
         return titleIndex.at(title);
     }
 
-    Array<string> findByAuthor(const string &author)
+    Array<string> findByAuthor(string author)
     {
         return authorIndex.at(author);
     }
 
-    Array<string> findByCategory(const string &category)
+    Array<string> findByCategory(string category)
     {
         return categoryIndex.at(category);
     }

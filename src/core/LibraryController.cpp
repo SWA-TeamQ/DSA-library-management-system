@@ -8,42 +8,42 @@ bool LibraryController::addBook(Book &b)
     return true;
 }
 
-bool LibraryController::removeBookById(const string &isbn)
+bool LibraryController::removeBookById(string isbn)
 {
     return bookManager.removeBook(BookSearchKey::ID, isbn);
 }
 
-bool LibraryController::removeBookByTitle(const string &title)
+bool LibraryController::removeBookByTitle(string title)
 {
     return bookManager.removeBook(BookSearchKey::TITLE, title);
 }
 
-bool LibraryController::removeBookByAuthor(const string &author)
+bool LibraryController::removeBookByAuthor(string author)
 {
     return bookManager.removeBook(BookSearchKey::AUTHOR, author);
 }
 
-bool LibraryController::removeBookByCategory(const string &category)
+bool LibraryController::removeBookByCategory(string category)
 {
     return bookManager.removeBook(BookSearchKey::CATEGORY, category);
 }
 
-Book *LibraryController::findBookById(const string &isbn)
+Book *LibraryController::findBookById(string isbn)
 {
     return bookManager.findBook(BookSearchKey::ID, isbn);
 }
 
-Array<Book *> LibraryController::findBooksByTitle(const string &title)
+Array<Book *> LibraryController::findBooksByTitle(string title)
 {
     return bookManager.findBooks(BookSearchKey::TITLE, title);
 }
 
-Array<Book *> LibraryController::findBooksByAuthor(const string &author)
+Array<Book *> LibraryController::findBooksByAuthor(string author)
 {
     return bookManager.findBooks(BookSearchKey::AUTHOR, author);
 }
 
-Array<Book *> LibraryController::findBooksByCategory(const string &category)
+Array<Book *> LibraryController::findBooksByCategory(string category)
 {
     return bookManager.findBooks(BookSearchKey::CATEGORY, category);
 }
@@ -82,32 +82,32 @@ bool LibraryController::addPatron(Patron &p)
     return patronManager.addPatron(p);
 }
 
-bool LibraryController::removePatronById(const string &patronID)
+bool LibraryController::removePatronById(string patronID)
 {
     return patronManager.removePatron(PatronSearchKey::ID, patronID);
 }
 
-bool LibraryController::removePatronByName(const string &patronName)
+bool LibraryController::removePatronByName(string patronName)
 {
     return patronManager.removePatron(PatronSearchKey::NAME, patronName);
 }
 
-Patron *LibraryController::findPatronById(const string &patronID)
+Patron *LibraryController::findPatronById(string patronID)
 {
     return patronManager.findPatron(PatronSearchKey::ID, patronID);
 }
 
-Patron *LibraryController::findPatronByName(const string &patronName)
+Patron *LibraryController::findPatronByName(string patronName)
 {
     return patronManager.findPatron(PatronSearchKey::NAME, patronName);
 }
 
-Array<Patron *> LibraryController::findPatronsById(const string &patronID)
+Array<Patron *> LibraryController::findPatronsById(string patronID)
 {
     return patronManager.findPatrons(PatronSearchKey::ID, patronID);
 }
 
-Array<Patron *> LibraryController::findPatronsByName(const string &patronName)
+Array<Patron *> LibraryController::findPatronsByName(string patronName)
 {
     return patronManager.findPatrons(PatronSearchKey::NAME, patronName);
 }
@@ -149,7 +149,7 @@ Array<Transaction *> LibraryController::listAllTransactions()
     return transactionManager.getAllTransactions();
 }
 
-void LibraryController::listTransactionsForPatron(const string &patronID)
+void LibraryController::listTransactionsForPatron(string patronID)
 {
     Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
     if (txs.empty())
@@ -160,7 +160,7 @@ void LibraryController::listTransactionsForPatron(const string &patronID)
     tablePrint(txs);
 }
 
-void LibraryController::listOverdueForPatron(const string &patronID)
+void LibraryController::listOverdueForPatron(string patronID)
 {
     Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
     Array<Transaction *> overdue;
@@ -186,12 +186,12 @@ Array<Transaction *> LibraryController::sortTransactionsByReturnDate(bool revers
  * Borrow/Return operations
  */
 
-bool LibraryController::borrowBook(const string &patronID, const string &isbn)
+bool LibraryController::borrowBook(string patronID, string isbn)
 {
     return loanService.borrowBook(patronID, isbn);
 }
 
-bool LibraryController::returnBook(const string &patronID, const string &isbn)
+bool LibraryController::returnBook(string patronID, string isbn)
 {
     return loanService.returnBook(patronID, isbn);
 }

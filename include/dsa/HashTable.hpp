@@ -26,13 +26,13 @@ public:
         return table.size();
     }
 
-    bool insert(const string &key, T &item)
+    bool insert(string key, T item)
     {
         auto [it, inserted] = table.emplace(key, item);
         return inserted;
     }
 
-    T &operator[](const string &key)
+    T &operator[](string key)
     {
         return table[key];
     }
@@ -40,7 +40,7 @@ public:
     auto begin() { return table.begin(); }
     auto end() { return table.end(); }
 
-    T* find(const string &key)
+    T* find(string key)
     {
     auto it = table.find(key);
     if (it != table.end())
@@ -48,7 +48,7 @@ public:
     return nullptr;
     }
 
-    bool remove(const string &key)
+    bool remove(string key)
     {
         auto removed = table.erase(key);
         return removed > 0;

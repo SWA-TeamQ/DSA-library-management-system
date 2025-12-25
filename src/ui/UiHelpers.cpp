@@ -13,7 +13,7 @@ void waitForEnter()
     getline(cin, dummy);
 }
 
-string readString(const string &prompt, bool optional)
+string readString(string prompt, bool optional)
 {
     string input;
     do
@@ -30,7 +30,7 @@ string readString(const string &prompt, bool optional)
     return input;
 }
 
-int readInt(const string &prompt)
+int readInt(string prompt)
 {
     int input;
     bool valid = true;
@@ -79,7 +79,7 @@ void printWelcomeBanner()
     waitForEnter();
 }
 
-void printHeader(const string &title)
+void printHeader(string title)
 {
     clearScreen();
     cout << "       .--.                   .---.        \n";
@@ -104,10 +104,10 @@ void printHeader(const string &title)
  * tablePrint (overloaded) - to print the list of objects in a table view
  */
 
-void print( Book &book)
+void print(Book &book)
 {
-    const auto fields = book.getFields();
-    const auto values = book.getValues();
+    auto fields = book.getFields();
+    auto values = book.getValues();
 
     for (int i = 0; i < fields.size(); i++)
     {
@@ -116,10 +116,10 @@ void print( Book &book)
     cout << endl;
 }
 
-void print( Patron &patron)
+void print(Patron &patron)
 {
-    const auto fields = patron.getFields();
-    const auto values = patron.getValues();
+    auto fields = patron.getFields();
+    auto values = patron.getValues();
 
     for (int i = 0; i < fields.size(); i++)
     {
@@ -128,10 +128,10 @@ void print( Patron &patron)
     cout << endl;
 }
 
-void print( Transaction &transaction)
+void print(Transaction &transaction)
 {
-    const auto fields = transaction.getFields();
-    const auto values = transaction.getValues();
+    auto fields = transaction.getFields();
+    auto values = transaction.getValues();
 
     for (int i = 0; i < fields.size(); i++)
     {
@@ -140,7 +140,7 @@ void print( Transaction &transaction)
     cout << endl;
 }
 
-void tablePrint( Array<Book> &books)
+void tablePrint(Array<Book> &books)
 {
     Book temp = Book();
     // table header
@@ -148,13 +148,13 @@ void tablePrint( Array<Book> &books)
     Row(fields, true); // true for the top border
 
     // table rows
-    for ( auto &book : books)
+    for (auto &book : books)
     {
         Row(book.getValues());
     }
 }
 
-void tablePrint( Array<Book *> &books)
+void tablePrint(Array<Book *> &books)
 {
     Book temp = Book();
     // table header
@@ -162,13 +162,13 @@ void tablePrint( Array<Book *> &books)
     Row(fields, true); // true for the top border
 
     // table rows
-    for (const auto &book : books)
+    for (auto *book : books)
     {
         Row((*book).getValues());
     }
 }
 
-void tablePrint( Array<Patron> &patrons)
+void tablePrint(Array<Patron> &patrons)
 {
     Patron temp = Patron();
 
@@ -177,13 +177,13 @@ void tablePrint( Array<Patron> &patrons)
     Row(fields, true); // true for the top border
 
     // table rows
-    for ( auto &book : patrons)
+    for (auto &patron : patrons)
     {
-        Row(book.getValues());
+        Row(patron.getValues());
     }
 }
 
-void tablePrint( Array<Patron *> &patrons)
+void tablePrint(Array<Patron *> &patrons)
 {
     Patron temp = Patron();
 
@@ -192,13 +192,13 @@ void tablePrint( Array<Patron *> &patrons)
     Row(fields, true); // true for the top border
 
     // table rows
-    for ( auto &patron : patrons)
+    for (auto *patron : patrons)
     {
         Row((*patron).getValues());
     }
 }
 
-void tablePrint( Array<Transaction> &transactions)
+void tablePrint(Array<Transaction> &transactions)
 {
     Transaction temp = Transaction();
 
@@ -207,13 +207,13 @@ void tablePrint( Array<Transaction> &transactions)
     Row(fields, true); // true for the top border
 
     // table rows
-    for ( auto &transaction : transactions)
+    for (auto &transaction : transactions)
     {
         Row(transaction.getValues());
     }
 }
 
-void tablePrint( Array<Transaction *> &transactions)
+void tablePrint(Array<Transaction *> &transactions)
 {
     Transaction temp = Transaction();
 
@@ -222,7 +222,7 @@ void tablePrint( Array<Transaction *> &transactions)
     Row(fields, true); // true for the top border
 
     // table rows
-    for ( auto &transaction : transactions)
+    for (auto *transaction : transactions)
     {
         Row((*transaction).getValues());
     }

@@ -45,8 +45,8 @@ public:
          int totalQuantity = 1,
          int currentQuantity = 1,
          int borrowCount = 0) : title(title),
-                                author(author), 
-                                isbn(isbn), 
+                                author(author),
+                                isbn(isbn),
                                 edition(edition),
                                 publicationYear(move(publicationYear))
 
@@ -65,13 +65,13 @@ public:
     bool isAvailable() { return currentQuantity > 0; }
     int getBorrowCount() { return borrowCount; }
 
-    void setTitle(const string &t) { this->title = t; }
-    void setAuthor(const string &a) { this->author = a; }
-    void setISBN(const string &i) { this->isbn = i; }
-    void setEdition(const string &e) { this->edition = e; }
-    void setPublicationYear(const int &p) { this->publicationYear = p; }
-    void setCategory(const string &c) { this->category = c; }
-    void setTotalQuantity(const int &t) { this->totalQuantity = t; }
+    void setTitle(string t) { this->title = t; }
+    void setAuthor(string a) { this->author = a; }
+    void setISBN(string i) { this->isbn = i; }
+    void setEdition(string e) { this->edition = e; }
+    void setPublicationYear(int p) { this->publicationYear = p; }
+    void setCategory(string c) { this->category = c; }
+    void setTotalQuantity(int t) { this->totalQuantity = t; }
     void incrementCurrentQuantity()
     {
         if (currentQuantity < totalQuantity)
@@ -88,7 +88,7 @@ public:
     void incrementBorrowCount() { this->borrowCount++; }
 
     string serialize();
-    void deserialize(const string &line);
+    void deserialize(string line);
 
     Array<string> getFields();
     Array<string> getValues();

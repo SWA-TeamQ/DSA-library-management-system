@@ -48,12 +48,12 @@ public:
     }
 
     // for generic lookup
-    string &getKey() { return patronID; }
+    string getKey() { return patronID; }
 
-    string &getID() { return patronID; }
-    string &getName() { return name; }
-    string &getContact() { return contact; }
-    string &getMembershipDate() { return membershipDate; }
+    string getID() { return patronID; }
+    string getName() { return name; }
+    string getContact() { return contact; }
+    string getMembershipDate() { return membershipDate; }
     int getBorrowCount() { return lifetimeBorrowCount; }
     bool isBorrowed() { return borrowed; }
 
@@ -61,10 +61,10 @@ public:
     // active borrow count (currently checked-out items)
     int getActiveBorrowCount() { return activeBorrowCount; }
 
-    void setID(const string &id) { patronID = id; }
-    void setName(const string &n) { name = n; }
-    void setContact(const string &c) { contact = c; }
-    void setMembershipDate(const string &date) { membershipDate = date; }
+    void setID(string id) { patronID = id; }
+    void setName(string n) { name = n; }
+    void setContact(string c) { contact = c; }
+    void setMembershipDate(string date) { membershipDate = date; }
     void setBorrowCount(int bc) { lifetimeBorrowCount = bc; }
     void setActiveBorrowCount(int bc) { activeBorrowCount = bc; }
     void setBorrowed(bool b) { borrowed = b; }
@@ -77,8 +77,8 @@ public:
             --activeBorrowCount;
     }
 
-    string serialize() const;
-    void deserialize(const string &line);
+    string serialize();
+    void deserialize(string line);
 
     Array<string> getFields();
     Array<string> getValues();

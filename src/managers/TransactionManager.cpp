@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool TransactionManager::addTransaction( Transaction &t)
+bool TransactionManager::addTransaction(Transaction &t)
 {
     transactionTable[t.getKey()] = t;
     searchMap.insert(t);
@@ -13,7 +13,7 @@ bool TransactionManager::addTransaction( Transaction &t)
     return true;
 }
 
-bool TransactionManager::removeTransaction(const TransactionSearchKey key, const string &value)
+bool TransactionManager::removeTransaction(TransactionSearchKey key, string value)
 {
     Array<string> ids;
     switch (key)
@@ -29,18 +29,20 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
         break;
     }
 
-    if (ids.empty()) return false;
+    if (ids.empty())
+        return false;
 
     bool deleted = false;
-    for (const string &id : ids)
+    for (string &id : ids)
     {
         Transaction *t = transactionTable.find(id);
-        if(!t) continue;
+        if (!t)
+            continue;
         searchMap.remove(*t);
         transactionTable.remove(id);
         deleted = true;
     }
-    
+
     if (deleted)
     {
         saveTransactions();
@@ -48,7 +50,7 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
     return deleted;
 }
 
-Transaction *TransactionManager::findTransaction(const TransactionSearchKey key, const string &value) 
+Transaction *TransactionManager::findTransaction(TransactionSearchKey key, string value)
 {
     Array<string> ids;
     switch (key)
@@ -64,13 +66,14 @@ Transaction *TransactionManager::findTransaction(const TransactionSearchKey key,
         break;
     }
 
-    if (ids.empty()) return nullptr;
+    if (ids.empty())
+        return nullptr;
 
     Transaction *t = transactionTable.find(ids[0]);
     return t;
 }
 
-Array<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) 
+Array<Transaction *> TransactionManager::findTransactions(TransactionSearchKey key, string value)
 {
     Array<string> ids;
     switch (key)
@@ -87,10 +90,11 @@ Array<Transaction *> TransactionManager::findTransactions(const TransactionSearc
     }
 
     Array<Transaction *> results;
-    for (const string &id : ids)
+    for (string &id : ids)
     {
         Transaction *t = transactionTable.find(id);
-        if (t) {
+        if (t)
+        {
             results.append(t);
         }
     }
@@ -104,25 +108,22 @@ Array<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key
     switch (key)
     {
     case TransactionSortKey::BORROW_DATE:
-        mergeSort(sorted, []( Transaction *t){
-            return t->getBorrowDate();
-        }, reverse);
+        mergeSort(sorted, [](Transaction *t)
+                  { return t->getBorrowDate(); }, reverse);
         break;
     case TransactionSortKey::DUE_DATE:
-        mergeSort(sorted, []( Transaction *t){
-            return t->getDueDate();
-        }, reverse);
+        mergeSort(sorted, [](Transaction *t)
+                  { return t->getDueDate(); }, reverse);
         break;
     case TransactionSortKey::RETURN_DATE:
-        mergeSort(sorted, []( Transaction *t){
-            return t->getReturnDate();
-        }, reverse);
+        mergeSort(sorted, [](Transaction *t)
+                  { return t->getReturnDate(); }, reverse);
         break;
     }
     return sorted;
 }
 
-Array<Transaction *> TransactionManager::getAllTransactions() 
+Array<Transaction *> TransactionManager::getAllTransactions()
 {
     return transactionTable.all();
 }

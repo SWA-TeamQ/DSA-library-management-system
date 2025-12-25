@@ -11,14 +11,16 @@ private:
     string filename;
 
 public:
-    DataStore(const string &filename){
+    DataStore(string filename)
+    {
         this->filename = "data/" + filename;
     }
 
-    bool saveData( HashTable<T> &dataMap) const
+    bool saveData(HashTable<T> &dataMap)
     {
         ofstream file(filename, ios::out | ios::trunc);
-        if (!file.is_open()) return false;
+        if (!file.is_open())
+            return false;
 
         for (auto &[key, item] : dataMap)
         {
@@ -31,7 +33,8 @@ public:
     bool addData(T &item)
     {
         ofstream file(filename, ios::app);
-        if (!file.is_open()) return false;
+        if (!file.is_open())
+            return false;
 
         file << item.serialize() << '\n';
         file.close();
@@ -42,12 +45,14 @@ public:
     {
         dataMap.clear();
         ifstream file(filename, ios::in);
-        if (!file.is_open()) return false;
+        if (!file.is_open())
+            return false;
 
         string line;
         while (getline(file, line))
         {
-            if (line.empty()) continue;
+            if (line.empty())
+                continue;
             T item;
             item.deserialize(line);
             dataMap[item.getKey()] = item;

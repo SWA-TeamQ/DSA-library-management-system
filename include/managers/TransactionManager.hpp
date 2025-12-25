@@ -17,7 +17,7 @@ private:
     TransactionSearchMap searchMap;
 
 public:
-    TransactionManager(const string &filename) : transactionStore(filename)
+    TransactionManager(string filename) : transactionStore(filename)
     {
         loadTransactions();
     }
@@ -48,11 +48,11 @@ public:
         searchMap.buildIndices(transactionTable);
     }
 
-    bool addTransaction( Transaction &t);
-    bool removeTransaction(const TransactionSearchKey key, const string &value);
-    Transaction *findTransaction(const TransactionSearchKey key, const string &value);
-    Array<Transaction *> findTransactions(const TransactionSearchKey key, const string &value);
-    Array<Transaction *> sortTransactions(const TransactionSortKey key, bool reverse = false);
+    bool addTransaction(Transaction &t);
+    bool removeTransaction(TransactionSearchKey key, string value);
+    Transaction *findTransaction(TransactionSearchKey key, string value);
+    Array<Transaction *> findTransactions(TransactionSearchKey key, string value);
+    Array<Transaction *> sortTransactions(TransactionSortKey key, bool reverse = false);
 
     Array<Transaction *> getAllTransactions();
 };

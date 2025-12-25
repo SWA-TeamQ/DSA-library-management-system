@@ -1,17 +1,15 @@
 #pragma once
-#ifndef UNORDERED_MAP_HPP
-#define UNORDERED_MAP_HPP
 #include <iostream>
 #include <string>
 #include <Array.hpp>
 #include <stdexcept>
 
-using std::string;
+using namespace std;
 
-inline std::size_t hash(const string &key)
+inline size_t hash(const string &key)
 {
-    const std::size_t BASE = 31;
-    std::size_t h = 0;
+    const size_t BASE = 31;
+    size_t h = 0;
     for (unsigned char c : key)
     {
         h = h * BASE + c;
@@ -30,7 +28,7 @@ template <typename T>
 class unordered_map
 {
 public:
-    static constexpr std::size_t bucketCount = 201241; // prime number
+    static constexpr size_t bucketCount = 201241; // prime number
     Array<Entry<T>> *buckets;
 
     unordered_map()
@@ -104,10 +102,10 @@ public:
 
     void insert(const string &key, const T &value)
     {
-        std::size_t index = getIndex(key);
+        size_t index = getIndex(key);
         Array<Entry<T>> &bucket = buckets[index];
 
-        for (std::size_t i = 0; i < bucket.size(); i++)
+        for (size_t i = 0; i < bucket.size(); i++)
         {
             if (bucket[i].key == key)
             {
@@ -120,10 +118,10 @@ public:
 
     T *find(const string &key)
     {
-        std::size_t index = getIndex(key);
+        size_t index = getIndex(key);
         Array<Entry<T>> &bucket = buckets[index];
 
-        for (std::size_t i = 0; i < bucket.size(); i++)
+        for (size_t i = 0; i < bucket.size(); i++)
         {
             if (bucket[i].key == key)
             {
@@ -135,10 +133,10 @@ public:
     }
 
     bool erase(const string& key) {
-        std::size_t index = getIndex(key);
+        size_t index = getIndex(key);
         Array<Entry<T>> &bucket = buckets[index];
 
-        for (std::size_t i = 0; i < bucket.size(); i++)
+        for (size_t i = 0; i < bucket.size(); i++)
         {
             if (bucket[i].key == key)
             {
@@ -152,9 +150,9 @@ public:
     Array<Entry<T>> getAllEntries() const
     {
         Array<Entry<T>> all;
-        for (std::size_t i = 0; i < bucketCount; i++)
+        for (size_t i = 0; i < bucketCount; i++)
         {
-            for (std::size_t j = 0; j < buckets[i].size(); j++)
+            for (size_t j = 0; j < buckets[i].size(); j++)
             {
                 all.append(buckets[i][j]);
             }
@@ -178,7 +176,7 @@ public:
 
         if (result == nullptr)
         {
-            throw std::out_of_range("Map::at() : key not found in map");
+            throw out_of_range("Map::at() : key not found in map");
         }
 
         return *result;
@@ -188,17 +186,17 @@ public:
 
     const T &at(const string &key) const
     {
-        std::size_t index = getIndex(key);
+        size_t index = getIndex(key);
         const Array<Entry<T>> &bucket = buckets[index];
 
-        for (std::size_t i = 0; i < bucket.size(); i++)
+        for (size_t i = 0; i < bucket.size(); i++)
         {
             if (bucket[i].key == key)
             {
                 return bucket[i].value;
             }
         }
-        throw std::out_of_range("Map::at() : key not found in const map");
+        throw out_of_range("Map::at() : key not found in const map");
     }
 
     bool isEmpty() const
@@ -224,7 +222,7 @@ public:
     }
 
 private:
-    std::size_t getIndex(const string &key) const
+    size_t getIndex(const string &key) const
     {
         return hash(key) % bucketCount;
     }

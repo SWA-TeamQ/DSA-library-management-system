@@ -35,7 +35,7 @@ string Transaction::serialize()
     return transactionID + "|" + bookID + "|" + patronID + "|" + borrowDate + "|" + dueDate + "|" + returnDate + "|" + (returned ? "1" : "0");
 }
 
-void Transaction::deserialize(const string &line)
+void Transaction::deserialize(string line)
 {
     stringstream ss(line);
     string field;
