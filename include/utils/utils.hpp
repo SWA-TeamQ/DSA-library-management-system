@@ -18,3 +18,10 @@ string addDays(const string &date, int days);
 int daysBetween(const string &from, const string &to);
 string trim( std::string& str);
 
+// escape/unescape fields for pipe-delimited persistence
+// Escaping rules:
+//  - '\\' -> "\\\\"
+//  - '|'  -> "\\|"
+//  - '\n' -> "\\n"
+string escapeField(const string &s);
+string unescapeField(const string &s);

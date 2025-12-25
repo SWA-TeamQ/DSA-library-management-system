@@ -15,12 +15,12 @@ public:
         this->filename = "data/" + filename;
     }
 
-    bool saveData(const HashTable<T> &dataMap) const
+    bool saveData( HashTable<T> &dataMap) const
     {
         ofstream file(filename, ios::out | ios::trunc);
         if (!file.is_open()) return false;
 
-        for (const auto &[key, item] : dataMap)
+        for (auto &[key, item] : dataMap)
         {
             file << item.serialize() << "\n";
         }
@@ -28,7 +28,7 @@ public:
         return true;
     }
 
-    bool addData(const T &item)
+    bool addData(T &item)
     {
         ofstream file(filename, ios::app);
         if (!file.is_open()) return false;

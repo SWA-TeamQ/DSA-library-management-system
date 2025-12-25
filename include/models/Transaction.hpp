@@ -49,11 +49,11 @@ public:
     }
 
     // for generic lookup
-    const string &getKey() const { return transactionID; }
+    const string &getKey() { return transactionID; }
 
     string &getID() { return transactionID; }
-    const string &getBookID() const { return bookID; }
-    const string &getPatronID() const { return patronID; }
+    const string &getBookID() { return bookID; }
+    const string &getPatronID() { return patronID; }
     string &getBorrowDate() { return borrowDate; }
     string &getDueDate() { return dueDate; }
     string &getReturnDate() { return returnDate; }
@@ -71,7 +71,7 @@ public:
     void markReturned();
     double calculateFine(double dailyRate = 0.50);
 
-    string serialize() const;
+    string serialize();
     void deserialize(const string &line);
 
     Array<string> getFields();

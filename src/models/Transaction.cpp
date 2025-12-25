@@ -30,7 +30,7 @@ double Transaction::calculateFine(double dailyRate)
     return days * dailyRate;
 }
 
-string Transaction::serialize() const
+string Transaction::serialize()
 {
     return transactionID + "|" + bookID + "|" + patronID + "|" + borrowDate + "|" + dueDate + "|" + returnDate + "|" + (returned ? "1" : "0");
 }

@@ -24,7 +24,7 @@ public:
     void buildIndices(HashTable<Patron> &patrons)
     {
         clear();
-        for (const auto &[id, p] : patrons)
+        for (auto &[id, p] : patrons)
         {
             insert(p);
         }

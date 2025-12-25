@@ -21,7 +21,7 @@ public:
     };
 
     // Copy Constructor (for deep copy)
-    Array(const Array &other) {
+    Array(Array &other) {
         this->length = other.length;
         this->initialCapacity = other.initialCapacity;
         this->capacity = other.capacity;
@@ -32,7 +32,7 @@ public:
     }
 
     // Copy Assignment Operator ( '=' operator overloading) // to make it work with out class objects
-    Array &operator=(const Array &other) {
+    Array &operator=(Array &other) {
         if (this != &other) {
             delete[] items;
             this->length = other.length;
@@ -47,7 +47,7 @@ public:
     }
 
     // Move Constructor
-    Array(Array &&other) noexcept {
+    Array(Array &&other) {
         this->length = other.length;
         this->initialCapacity = other.initialCapacity;
         this->capacity = other.capacity;
@@ -59,7 +59,7 @@ public:
     }
 
     // Move Assignment Operator
-    Array &operator=(Array &&other) noexcept {
+    Array &operator=(Array &&other) {
         if (this != &other) {
             delete[] items;
             this->length = other.length;
@@ -87,18 +87,7 @@ public:
         return items[index];
     }
 
-    // indexing for const object
-    const T &operator[](int index) const
-    {
-        validateIndex(index);
-        return items[index];
-    }
-
     T* begin(){
-        return items;
-    }
-
-    const T* begin() const{
         return items;
     }
 
@@ -106,17 +95,7 @@ public:
         return items + length;
     }
 
-    const T* end() const{
-        return items + length;
-    }
-
     T* back(){
-        if(length > 0)
-            return &items[length - 1];
-        return nullptr;
-    }
-
-    const T* back() const{
         if(length > 0)
             return &items[length - 1];
         return nullptr;
@@ -158,7 +137,7 @@ public:
         pop();
     }
 
-    int find(const T &item) const
+    int find(T &item)
     {
         for(int i = 0; i < length; i++)
             if (items[i] == item)
@@ -166,7 +145,7 @@ public:
         return -1;
     }
 
-    void remove(const T &item){
+    void remove(T &item){
         int index = find(item);
         if (index != -1)
             removeAt(index);
