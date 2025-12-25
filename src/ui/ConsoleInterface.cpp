@@ -70,7 +70,7 @@ void ConsoleInterface::handleTransactionMenu()
 }
 
 void ConsoleInterface::handleDataMenu()
-{
+{ 
     bool back = false;
     while (!back)
     {
@@ -104,18 +104,16 @@ void ConsoleInterface::handleDataMenu()
 
 void ConsoleInterface::handleSaveData()
 {
-    cout << "\n +-------------------------------------------------------+\n";
-    cout << " | NOTICE: The [Save Data] feature is currently         |\n";
-    cout << " | being implemented by Member 6.                        |\n";
-    cout << " +-------------------------------------------------------+\n";
+    cout<<"Saving Data ...\n";
+    controller.save();
+    cout<<"..........Done...............\n";
     waitForEnter();
 }
 
 void ConsoleInterface::handleLoadData()
 {
-    cout << "\n +-------------------------------------------------------+\n";
-    cout << " | NOTICE: The [Load Data] feature is currently         |\n";
-    cout << " | being implemented by Member 6.                        |\n";
-    cout << " +-------------------------------------------------------+\n";
+    cout<<"Loading Data .... \n";
+    controller.load();
+    cout<<"...........Done...............\n";
     waitForEnter();
 }

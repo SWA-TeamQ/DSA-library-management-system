@@ -1,19 +1,18 @@
 #pragma once
 #include "models/Book.hpp"
-#include <unordered_set>
-#include <unordered_map>
-#include <string>
+#include "dsa/Map.hpp"
 #include "dsa/Array.hpp"
+#include <string>
 
 using namespace std;
 
-// Simple search table for Books by title and author
+// Simple search table for Books by title, author, category
 class BookSearchMap
 {
 private:
-    unordered_map<string, unordered_set<string>> titleIndex;
-    unordered_map<string, unordered_set<string>> authorIndex;
-    unordered_map<string, unordered_set<string>> categoryIndex;
+    dsa::unordered_map<string, dsa::Array<string>> titleIndex;
+    dsa::unordered_map<string, dsa::Array<string>> authorIndex;
+    dsa::unordered_map<string, dsa::Array<string>> categoryIndex;
 
 public:
     BookSearchMap() = default;
@@ -26,7 +25,7 @@ public:
         categoryIndex.clear();
     }
 
-    // Build indices from any map-like container of Books (e.g., unordered_map, HashTable)
+    // Build indices from any map-like container of Books
     template <typename MapType>
     void buildIndices(const MapType &books)
     {
@@ -39,102 +38,72 @@ public:
 
     void insert(const Book &b)
     {
-        titleIndex[b.getTitle()].insert(b.getKey());
-        authorIndex[b.getAuthor()].insert(b.getKey());
-        categoryIndex[b.getCategory()].insert(b.getKey());
+        titleIndex[b.getTitle()].append(b.getKey());
+        authorIndex[b.getAuthor()].append(b.getKey());
+        categoryIndex[b.getCategory()].append(b.getKey());
     }
 
     void remove(const Book &b)
     {
-        string id = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
-
-        // remove from titleIndex
-        auto it = titleIndex.find(title);
-        if (it != titleIndex.end())
+        auto removeFromIndex = [&](dsa::unordered_map<string,Array<string>> &index, const string &key)
         {
-            it->second.erase(id);
-            // after deletion if the unordered set is empty, then we want to remove the key
-            if (it->second.empty())
+            Array<string>* arrPtr = index.find(key);
+            if (arrPtr)
             {
-                titleIndex.erase(it);
+                Array<string>& arr = *arrPtr;
+                for (size_t i = 0; i < arr.size(); i++)
+                {
+                    if (arr[i] == b.getKey())
+                    {
+                        arr.removeAt(i);
+                        break;
+                    }
+                }
+                if (arr.isEmpty())
+                {
+                    index.erase(key);
+                }
             }
-        }
+        };
 
-        // remove from authorIndex
-        it = authorIndex.find(author);
-        if (it != authorIndex.end())
-        {
-            it->second.erase(id);
-            // after deletion if the unordered set is empty, then we want to remove the key
-            if (it->second.empty())
-            {
-                authorIndex.erase(it);
-            }
-        }
-
-        // remove from categoryIndex
-        it = categoryIndex.find(category);
-        if (it != categoryIndex.end())
-        {
-            it->second.erase(id);
-            // after deletion if the unordered set is empty, then we want to remove the key
-            if (it->second.empty())
-            {
-                categoryIndex.erase(it);
-            }
-        }
+        removeFromIndex(titleIndex, b.getTitle());
+        removeFromIndex(authorIndex, b.getAuthor());
+        removeFromIndex(categoryIndex, b.getCategory());
     }
 
-    // Search books by title
     Array<string> findByTitle(const string &title) const
     {
-        auto it = titleIndex.find(title);
-        if (it != titleIndex.end())
+        try
         {
-            auto setIt = it->second;
-            Array<string> ids;
-            for (auto &key : setIt)
-            {
-                ids.append(key);
-            }
-            return ids;
+            return titleIndex.at(title); // throws if key not found
         }
-        return {};
+        catch (std::out_of_range &)
+        {
+            return {};
+        }
     }
 
-    // Search books by author
-    Array<string> findByAuthor(const string &author) const
+    dsa::Array<string> findByAuthor(const string &author) const
     {
-        auto it = authorIndex.find(author);
-        if (it != authorIndex.end())
+        try
         {
-            auto setIt = it->second;
-            Array<string> ids;
-            for (auto &key : setIt)
-            {
-                ids.append(key);
-            }
-            return ids;
+            return authorIndex.at(author);
         }
-
-        return {};
+        catch (std::out_of_range &)
+        {
+            return {};
+        }
     }
 
-    // Search books by category
-    Array<string> findByCategory(const string &category) const
+    dsa::Array<string> findByCategory(const string &category) const
     {
-        auto it = categoryIndex.find(category);
-        if (it != categoryIndex.end())
+        try
         {
-            auto setIt = it->second;
-            Array<string> ids;
-            for (auto &key : setIt)
-            {
-                ids.append(key);
-            }
-            return ids;
+            return categoryIndex.at(category);
         }
-
-        return {};
+        catch (std::out_of_range &)
+        {
+            return {};
+        }
     }
 };

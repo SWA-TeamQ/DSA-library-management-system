@@ -116,7 +116,7 @@ public:
         return nullptr;
     }
 
-    const T* back(){
+    const T* back() const{
         if(length > 0)
             return &items[length - 1];
         return nullptr;

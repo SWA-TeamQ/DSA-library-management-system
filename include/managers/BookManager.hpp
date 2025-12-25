@@ -25,25 +25,29 @@ public:
     }
 
     // Data operations
-    void loadBooks(){
+    void loadBooks()
+    {
         bookTable.clear();
         searchMap.clear();
 
-        if(!bookStore.loadData(bookTable)){
+        if (!bookStore.loadData(bookTable))
+        {
             cout << "Warning: unable to load books from file" << endl;
             return;
         }
         buildSearchMap();
     }
 
-    void saveBooks(){
+    void saveBooks()
+    {
         bookStore.saveData(bookTable);
     }
-    
+
     // title -> id, author -> id
-    void buildSearchMap(){
+    void buildSearchMap()
+    {
         searchMap.buildIndices(bookTable);
-    } 
+    }
 
     // Book operations
     bool addBook(const Book &b);
@@ -51,6 +55,6 @@ public:
     bool removeBook(const BookSearchKey key, const string &value);
     Book *findBook(const BookSearchKey key, const string &value) const;
     Array<Book *> findBooks(const BookSearchKey key, const string &value) const;
-    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false);
+    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false) const;
     Array<Book *> getAllBooks() const;
 };

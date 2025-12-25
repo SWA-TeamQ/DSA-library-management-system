@@ -13,20 +13,15 @@ bool BookManager::addBook(const Book &book)
         // New book
         Book newBook = book;
         newBook.setBorrowCount(0);
-        newBook.setTotalQuantity(newBook.getTotalQuantity());
-        newBook.setCurrentQuantity(newBook.getTotalQuantity());
-       
-
+        newBook.setTotalQuantity(book.getTotalQuantity());
+        
         bookTable[newBook.getKey()] = newBook;
         searchMap.insert(newBook);
         bookStore.addData(newBook); // persist new book
+        return true;
     }
-  
- 
-    return true;
+    return false;
 }
-
-
 
 bool BookManager::removeBook(const BookSearchKey key, const string &value)
 {
@@ -172,8 +167,7 @@ bool BookManager::updateBook(const Book& newBook)
     return true;
 }
 
-
-Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse)
+Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse) const
 {
     Array<Book *> sortedBooks = bookTable.all();
 

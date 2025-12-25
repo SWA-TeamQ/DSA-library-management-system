@@ -77,7 +77,9 @@ public:
 
     // Transaction operations
     bool addTransaction(const Transaction &t);
-    void listAllTransactions() const;
+    Array<Transaction *> listAllTransactions() const;
+    void listTransactionsForPatron(const string &patronID) const;
+    void listOverdueForPatron(const string &patronID) const;
     Array<Transaction *> sortTransactionsByReturnDate(bool reverse = false);
 
     // Borrow/Return operations

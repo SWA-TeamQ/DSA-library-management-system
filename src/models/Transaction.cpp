@@ -21,10 +21,13 @@ void Transaction::markReturned()
 
 double Transaction::calculateFine(double dailyRate) const
 {
-    if (!isOverdue())
-        return 0.0;
-    // Simplified fine calculation
-    return 5.0; // fixed fine
+    // If transaction was returned, compute fine based on return date
+    string effectiveDate = returnDate.empty() ? getCurrentDate() : returnDate;
+    // If effective date is not after dueDate -> no fine
+    if (effectiveDate <= dueDate) return 0.0;
+    int days = daysBetween(dueDate, effectiveDate);
+    if (days <= 0) return 0.0;
+    return days * dailyRate;
 }
 
 string Transaction::serialize() const

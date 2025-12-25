@@ -15,16 +15,17 @@ public:
         this->filename = "data/" + filename;
     }
 
-    // any type of map-like object
-    template <typename MapType>
-    bool saveData(const MapType &dataMap) const
+    bool saveData(const HashTable<T> &dataMap) const
     {
         ofstream file(filename, ios::out | ios::trunc);
         if (!file.is_open()) return false;
 
+        //Need fix: if you are using a key and value ,
+        //then u are already setting what type of data container
+        // it is, for this case a map
         for (const auto &[key, item] : dataMap)
         {
-            file << item.serialize() << '\n';
+            file << item.serialize() << "\n";
         }
         file.close();
         return true;
@@ -40,8 +41,7 @@ public:
         return true;
     }
 
-    template <typename MapType>
-    bool loadData(MapType &dataMap)
+    bool loadData(HashTable<T> &dataMap)
     {
         dataMap.clear();
         ifstream file(filename, ios::in);
@@ -53,6 +53,8 @@ public:
             if (line.empty()) continue;
             T item;
             item.deserialize(line);
+            //NOTE: if a template for the MapType is needed then consider 
+            //the use of [] operator as it isn't available in sets
             dataMap[item.getKey()] = item;
         }
         file.close();
