@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void Row(const Array<string>& values, bool borderTop = false, int width = 15) {
+void Row(Array<string>& values, bool borderTop = false, int width = 15) {
     int totalWidth = values.size() * (width + 3) + 1;
     // border top
     if(borderTop){

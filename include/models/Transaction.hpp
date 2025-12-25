@@ -32,19 +32,19 @@ private:
 public:
     Transaction() = default;
 
-    Transaction(string &transactionID,
-                string &bookID,
-                string &patronID,
-                string &borrowDate,
-                string &dueDate,
-                string &returnDate,
+    Transaction(string transactionID,
+                string bookID,
+                string patronID,
+                string borrowDate,
+                string dueDate,
+                string returnDate,
                 bool returned = false) : transactionID(transactionID),
-                                         bookID(bookID),
-                                         patronID(patronID),
-                                         borrowDate(borrowDate),
-                                         dueDate(dueDate),
-                                         returnDate(returnDate),
-                                         returned(returned)
+                                               bookID(bookID),
+                                               patronID(patronID),
+                                               borrowDate(borrowDate),
+                                               dueDate(dueDate),
+                                               returnDate(returnDate),
+                                               returned(returned)
     {
     }
 
@@ -65,7 +65,7 @@ public:
     void setBorrowDate(const string &date) { borrowDate = date; }
     void setDueDate(const string &date) { dueDate = date; }
     void setReturnDate(const string &date) { returnDate = date; }
-    void setReturned(bool r) { returned = r; }
+    void setReturned(const bool &r) { returned = r; }
 
     bool isOverdue();
     void markReturned();

@@ -25,33 +25,31 @@ public:
         categoryIndex.clear();
     }
 
-    // Build indices from any map-like container of Books
-    template <typename MapType>
-    void buildIndices(const MapType &books)
+    void buildIndices(HashTable<Book> &books)
     {
         clear();
-        for (const auto &[id, book] : books)
+        for (auto &[id, book] : books)
         {
             insert(book);
         }
     }
 
-    void insert(const Book &b)
+    void insert(Book &b)
     {
         titleIndex[b.getTitle()].append(b.getKey());
         authorIndex[b.getAuthor()].append(b.getKey());
         categoryIndex[b.getCategory()].append(b.getKey());
     }
 
-    void remove(const Book &b)
+    void remove(Book &b)
     {
         auto removeFromIndex = [&](unordered_map<string, Array<string>> &index, const string &key)
         {
             auto it = index.find(key);
             if (it != index.end())
             {
-                auto& arr = it->second;
-                for (std::size_t i = 0; i < arr.size(); i++)
+                auto &arr = it->second;
+                for (size_t i = 0; i < arr.size(); i++)
                 {
                     if (arr[i] == b.getKey())
                     {
@@ -73,37 +71,16 @@ public:
 
     Array<string> findByTitle(const string &title)
     {
-        try
-        {
-            return titleIndex.at(title); // throws if key not found
-        }
-        catch (std::out_of_range &)
-        {
-            return {};
-        }
+        return titleIndex.at(title);
     }
 
     Array<string> findByAuthor(const string &author)
     {
-        try
-        {
-            return authorIndex.at(author);
-        }
-        catch (std::out_of_range &)
-        {
-            return {};
-        }
+        return authorIndex.at(author);
     }
 
     Array<string> findByCategory(const string &category)
     {
-        try
-        {
-            return categoryIndex.at(category);
-        }
-        catch (std::out_of_range &)
-        {
-            return {};
-        }
+        return categoryIndex.at(category);
     }
 };

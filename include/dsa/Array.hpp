@@ -101,7 +101,7 @@ public:
         return nullptr;
     }
 
-    void append(const T &item)
+    void append(T item)
     {
         if(full()) 
             resize();
@@ -145,7 +145,7 @@ public:
         return -1;
     }
 
-    void remove(T &item){
+    void remove(T item){
         int index = find(item);
         if (index != -1)
             removeAt(index);

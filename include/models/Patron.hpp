@@ -48,18 +48,18 @@ public:
     }
 
     // for generic lookup
-    const string &getKey() const { return patronID; }
+    string &getKey() { return patronID; }
 
-    const string &getID() const { return patronID; }
-    const string &getName() const { return name; }
-    const string &getContact() const { return contact; }
-    const string &getMembershipDate() const { return membershipDate; }
-    int getBorrowCount() const { return lifetimeBorrowCount; }
-    bool isBorrowed() const { return borrowed; }
+    string &getID() { return patronID; }
+    string &getName() { return name; }
+    string &getContact() { return contact; }
+    string &getMembershipDate() { return membershipDate; }
+    int getBorrowCount() { return lifetimeBorrowCount; }
+    bool isBorrowed() { return borrowed; }
 
     // lifetime borrow count (total times patron borrowed any book)
     // active borrow count (currently checked-out items)
-    int getActiveBorrowCount() const { return activeBorrowCount; }
+    int getActiveBorrowCount() { return activeBorrowCount; }
 
     void setID(const string &id) { patronID = id; }
     void setName(const string &n) { name = n; }

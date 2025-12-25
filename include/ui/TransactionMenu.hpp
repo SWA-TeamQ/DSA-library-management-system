@@ -7,7 +7,7 @@
 class TransactionMenu
 {
 public:
-    explicit TransactionMenu(LibraryController &controller) : controller(controller) {}
+    TransactionMenu(LibraryController &controller) : controller(controller) {}
     void show();
 
 private:
@@ -17,6 +17,4 @@ private:
     void addTransaction();
     void searchTransactions();
     void sortTransactions();
-    std::string readLine(const std::string &prompt) ;
-    void waitForEnter() ;
 };

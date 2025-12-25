@@ -17,7 +17,7 @@ private:
     PatronSearchMap searchMap;
 
 public:
-    PatronManager(const string &filename) : patronStore(filename)
+    PatronManager(string filename) : patronStore(filename)
     {
         loadPatrons();
     }

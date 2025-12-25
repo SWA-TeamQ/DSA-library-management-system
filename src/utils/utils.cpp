@@ -9,7 +9,7 @@ string getCurrentDate()
     return ss.str();
 }
 
-string generateId(const string &prefix)
+string generateId(string prefix)
 {
     // simple id generator using random (srand)
     srand(time(nullptr));
@@ -20,7 +20,7 @@ string generateId(const string &prefix)
 }
 
 // parse YYYY-MM-DD into tm (local)
-static tm parseDate(const string &date)
+static tm parseDate(string date)
 {
     tm t{};
     sscanf(date.c_str(), "%d-%d-%d", &t.tm_year, &t.tm_mon, &t.tm_mday);
@@ -32,7 +32,7 @@ static tm parseDate(const string &date)
     return t;
 }
 
-string addDays(const string &date, int days)
+string addDays(string date, int days)
 {
     tm t = parseDate(date);
     time_t tt = mktime(&t);
@@ -43,7 +43,7 @@ string addDays(const string &date, int days)
     return ss.str();
 }
 
-int daysBetween(const string &from, const string &to)
+int daysBetween(string from, string to)
 {
     tm tf = parseDate(from);
     tm tt = parseDate(to);
@@ -53,7 +53,7 @@ int daysBetween(const string &from, const string &to)
     return static_cast<int>(diff / (24 * 60 * 60));
 }
 
-string trim(string &s)
+string trim(string s)
 {
     std::size_t start = 0;
     while (start < s.size() && isspace(static_cast<unsigned char>(s[start])))
@@ -71,7 +71,7 @@ string trim(string &s)
 //  - '\\' -> "\\\\"
 //  - '|'  -> "\\|"
 //  - '\n' -> "\\n"
-string escapeField(const string &s)
+string escapeField(string s)
 {
     string result;
     result.reserve(s.size());
@@ -96,7 +96,7 @@ string escapeField(const string &s)
     return result;
 }
 
-string unescapeField(const string &s)
+string unescapeField(string s)
 {
     string result;
     result.reserve(s.size());
