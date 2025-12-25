@@ -125,7 +125,7 @@ public:
 
     bool isEmpty() const
     {
-        for (int i = 0; i < bucketCount; i++)
+        for (size_t i = 0; i < bucketCount; i++)
         {
             Array<T> &bucket = buckets[i];
             if (!bucket.empty())
@@ -138,7 +138,7 @@ public:
 
     void clear()
     {
-        for (int i = 0; i < bucketCount; i++)
+        for (size_t i = 0; i < bucketCount; i++)
         buckets[i].clear();
         {
             

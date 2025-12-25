@@ -10,10 +10,10 @@ using namespace std;
 template <typename T>
 class Array{
 public:
-    int capacity, initialCapacity, length;
+    size_t capacity, initialCapacity, length;
     T *items;
 
-    Array(int capacity = 1000){
+    Array(size_t capacity = 1000){
         this->length = 0;
         this->initialCapacity = capacity;
         this->capacity = capacity;
@@ -26,7 +26,7 @@ public:
         this->initialCapacity = other.initialCapacity;
         this->capacity = other.capacity;
         this->items = new T[this->capacity];
-        for (int i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++) {
             this->items[i] = other.items[i];
         }
     }
@@ -39,7 +39,7 @@ public:
             this->initialCapacity = other.initialCapacity;
             this->capacity = other.capacity;
             this->items = new T[this->capacity];
-            for (int i = 0; i < length; i++) {
+            for (size_t i = 0; i < length; i++) {
                 this->items[i] = other.items[i];
             }
         }
@@ -81,7 +81,7 @@ public:
     }
 
     // indexing
-    T &operator[](int index)
+    T &operator[](size_t index)
     {
         validateIndex(index);
         return items[index];
@@ -114,7 +114,7 @@ public:
             length--;
     }
     
-    void insertAt(int index, T item)
+    void insertAt(size_t index, T item)
     {
         if(index != length) 
             validateIndex(index);
@@ -122,31 +122,31 @@ public:
             resize();
 
         append(item);
-        for(int i = length - 1; i > index; --i){
+        for(size_t i = length - 1; i > index; --i){
             auto temp = items[i];
             items[i] = items[i - 1];
             items[i - 1] = temp;
         }
     }
 
-    void removeAt(int index)
+    void removeAt(size_t index)
     {
         validateIndex(index);
-        for(int i = index; i < length - 1; i++)
+        for(size_t i = index; i < length - 1; i++)
             items[i] = items[i + 1];
         pop();
     }
 
-    int find(T &item)
+    size_t find(T &item)
     {
-        for(int i = 0; i < length; i++)
+        for(size_t i = 0; i < length; i++)
             if (items[i] == item)
                 return i;
         return -1;
     }
 
     void remove(T item){
-        int index = find(item);
+        size_t index = find(item);
         if (index != -1)
             removeAt(index);
     }
@@ -164,7 +164,7 @@ public:
         return length == capacity;
     }
 
-    int size() const
+    size_t size() const
     {
         return length;
     }
@@ -180,13 +180,13 @@ public:
     void resize(){
         capacity = capacity * 2;
         T *temp = new T[capacity];
-        for(int i = 0; i < length; i++)
+        for(size_t i = 0; i < length; i++)
             temp[i] = items[i];
         delete[] items;
         items = temp;
     }
 
-    void validateIndex(int index) const
+    void validateIndex(size_t index) const
     {
         if(!(0 <= index && index <= length - 1)){
             throw out_of_range("Index out of range");

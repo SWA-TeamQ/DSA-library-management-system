@@ -109,7 +109,7 @@ void print(Book &book)
     auto fields = book.getFields();
     auto values = book.getValues();
 
-    for (int i = 0; i < fields.size(); i++)
+    for (size_t i = 0; i < fields.size(); i++)
     {
         cout << '\t' << fields[i] << ": " << values[i] << endl;
     }
@@ -121,7 +121,7 @@ void print(Patron &patron)
     auto fields = patron.getFields();
     auto values = patron.getValues();
 
-    for (int i = 0; i < fields.size(); i++)
+    for (size_t i = 0; i < fields.size(); i++)
     {
         cout << '\t' << fields[i] << ": " << values[i] << endl;
     }
@@ -133,7 +133,7 @@ void print(Transaction &transaction)
     auto fields = transaction.getFields();
     auto values = transaction.getValues();
 
-    for (int i = 0; i < fields.size(); i++)
+    for (size_t i = 0; i < fields.size(); i++)
     {
         cout << '\t' << fields[i] << ": " << values[i] << endl;
     }

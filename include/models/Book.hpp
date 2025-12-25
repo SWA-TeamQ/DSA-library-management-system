@@ -48,7 +48,11 @@ public:
                                 author(author),
                                 isbn(isbn),
                                 edition(edition),
-                                publicationYear(move(publicationYear))
+                                publicationYear(publicationYear),
+                                category(category),
+                                totalQuantity(totalQuantity),
+                                currentQuantity(currentQuantity),
+                                borrowCount(borrowCount)
 
     {};
 
