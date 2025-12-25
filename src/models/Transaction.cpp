@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool Transaction::isOverdue() const
+bool Transaction::isOverdue() 
 {
     if (returned)
         return false;
@@ -19,7 +19,7 @@ void Transaction::markReturned()
     returnDate = getCurrentDate();
 }
 
-double Transaction::calculateFine(double dailyRate) const
+double Transaction::calculateFine(double dailyRate) 
 {
     // If transaction was returned, compute fine based on return date
     string effectiveDate = returnDate.empty() ? getCurrentDate() : returnDate;
@@ -50,7 +50,7 @@ void Transaction::deserialize(const string &line)
     returned = (field == "1");
 }
 
-Array<string> Transaction::getFields() const
+Array<string> Transaction::getFields() 
 {
     Array<string> fields;
     fields.append("Transaction ID");
@@ -63,7 +63,7 @@ Array<string> Transaction::getFields() const
     return fields;
 }
 
-Array<string> Transaction::getValues() const
+Array<string> Transaction::getValues() 
 {
     Array<string> values;
     values.append(transactionID);

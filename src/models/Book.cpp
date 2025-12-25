@@ -26,7 +26,7 @@ Book::Book(string title,
   this->borrowCount = borrowCount;
 }
 
-string Book::serialize() const
+string Book::serialize() const 
 {
   return title + "," + author + "," + isbn + "," + edition + "," +
          to_string(publicationYear) + "," + category + "," + to_string(TotalQuantity) + "," + to_string(currentQuantity) + "," + "," + to_string(borrowCount);
@@ -68,7 +68,7 @@ void Book::deserialize(const string &line)
   }
 }
 
-Array<string> Book::getFields() const
+Array<string> Book::getFields() 
 {
   Array<string> fields;
   fields.append("Title");
@@ -83,7 +83,7 @@ Array<string> Book::getFields() const
   return fields;
 }
 
-Array<string> Book::getValues() const
+Array<string> Book::getValues() 
 {
   Array<string> values;
   values.append(title);

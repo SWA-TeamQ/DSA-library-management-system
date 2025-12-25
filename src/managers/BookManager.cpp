@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool BookManager::addBook(const Book &book)
+bool BookManager::addBook(Book &book)
 {
     Book* existing = bookTable.find(book.getKey());
 
@@ -53,7 +53,7 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
         Book *b = bookTable.find(id);
         if (!b)
             continue;
-        if (!b->isAvailable())
+        if (!b->isAllReturned())
         {
             cout << "Book " << b->getKey() << " is already borrowed so it couldn't be removed" << endl;
             continue;
@@ -71,7 +71,7 @@ bool BookManager::removeBook(const BookSearchKey key, const string &value)
 }
 
 // Search a Book by its searchable keys
-Book *BookManager::findBook(const BookSearchKey key, const string &value) const
+Book *BookManager::findBook(const BookSearchKey key, const string &value) 
 {
     Array<string> ids;
     switch (key)
@@ -104,7 +104,7 @@ Book *BookManager::findBook(const BookSearchKey key, const string &value) const
 }
 
 // Search Books by a specific key
-Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &value) const
+Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &value) 
 {
     Array<string> ids;
     switch (key)
@@ -136,7 +136,7 @@ Array<Book *> BookManager::findBooks(const BookSearchKey key, const string &valu
 }
 
 // Update a book details
-bool BookManager::updateBook(const Book& newBook)
+bool BookManager::updateBook( Book& newBook)
 {
     Book* oldBook = bookTable.find(newBook.getKey());
     if (!oldBook)
@@ -167,33 +167,33 @@ bool BookManager::updateBook(const Book& newBook)
     return true;
 }
 
-Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse) const
+Array<Book *> BookManager::sortBooks(const BookSortKey key, bool reverse) 
 {
     Array<Book *> sortedBooks = bookTable.all();
 
     switch (key)
     {
     case BookSortKey::TITLE:
-        mergeSort(sortedBooks, [](const Book *b)
+        mergeSort(sortedBooks, []( Book *b)
                   { return b->getTitle(); }, reverse);
         break;
     case BookSortKey::AUTHOR:
-        mergeSort(sortedBooks, [](const Book *b)
+        mergeSort(sortedBooks, []( Book *b)
                   { return b->getAuthor(); }, reverse);
         break;
     case BookSortKey::YEAR:
-        mergeSort(sortedBooks, [](const Book *b)
+        mergeSort(sortedBooks, []( Book *b)
                   { return b->getPublicationYear(); }, reverse);
         break;
     case BookSortKey::BORROW_COUNT:
-        mergeSort(sortedBooks, [](const Book *b)
+        mergeSort(sortedBooks, []( Book *b)
                   { return b->getBorrowCount(); }, reverse);
         break;
     }
     return sortedBooks;
 }
 
-Array<Book *> BookManager::getAllBooks() const
+Array<Book *> BookManager::getAllBooks() 
 {
     return bookTable.all();
 }

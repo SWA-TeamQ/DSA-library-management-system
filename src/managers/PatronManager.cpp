@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool PatronManager::addPatron(const Patron &p)
+bool PatronManager::addPatron( Patron &p)
 {
     patronTable[p.getKey()] = p;
     searchMap.insert(p);
@@ -50,7 +50,7 @@ bool PatronManager::removePatron(const PatronSearchKey key, const string &value)
     return deleted;
 }
 
-Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value) const
+Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value) 
 {
     Array<string> ids;
     switch(key){
@@ -69,7 +69,7 @@ Patron *PatronManager::findPatron(const PatronSearchKey key, const string &value
     return patronTable.find(ids[0]);
 }
 
-Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) const
+Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const string &value) 
 {
     Array<string> ids;
     switch(key){
@@ -91,7 +91,7 @@ Array<Patron *> PatronManager::findPatrons(const PatronSearchKey key, const stri
     return patrons;
 }
 
-bool PatronManager::updatePatron(const Patron &newPatron)
+bool PatronManager::updatePatron( Patron &newPatron)
 {
     Patron *oldPatron = patronTable.find(newPatron.getKey());
     if(oldPatron == nullptr){
@@ -126,17 +126,17 @@ Array<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse
 
     switch(key){
         case PatronSortKey::NAME:
-            mergeSort(sortedPatrons, [](const Patron *p){
+            mergeSort(sortedPatrons, []( Patron *p){
                 return p->getName();
             }, reverse);
             break;
         case PatronSortKey::MEMBERSHIP_DATE:
-            mergeSort(sortedPatrons, [](const Patron *p){
+            mergeSort(sortedPatrons, []( Patron *p){
                 return p->getMembershipDate();
             }, reverse);
             break;
         case PatronSortKey::BORROW_COUNT:
-            mergeSort(sortedPatrons, [](const Patron *p){
+            mergeSort(sortedPatrons, []( Patron *p){
                 return p->getBorrowCount();
             }, reverse);
             break;
@@ -144,7 +144,7 @@ Array<Patron *> PatronManager::sortPatrons(const PatronSortKey key, bool reverse
     return sortedPatrons;
 }
 
-Array<Patron *> PatronManager::getAllPatrons() const
+Array<Patron *> PatronManager::getAllPatrons() 
 {
     return patronTable.all();
 }
