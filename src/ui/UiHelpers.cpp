@@ -51,6 +51,7 @@ int readInt(string prompt)
             return input;
         }
     } while (valid);
+    return input;
 }
 
 void clearScreen()
