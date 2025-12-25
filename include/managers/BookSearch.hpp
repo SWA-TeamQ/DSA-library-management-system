@@ -1,6 +1,6 @@
 #pragma once
 #include "models/Book.hpp"
-#include "dsa/Map.hpp"
+#include <unordered_map>
 #include "dsa/Array.hpp"
 #include <string>
 
@@ -10,9 +10,9 @@ using namespace std;
 class BookSearchMap
 {
 private:
-    dsa::unordered_map<string, dsa::Array<string>> titleIndex;
-    dsa::unordered_map<string, dsa::Array<string>> authorIndex;
-    dsa::unordered_map<string, dsa::Array<string>> categoryIndex;
+    unordered_map<string, Array<string>> titleIndex;
+    unordered_map<string, Array<string>> authorIndex;
+    unordered_map<string, Array<string>> categoryIndex;
 
 public:
     BookSearchMap() = default;
@@ -45,13 +45,13 @@ public:
 
     void remove(const Book &b)
     {
-        auto removeFromIndex = [&](dsa::unordered_map<string,Array<string>> &index, const string &key)
+        auto removeFromIndex = [&](unordered_map<string, Array<string>> &index, const string &key)
         {
-            Array<string>* arrPtr = index.find(key);
-            if (arrPtr)
+            auto it = index.find(key);
+            if (it != index.end())
             {
-                Array<string>& arr = *arrPtr;
-                for (size_t i = 0; i < arr.size(); i++)
+                auto& arr = it->second;
+                for (std::size_t i = 0; i < arr.size(); i++)
                 {
                     if (arr[i] == b.getKey())
                     {
@@ -59,9 +59,9 @@ public:
                         break;
                     }
                 }
-                if (arr.isEmpty())
+                if (arr.empty())
                 {
-                    index.erase(key);
+                    index.erase(it);
                 }
             }
         };
@@ -71,7 +71,7 @@ public:
         removeFromIndex(categoryIndex, b.getCategory());
     }
 
-    Array<string> findByTitle(const string &title) const
+    Array<string> findByTitle(const string &title)
     {
         try
         {
@@ -83,7 +83,7 @@ public:
         }
     }
 
-    dsa::Array<string> findByAuthor(const string &author) const
+    Array<string> findByAuthor(const string &author)
     {
         try
         {
@@ -95,7 +95,7 @@ public:
         }
     }
 
-    dsa::Array<string> findByCategory(const string &category) const
+    Array<string> findByCategory(const string &category)
     {
         try
         {

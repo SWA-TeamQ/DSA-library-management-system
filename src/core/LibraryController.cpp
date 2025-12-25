@@ -1,7 +1,7 @@
 #include "core/LibraryController.hpp"
 
 // Book operations
-bool LibraryController::addBook(const Book &b)
+bool LibraryController::addBook( Book &b)
 {
     bookManager.addBook(b);
     return true;
@@ -27,22 +27,22 @@ bool LibraryController::removeBookByCategory(const string &category)
     return bookManager.removeBook(BookSearchKey::CATEGORY, category);
 }
 
-Book *LibraryController::findBookById(const string &isbn) const
+Book *LibraryController::findBookById(const string &isbn) 
 {
     return bookManager.findBook(BookSearchKey::ID, isbn);
 }
 
-Array<Book *> LibraryController::findBooksByTitle(const string &title) const
+Array<Book *> LibraryController::findBooksByTitle(const string &title) 
 {
     return bookManager.findBooks(BookSearchKey::TITLE, title);
 }
 
-Array<Book *> LibraryController::findBooksByAuthor(const string &author) const
+Array<Book *> LibraryController::findBooksByAuthor(const string &author) 
 {
     return bookManager.findBooks(BookSearchKey::AUTHOR, author);
 }
 
-Array<Book *> LibraryController::findBooksByCategory(const string &category) const
+Array<Book *> LibraryController::findBooksByCategory(const string &category)
 {
     return bookManager.findBooks(BookSearchKey::CATEGORY, category);
 }
@@ -66,17 +66,17 @@ Array<Book *> LibraryController::sortBooksByBorrowCount(bool reverse)
     return bookManager.sortBooks(BookSortKey::BORROW_COUNT, reverse);
 }
 
-bool LibraryController::updateBook(const Book &b)
+bool LibraryController::updateBook( Book &b)
 {
     return bookManager.updateBook(b);
 }
 
-Array<Book *> LibraryController::listAllBooks() const
+Array<Book *> LibraryController::listAllBooks()
 {
     return bookManager.getAllBooks();
 }
 
-bool LibraryController::addPatron(const Patron &p)
+bool LibraryController::addPatron( Patron &p) 
 {
     return patronManager.addPatron(p);
 }
@@ -91,22 +91,22 @@ bool LibraryController::removePatronByName(const string &patronName)
     return patronManager.removePatron(PatronSearchKey::NAME, patronName);
 }
 
-Patron *LibraryController::findPatronById(const string &patronID) const
+Patron* LibraryController::findPatronById(const string &patronID)
 {
     return patronManager.findPatron(PatronSearchKey::ID, patronID);
 }
 
-Patron *LibraryController::findPatronByName(const string &patronName) const
+Patron *LibraryController::findPatronByName(const string &patronName)
 {
     return patronManager.findPatron(PatronSearchKey::NAME, patronName);
 }
 
-Array<Patron *> LibraryController::findPatronsById(const string &patronID) const
+Array<Patron *> LibraryController::findPatronsById(const string &patronID)
 {
     return patronManager.findPatrons(PatronSearchKey::ID, patronID);
 }
 
-Array<Patron *> LibraryController::findPatronsByName(const string &patronName) const
+Array<Patron *> LibraryController::findPatronsByName(const string &patronName)
 {
     return patronManager.findPatrons(PatronSearchKey::NAME, patronName);
 }
@@ -126,24 +126,24 @@ Array<Patron *> LibraryController::sortPatronsByBorrowCount(bool reverse)
     return patronManager.sortPatrons(PatronSortKey::BORROW_COUNT, reverse);
 }
 
-bool LibraryController::updatePatron(const Patron &p)
+bool LibraryController::updatePatron( Patron &p)
 {
     return patronManager.updatePatron(p);
 }
 
-Array<Patron *> LibraryController::listAllPatrons() const
+Array<Patron *> LibraryController::listAllPatrons() 
 {
     return patronManager.getAllPatrons();
 }
 
 // Transaction operations
 
-bool LibraryController::addTransaction(const Transaction &t)
+bool LibraryController::addTransaction( Transaction &t)
 {
     return transactionManager.addTransaction(t);
 }
 
-Array<Transaction *> LibraryController::listAllTransactions() const
+Array<Transaction *> LibraryController::listAllTransactions() 
 {
     return transactionManager.getAllTransactions();
 }

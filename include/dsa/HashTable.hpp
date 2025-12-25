@@ -8,7 +8,7 @@ template <typename T>
 class HashTable
 {
 private:
-    unordered_map<string, T> table;
+    std::unordered_map<string, T> table;
 
 public:
     HashTable() = default;
@@ -44,6 +44,15 @@ public:
     auto end() { return table.end(); }
     auto begin() const { return table.begin(); }
     auto end() const { return table.end(); }
+
+    T* find(const std::string &key)
+    {
+    auto it = table.find(key);
+    if (it != table.end())
+        return &it->second;
+    return nullptr;
+    }
+
 
     T *find(const string &key) const
     {

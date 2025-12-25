@@ -47,18 +47,17 @@ public:
          int borrowCount = 0);
 
     // for generic lookup
-    const string getKey() const { return isbn; }
-
-    const string getTitle() const { return title; }
-    const string getAuthor() const { return author; }
-    const string getISBN() const { return isbn; }
-    const string getEdition() const { return edition; }
-    const int getPublicationYear() const { return publicationYear; }
-    const string getCategory() const { return category; }
-    const int getTotalQuantity() const { return totalQuantity; }
-    const int getCurrentQuantity() const { return currentQuantity; }
-    const bool isAvailable() { return currentQuantity > 0; }
-    int getBorrowCount() const { return borrowCount; }
+    const string& getKey() const { return isbn; }
+    
+    const string& getTitle() const { return title; }
+    const string& getAuthor() const { return author; }
+    const string getEdition() { return edition; }
+    int getPublicationYear() const { return publicationYear; }
+    const string& getCategory() const { return category; }
+    int getTotalQuantity() const { return totalQuantity; }
+    int getCurrentQuantity() const { return currentQuantity; }
+    bool isAvailable() const { return currentQuantity > 0; }
+    int getBorrowCount()  { return borrowCount; }
 
     void setTitle(const string &title) { this->title = title; }
     void setAuthor(const string &author) { this->author = author; }
@@ -77,6 +76,6 @@ public:
     string serialize() const;
     void deserialize(const string &line);
 
-    Array<string> getFields() const;
-    Array<string> getValues() const;
+    Array<string> getFields();
+    Array<string> getValues();
 };

@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool TransactionManager::addTransaction(const Transaction &t)
+bool TransactionManager::addTransaction( Transaction &t)
 {
     transactionTable[t.getKey()] = t;
     searchMap.insert(t);
@@ -48,7 +48,7 @@ bool TransactionManager::removeTransaction(const TransactionSearchKey key, const
     return deleted;
 }
 
-Transaction *TransactionManager::findTransaction(const TransactionSearchKey key, const string &value) const
+Transaction *TransactionManager::findTransaction(const TransactionSearchKey key, const string &value) 
 {
     Array<string> ids;
     switch (key)
@@ -70,7 +70,7 @@ Transaction *TransactionManager::findTransaction(const TransactionSearchKey key,
     return t;
 }
 
-Array<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) const
+Array<Transaction *> TransactionManager::findTransactions(const TransactionSearchKey key, const string &value) 
 {
     Array<string> ids;
     switch (key)
@@ -104,17 +104,17 @@ Array<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key
     switch (key)
     {
     case TransactionSortKey::BORROW_DATE:
-        mergeSort(sorted, [](const Transaction *t){
+        mergeSort(sorted, []( Transaction *t){
             return t->getBorrowDate();
         }, reverse);
         break;
     case TransactionSortKey::DUE_DATE:
-        mergeSort(sorted, [](const Transaction *t){
+        mergeSort(sorted, []( Transaction *t){
             return t->getDueDate();
         }, reverse);
         break;
     case TransactionSortKey::RETURN_DATE:
-        mergeSort(sorted, [](const Transaction *t){
+        mergeSort(sorted, []( Transaction *t){
             return t->getReturnDate();
         }, reverse);
         break;
@@ -122,7 +122,7 @@ Array<Transaction *> TransactionManager::sortTransactions(TransactionSortKey key
     return sorted;
 }
 
-Array<Transaction *> TransactionManager::getAllTransactions() const
+Array<Transaction *> TransactionManager::getAllTransactions() 
 {
     return transactionTable.all();
 }

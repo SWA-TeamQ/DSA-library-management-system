@@ -5,7 +5,7 @@
 
 using namespace std;
 
-string TransactionMenu::readLine(const string &prompt) const
+string TransactionMenu::readLine(const string &prompt) 
 {
 	cout << prompt;
 	string s;
@@ -18,7 +18,7 @@ string TransactionMenu::readLine(const string &prompt) const
 	return s;
 }
 
-void TransactionMenu::waitForEnter() const
+void TransactionMenu::waitForEnter() 
 {
 	cout << "\nPress Enter to continue...";
 	string dummy;

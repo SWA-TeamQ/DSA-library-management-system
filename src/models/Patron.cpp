@@ -5,7 +5,7 @@
 
 using namespace std;
 
-string Patron::serialize() const
+string Patron::serialize() const 
 {
     return patronID + "," + name + "," + contact + "," + membershipDate + "," + (borrowed ? "1" : "0") + "," + to_string(borrowCount);
 }
@@ -34,7 +34,7 @@ void Patron::deserialize(const string &line)
     }
 }
 
-Array<string> Patron::getFields() const
+Array<string> Patron::getFields() 
 {
     Array<string> fields;
     fields.append("ID");
@@ -46,7 +46,7 @@ Array<string> Patron::getFields() const
     return fields;
 }
 
-Array<string> Patron::getValues() const
+Array<string> Patron::getValues() 
 {
     Array<string> values;
     values.append(patronID);

@@ -50,11 +50,11 @@ public:
     }
 
     // Book operations
-    bool addBook(const Book &b);
-    bool updateBook(const Book &b);
+    bool addBook(Book &b);
+    bool updateBook( Book &b);
     bool removeBook(const BookSearchKey key, const string &value);
-    Book *findBook(const BookSearchKey key, const string &value) const;
-    Array<Book *> findBooks(const BookSearchKey key, const string &value) const;
-    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false) const;
-    Array<Book *> getAllBooks() const;
+    Book *findBook(const BookSearchKey key, const string &value);
+    Array<Book *> findBooks(const BookSearchKey key, const string &value);
+    Array<Book *> sortBooks(const BookSortKey key, bool reverse = false);
+    Array<Book *> getAllBooks();
 };
