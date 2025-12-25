@@ -6,6 +6,7 @@
   "scripts": {
     "cmake:configure": "cmake -S . -B build",
     "cmake:build": "cmake --build build",
+    "build" : "npm run cmake:configure && npm run cmake:build",
     "run": "build\\\\lms.exe",
     "dev": "npm run cmake:configure && npm run cmake:build && npm run run"
   }

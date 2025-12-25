@@ -3,14 +3,16 @@
 void clearInput()
 {
     cin.clear();
-    cin.ignore(INT_MAX, '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear leftover input
 }
 
 void waitForEnter()
 {
-    string dummy;
-    clearInput();
-    getline(cin, dummy);
+    cout << "Press Enter to continue...";
+    if(cin.peek() != '\n'){
+        clearInput();
+    }
+    cin.get();
 }
 
 string readString(string prompt, bool optional)
@@ -93,7 +95,7 @@ void printHeader(string title)
     printDivider();
     cout << "|  CATEGORY: " << title;
     // Pad with spaces to keep the border aligned
-    int padding = 46 - (int)title.length();
+        int padding = 46 - (int)title.length();
     for (int i = 0; i < padding; ++i)
         cout << " ";
     cout << "|\n";
@@ -110,6 +112,7 @@ void print(Book &book)
     auto fields = book.getFields();
     auto values = book.getValues();
 
+    cout << endl;
     for (size_t i = 0; i < fields.size(); i++)
     {
         cout << '\t' << fields[i] << ": " << values[i] << endl;
@@ -122,6 +125,7 @@ void print(Patron &patron)
     auto fields = patron.getFields();
     auto values = patron.getValues();
 
+    cout << endl;
     for (size_t i = 0; i < fields.size(); i++)
     {
         cout << '\t' << fields[i] << ": " << values[i] << endl;
@@ -134,6 +138,7 @@ void print(Transaction &transaction)
     auto fields = transaction.getFields();
     auto values = transaction.getValues();
 
+    cout << endl;
     for (size_t i = 0; i < fields.size(); i++)
     {
         cout << '\t' << fields[i] << ": " << values[i] << endl;
