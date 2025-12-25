@@ -4,28 +4,6 @@
 
 using namespace std;
 
-Book::Book(string title,
-           string author,
-           string isbn,
-           string edition,
-           int publicationYear,
-           string category,
-           int TotalQuantity,
-           int currentQuantity,
-           int borrowCount)
-{
-  this->title = title;
-  this->author = author;
-  this->isbn = isbn;
-  this->edition = edition;
-  this->publicationYear = publicationYear;
-  this->category = category;
-  this->totalQuantity = TotalQuantity;
-  this->currentQuantity = currentQuantity;
-  
-  this->borrowCount = borrowCount;
-}
-
 string Book::serialize() const 
 {
   return title + "|" + author + "|" + isbn + "|" + edition + "|" +

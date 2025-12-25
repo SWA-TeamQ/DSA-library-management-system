@@ -4,8 +4,17 @@
 #include "dsa/Array.hpp"
 using namespace std;
 
-enum class PatronSearchKey { NAME, ID };
-enum class PatronSortKey { NAME, MEMBERSHIP_DATE, BORROW_COUNT };
+enum class PatronSearchKey
+{
+    NAME,
+    ID
+};
+enum class PatronSortKey
+{
+    NAME,
+    MEMBERSHIP_DATE,
+    BORROW_COUNT
+};
 
 class Patron
 {
@@ -17,6 +26,7 @@ private:
     int activeBorrowCount{0};
     int lifetimeBorrowCount{0};
     bool borrowed{false};
+
 public:
     Patron() = default;
 
@@ -27,27 +37,27 @@ public:
            int lifetimeBorrowCount = 0,
            int activeBorrowCount = 0,
            bool borrowed = false)
-        : patronID(std::move(patronID)),
-          name(std::move(name)),
-          contact(std::move(contact)),
-          membershipDate(std::move(membershipDate)),
-          activeBorrowCount(activeBorrowCount),
-          lifetimeBorrowCount(lifetimeBorrowCount),
-          borrowed(borrowed)
-    {}
+    {
+        this->patronID = patronID;
+        this->name = name;
+        this->contact = contact;
+        this->membershipDate = membershipDate;
+        this->activeBorrowCount = activeBorrowCount;
+        this->lifetimeBorrowCount = lifetimeBorrowCount;
+        this->borrowed = borrowed;
+    }
 
     // for generic lookup
-    const string& getKey() const { return patronID; }
+    const string &getKey() const { return patronID; }
 
-    string getID() { return patronID; }
-    string& getName() { return name; }
-    string getContact() { return contact; }
-    string getMembershipDate() { return membershipDate; }
-    int getBorrowCount() { return lifetimeBorrowCount; }
-    bool hasBorrowed() { return borrowed; }
-    
-    // lifetime borrow count (total times patron borrowed any book)
+    const string &getID() const { return patronID; }
+    const string &getName() const { return name; }
+    const string &getContact() const { return contact; }
+    const string &getMembershipDate() const { return membershipDate; }
     int getBorrowCount() const { return lifetimeBorrowCount; }
+    bool isBorrowed() const { return borrowed; }
+
+    // lifetime borrow count (total times patron borrowed any book)
     // active borrow count (currently checked-out items)
     int getActiveBorrowCount() const { return activeBorrowCount; }
 
@@ -61,11 +71,15 @@ public:
 
     void incrementBorrowCount() { ++lifetimeBorrowCount; }
     void incrementActiveBorrowCount() { ++activeBorrowCount; }
-    void decrementActiveBorrowCount() { if (activeBorrowCount > 0) --activeBorrowCount; }
+    void decrementActiveBorrowCount()
+    {
+        if (activeBorrowCount > 0)
+            --activeBorrowCount;
+    }
 
     string serialize() const;
     void deserialize(const string &line);
-    
+
     Array<string> getFields();
     Array<string> getValues();
 };

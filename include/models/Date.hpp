@@ -12,47 +12,57 @@ private:
 
 public:
     Date() = default;
-    Date(int day, int month, int year) { 
-        this->day = day;
-        this->month = month;
-        this->year = year;
+    Date(int d, int m, int y)
+    {
+        this->day = d;
+        this->month = m;
+        this->year = y;
     }
 
-    int getDay() {
-        return day; 
+    int getDay()
+    {
+        return day;
     }
-    int getMonth() { 
-        return month; 
+    int getMonth()
+    {
+        return month;
     }
-    int getYear() { 
-        return year; 
+    int getYear()
+    {
+        return year;
     }
 
-    void setDay(int day) {
-        if(day < 1 || day > 31){
+    void setDay(int d)
+    {
+        if (d < 1 || d > 31)
+        {
             throw invalid_argument("Day cannot be less than 1 or greater than 31");
         }
-        this->day = day;
+        this->day = d;
     }
-    void setMonth(int month) {
-        if(month < 1 || month > 12){
+    void setMonth(int m)
+    {
+        if (m < 1 || m > 12)
+        {
             throw invalid_argument("Month cannot be less than 1 or greater than 12");
         }
-        this->month = month;
+        this->month = m;
     }
-    void setYear(int year) {
-        if(year < 100){
-            year = 2000 + year;
+    void setYear(int y)
+    {
+        if (y < 100)
+        {
+            y = 2000 + y;
         }
 
-        if(year < 2025 || year > 2030){
+        if (y < 2025 || y > 2030)
+        {
             throw invalid_argument("Year cannot be less than 2025 or greater than 2030");
         }
 
-        this->year = year;
+        this->year = y;
     }
 
-    void print();
     string serialize();
     void deserialize(const string &line);
 };
