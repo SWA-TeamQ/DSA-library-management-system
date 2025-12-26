@@ -133,13 +133,12 @@ public:
         if (full())
             resize();
 
-        append(item);
         for (size_t i = length - 1; i > index; --i)
         {
-            auto temp = items[i];
             items[i] = items[i - 1];
-            items[i - 1] = temp;
         }
+        items[index] = item;
+        length++;
     }
 
     void removeAt(size_t index)
@@ -200,7 +199,7 @@ public:
         items = temp;
     }
 
-    void validateIndex(int index) const
+    void validateIndex(size_t index) const
     {
         if (index >= length)
         {
