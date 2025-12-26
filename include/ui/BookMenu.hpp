@@ -5,6 +5,8 @@
 #include "dsa/Array.hpp"
 #include "core/LibraryController.hpp"
 #include "ui/UiHelpers.hpp"
+#include "ui/UiComponents.hpp"
+#include "ui/Schemas.hpp"
 
 class BookMenu
 {
@@ -16,8 +18,8 @@ private:
     LibraryController &controller;
 
     void listBooks();
-    void addBook();
     void removeBook();
+    void addBook();
     void updateBook();
     void searchBooks();
     void sortBooks();

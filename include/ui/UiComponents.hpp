@@ -13,7 +13,49 @@ using namespace std;
 
 void Row(Array<string> values, bool borderTop = false, int width = 15);
 
-void BookForm(Book &book, Array<Field> schema, bool update = false);
+template <typename T>
+void Form(T &obj, Array<Field> schema, bool update)
+{
+    for (auto &field : schema)
+    {
+        string input;
+        int number;
 
-void PatronForm(Patron &patron, Array<Field> schema, bool update = false);
-void TransactionForm(Transaction &transaction, Array<Field> schema, bool update = false);
+        bool isRequired = field.required && !update; // if the field is required and we are not updating, then it is required
+
+        // this is the input prompt
+        string prompt = field.label + (field.required ? " *" : "") + ": ";
+
+        // if the field is type of string
+        if (field.type == FieldType::STRING)
+        {
+            if (update)
+            {
+                string fieldKey = obj.getField(field.key);
+                input = readString(prompt, isRequired, fieldKey);
+            }
+            else
+            {
+                input = readString(prompt);
+            }
+        }
+        // if the field is type of integer
+        else if (field.type == FieldType::INTEGER)
+        {
+            if (update)
+            {
+                int fieldKey = stoi(obj.getField(field.key));
+                number = readInt(prompt, isRequired, fieldKey);
+            }
+            else
+            {
+                number = readInt(prompt);
+            }
+            // change the number into a string so that it will be compatible with the generic setter function
+            input = to_string(number);
+        }
+
+        // sets the field of the object dynamically
+        obj.setField(field.key, input);
+    }
+}

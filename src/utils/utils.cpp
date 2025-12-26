@@ -66,8 +66,8 @@ string trim(string s)
     return s.substr(start, end - start);
 }
 
-string toLower(string s){
-    for(char &c : s){
+string toLower(string s) {
+    for (char &c : s) {
         c = tolower(c);
     }
     return s;

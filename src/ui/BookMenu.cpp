@@ -53,24 +53,6 @@ void BookMenu::listBooks()
     waitForEnter();
 }
 
-void BookMenu::addBook()
-{
-    printHeader("Add Book");
-    Book newBook;
-    newBook.setTitle(readString("Title: "));
-    newBook.setAuthor(readString("Author: "));
-    newBook.setISBN(readString("ISBN: "));
-    newBook.setEdition(readString("Edition: "));
-    newBook.setPublicationYear(readInt("Publication year: "));
-    newBook.setCategory(readString("Category: "));
-
-    if (controller.addBook(newBook))
-        cout << "Book added successfully.\n";
-    else
-        cout << "A book with this ISBN already exists.\n";
-    waitForEnter();
-}
-
 void BookMenu::removeBook()
 {
     printHeader("Remove Book");
@@ -117,26 +99,47 @@ void BookMenu::removeBook()
     waitForEnter();
 }
 
+void BookMenu::addBook()
+{
+    printHeader("Add Book");
+    Book newBook;
+    Form<Book>(newBook, bookSchema(), false);
+
+    if (controller.addBook(newBook))
+        cout << "Book added successfully.\n";
+    else
+        cout << "A book with this ISBN already exists.\n";
+    waitForEnter();
+}
+
 void BookMenu::updateBook()
 {
     printHeader("Update Book");
     cout << "Enter the ISBN of the book to update:\n";
     string isbn = readString("Enter ISBN: ");
-    if (auto *book = controller.findBookById(isbn))
+    auto *book = controller.findBookById(isbn);
+
+    if (!book)
     {
-        cout << "Current details:\n";
-        print(*book);
-        cout << "Enter new details:\n";
-        book->setTitle(readString("Title: "));
-        book->setAuthor(readString("Author: "));
-        book->setEdition(readString("Edition: "));
-        book->setPublicationYear(readInt("Publication year: "));
-        book->setCategory(readString("Category: "));
-        controller.updateBook(*book);
+        cout << "Book not found.\n";
+        waitForEnter();
+        return;
+    }
+
+    // show previous book details if the book is found
+    cout << "Current details:\n";
+    print(*book);
+
+    Form(*book, bookSchema(), true); // show the book update form
+
+    if (controller.updateBook(*book))
+    {
         cout << "Book updated.\n";
     }
     else
-        cout << "Book not found.\n";
+    {
+        cerr << "Error occured during update" << endl;
+    }
 
     waitForEnter();
 }
@@ -199,20 +202,18 @@ void BookMenu::sortBooks()
          << "3. Publication year\n"
          << "4. Borrow count\n"
          << "0. Back\n";
-    string field = readString("Sort by: ");
-    if (field == "0")
+
+    int choice = readInt("Sort By: ");
+    if (choice == 0)
         return;
 
-    string order = readString("Reverse order? (y/n): ");
-    bool reverse = (order == "y" || order == "Y");
+    string order = toLower(readString("Reverse order? (y/n): "));
+    bool reverse = (order == "y");
 
     Array<Book *> books;
 
-    int choice = readInt("Choose: ");
     switch (choice)
     {
-    case 0:
-        return;
     case 1:
         books = controller.sortBooksByTitle(reverse);
         break;
