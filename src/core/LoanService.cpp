@@ -59,20 +59,15 @@ bool LoanService::borrowBook(string patronID, string isbn)
     string borrowDate = getCurrentDate();
     string dueDate = addDays(borrowDate, LOAN_DAYS);
 
-    Transaction t(transactionID, isbn, patronID, borrowDate, dueDate, "", false);
+    Transaction t(transactionID, isbn, patronID, borrowDate, dueDate);
 
     if (!transactionManager.addTransaction(t))
     {
-
-        // Rollback ONLY active state
-
         book->incrementCurrentQuantity();
         patron->decrementActiveBorrowCount();
-        // NO rollback of lifetime counters
         return false;
     }
 
-    // Persist book state
     bookManager.saveBooks();
     return true;
 }

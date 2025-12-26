@@ -36,11 +36,11 @@ public:
                 string bookID,
                 string patronID,
                 string borrowDate,
-                string dueDate) : transactionID(transactionID),
-                                  bookID(bookID),
-                                  patronID(patronID),
-                                  borrowDate(borrowDate),
-                                  dueDate(dueDate),
+                string dueDate) : transactionID(move(transactionID)),
+                                  bookID(move(bookID)),
+                                  patronID(move(patronID)),
+                                  borrowDate(move(borrowDate)),
+                                  dueDate(move(dueDate)),
                                   returnDate(""),
                                   returned(false)
     {

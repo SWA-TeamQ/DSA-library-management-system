@@ -23,9 +23,9 @@ private:
     string name;
     string contact;
     string membershipDate;
-    int activeBorrowCount{0};
-    int lifetimeBorrowCount{0};
-    bool borrowed{false};
+    int activeBorrowCount;
+    int lifetimeBorrowCount;
+    bool borrowed;
 
 public:
     Patron() = default;
@@ -33,13 +33,15 @@ public:
     Patron(string patronID,
            string name,
            string contact,
-           string membershipDate) : patronID(patronID),
-                                    name(name),
-                                    contact(contact),
-                                    membershipDate(membershipDate),
-                                    lifetimeBorrowCount(0),
+           string membershipDate) : patronID(move(patronID)),
+                                    name(move(name)),
+                                    contact(move(contact)),
+                                    membershipDate(move(membershipDate)),
                                     activeBorrowCount(0),
-                                    borrowed(false) {};
+                                    lifetimeBorrowCount(0),
+                                    borrowed(false)
+    {
+    }
 
     // for generic lookup
     string getKey() { return patronID; }

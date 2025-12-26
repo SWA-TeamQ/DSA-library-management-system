@@ -31,6 +31,7 @@ add_executable(lms
     src/ui/TransactionMenu.cpp
     src/ui/UiHelpers.cpp
     src/ui/UiComponents.cpp
+    src/ui/Schemas.cpp
 )
 
 # Future: tests target

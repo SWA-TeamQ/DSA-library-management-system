@@ -3,6 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <limits>
+#include <stdexcept>
 #include <cstdlib> // for system()
 #include "models/Book.hpp"
 #include "models/Patron.hpp"
@@ -16,7 +17,7 @@ using namespace std;
 void clearInput();
 void waitForEnter();
 string readString(string prompt, bool optional = false);
-int readInt(string prompt);
+int readInt(string prompt, bool optional = false);
 void clearScreen();
 void printDivider();
 void printHeader(string title);

@@ -43,16 +43,18 @@ public:
         string edition,
         int publicationYear,
         string category = "General",
-        int totalQuantity = 1) : title(title),
-                                 author(author),
-                                 isbn(isbn),
-                                 edition(edition),
+        int totalQuantity = 1) : isbn(move(isbn)),
+                                 title(move(title)),
+                                 author(move(author)),
+                                 edition(move(edition)),
                                  publicationYear(publicationYear),
-                                 category(category),
+                                 category(move(category)),
                                  totalQuantity(totalQuantity),
                                  currentQuantity(totalQuantity),
-                                 borrowCount(0) {};
-
+                                 borrowCount(0)
+    {
+    }
+    
     // for generic lookup
     string &getKey() { return isbn; }
 
