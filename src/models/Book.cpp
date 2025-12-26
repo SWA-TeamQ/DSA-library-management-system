@@ -54,7 +54,7 @@ bool Book::setField(const string &key, const string &value)
     if (key == "edition") { edition = value; return true; }
     if (key == "publicationYear") { publicationYear = stoi(value); return true; }
     if (key == "category") { category = value; return true; }
-    if (key == "totalQuantity") { totalQuantity = stoi(value); if (currentQuantity > totalQuantity) currentQuantity = totalQuantity; return true; }
+    if (key == "totalQuantity") { totalQuantity = stoi(value); currentQuantity = totalQuantity; return true; }
     if (key == "currentQuantity") { currentQuantity = stoi(value); if (currentQuantity > totalQuantity) currentQuantity = totalQuantity; return true; }
     if (key == "borrowCount") { borrowCount = stoi(value); return true; }
   }

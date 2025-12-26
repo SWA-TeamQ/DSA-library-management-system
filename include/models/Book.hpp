@@ -74,7 +74,7 @@ public:
     void setEdition(string e) { this->edition = e; }
     void setPublicationYear(int p) { this->publicationYear = p; }
     void setCategory(string c) { this->category = c; }
-    void setTotalQuantity(int t) { this->totalQuantity = t; }
+    void setTotalQuantity(int t) { this->totalQuantity = t; this->currentQuantity = t;}
     void incrementCurrentQuantity()
     {
         if (currentQuantity < totalQuantity)

@@ -34,7 +34,3 @@ add_executable(lms
     src/ui/Schemas.cpp
 )
 
-# Future: tests target
-# enable_testing()
-# add_executable(lms_tests tests/basic_tests.cpp)
-# add_test(NAME lms_basic COMMAND lms_tests)
