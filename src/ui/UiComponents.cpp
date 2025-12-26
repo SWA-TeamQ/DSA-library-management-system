@@ -81,7 +81,7 @@ void PatronForm(Patron &patron, Array<Field> schema, bool update)
     for (auto &field : schema)
     {
         string input;
-        int number = 0;
+        int number;
         bool isRequired = field.required && !update;
 
         string prompt = field.label + (field.required ? " *" : "") + ": ";
@@ -89,6 +89,9 @@ void PatronForm(Patron &patron, Array<Field> schema, bool update)
 
         if (field.type == FieldType::STRING)
         {
+            if(update){
+                input = readString(prompt, isRequired, book)
+            }
             input = readString(prompt, isRequired);
         }
         else if (field.type == FieldType::INTEGER)

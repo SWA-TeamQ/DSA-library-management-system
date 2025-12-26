@@ -50,6 +50,39 @@ void Transaction::deserialize(string line)
     returned = (field == "1");
 }
 
+bool parseBoolTx(const string &s)
+{
+    if (s == "1") return true;
+    if (s == "0") return false;
+    string t = s;
+    for (auto &c : t) c = (char)tolower(c);
+    return (t == "true" || t == "yes" || t == "y");
+}
+
+string Transaction::getField(const string &key)
+{
+    if (key == "transactionID") return transactionID;
+    if (key == "bookID") return bookID;
+    if (key == "patronID") return patronID;
+    if (key == "borrowDate") return borrowDate;
+    if (key == "dueDate") return dueDate;
+    if (key == "returnDate") return returnDate;
+    if (key == "returned") return returned ? string("1") : string("0");
+    return string();
+}
+
+bool Transaction::setField(const string &key, const string &value)
+{
+    if (key == "transactionID") { transactionID = value; return true; }
+    if (key == "bookID") { bookID = value; return true; }
+    if (key == "patronID") { patronID = value; return true; }
+    if (key == "borrowDate") { borrowDate = value; return true; }
+    if (key == "dueDate") { dueDate = value; return true; }
+    if (key == "returnDate") { returnDate = value; return true; }
+    if (key == "returned") { returned = parseBoolTx(value); return true; }
+    return false;
+}
+
 Array<string> Transaction::getFields() 
 {
     Array<string> fields;

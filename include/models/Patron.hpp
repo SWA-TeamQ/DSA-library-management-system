@@ -76,6 +76,11 @@ public:
     string serialize();
     void deserialize(string line);
 
+    // Key-based access helpers (keys: patronID, name, contact, membershipDate,
+    // activeBorrowCount, borrowCount, borrowed)
+    string getField(const string &key);
+    bool setField(const string &key, const string &value);
+
     Array<string> getFields();
     Array<string> getValues();
 };

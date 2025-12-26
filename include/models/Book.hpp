@@ -23,9 +23,9 @@ enum class BookSortKey
 class Book
 {
 private:
+    string isbn;
     string title;
     string author;
-    string isbn;
     string edition;
     int publicationYear;
     string category;
@@ -54,7 +54,7 @@ public:
                                  borrowCount(0)
     {
     }
-    
+
     // for generic lookup
     string &getKey() { return isbn; }
 
@@ -92,6 +92,12 @@ public:
 
     string serialize();
     void deserialize(string line);
+
+    // Key-based access helpers (string keys per schema: isbn, title, ...)
+    // Returns value stringified; empty string if key unknown.
+    string getField(const string &key);
+    // Sets field from string; parses integers when needed. Returns true if key handled.
+    bool setField(const string &key, const string &value);
 
     Array<string> getFields();
     Array<string> getValues();

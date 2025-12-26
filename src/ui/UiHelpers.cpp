@@ -16,9 +16,9 @@ void waitForEnter()
     cin.get();
 }
 
-string readString(string prompt, bool optional)
+string readString(string prompt, bool optional, string fallback)
 {
-    string input;
+    string input = fallback;
     do
     {
         cout << prompt;
@@ -33,10 +33,10 @@ string readString(string prompt, bool optional)
     return input;
 }
 
-int readInt(const string &prompt, bool optional)
+int readInt(const string &prompt, bool optional, int fallback)
 {
     string input;
-    int number;
+    int number = fallback;
     bool valid;
 
     do
@@ -55,7 +55,7 @@ int readInt(const string &prompt, bool optional)
             }
             else
             {
-                return -1;
+                return number;
             }
         }
         else
