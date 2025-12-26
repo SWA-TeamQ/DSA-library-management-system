@@ -33,19 +33,13 @@ public:
     Patron(string patronID,
            string name,
            string contact,
-           string membershipDate,
-           int lifetimeBorrowCount = 0,
-           int activeBorrowCount = 0,
-           bool borrowed = false)
-    {
-        this->patronID = patronID;
-        this->name = name;
-        this->contact = contact;
-        this->membershipDate = membershipDate;
-        this->activeBorrowCount = activeBorrowCount;
-        this->lifetimeBorrowCount = lifetimeBorrowCount;
-        this->borrowed = borrowed;
-    }
+           string membershipDate) : patronID(patronID),
+                                    name(name),
+                                    contact(contact),
+                                    membershipDate(membershipDate),
+                                    lifetimeBorrowCount(0),
+                                    activeBorrowCount(0),
+                                    borrowed(false) {};
 
     // for generic lookup
     string getKey() { return patronID; }

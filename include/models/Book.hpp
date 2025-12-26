@@ -36,25 +36,22 @@ private:
 public:
     Book() = default;
 
-    Book(string title,
-         string author,
-         string isbn,
-         string edition,
-         int publicationYear,
-         string category = "General",
-         int totalQuantity = 1,
-         int currentQuantity = 1,
-         int borrowCount = 0) : title(title),
-                                author(author),
-                                isbn(isbn),
-                                edition(edition),
-                                publicationYear(publicationYear),
-                                category(category),
-                                totalQuantity(totalQuantity),
-                                currentQuantity(currentQuantity),
-                                borrowCount(borrowCount)
-
-    {};
+    Book(
+        string isbn,
+        string title,
+        string author,
+        string edition,
+        int publicationYear,
+        string category = "General",
+        int totalQuantity = 1) : title(title),
+                                 author(author),
+                                 isbn(isbn),
+                                 edition(edition),
+                                 publicationYear(publicationYear),
+                                 category(category),
+                                 totalQuantity(totalQuantity),
+                                 currentQuantity(totalQuantity),
+                                 borrowCount(0) {};
 
     // for generic lookup
     string &getKey() { return isbn; }
@@ -87,7 +84,7 @@ public:
             this->currentQuantity--;
     }
 
-    bool isAllReturned() { return currentQuantity == totalQuantity; }
+    bool isAllReturned() { return this->currentQuantity == this->totalQuantity; }
     void setBorrowCount(int b) { this->borrowCount = b; }
     void incrementBorrowCount() { this->borrowCount++; }
 
