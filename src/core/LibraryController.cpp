@@ -1,7 +1,6 @@
 #include "core/LibraryController.hpp"
-#include "ui/UiHelpers.hpp"
 
-// Book operations
+/* -------------  Book operations ---------------*/
 bool LibraryController::addBook(Book &b)
 {
     bookManager.addBook(b);
@@ -77,6 +76,12 @@ Array<Book *> LibraryController::listAllBooks()
     return bookManager.getAllBooks();
 }
 
+/**
+ *
+ * Patron Section
+ *
+ */
+
 bool LibraryController::addPatron(Patron &p)
 {
     return patronManager.addPatron(p);
@@ -137,19 +142,30 @@ Array<Patron *> LibraryController::listAllPatrons()
     return patronManager.getAllPatrons();
 }
 
-// Transaction operations
+/**
+ *
+ * Transaction section
+ *
+ */
 
 bool LibraryController::addTransaction(Transaction &t)
 {
     return transactionManager.addTransaction(t);
 }
 
+Transaction * LibraryController::findTransactionById(string txID)
+{
+    return transactionManager.findTransaction(TransactionSearchKey::ID, txID);
+};
+
 Array<Transaction *> LibraryController::listAllTransactions()
 {
     return transactionManager.getAllTransactions();
 }
 
-void LibraryController::listTransactionsForPatron(string patronID)
+
+
+Array<Transaction *> LibraryController::listTransactionsForPatron(string patronID)
 {
     Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
     if (txs.empty())
@@ -160,7 +176,7 @@ void LibraryController::listTransactionsForPatron(string patronID)
     tablePrint(txs);
 }
 
-void LibraryController::listOverdueForPatron(string patronID)
+Array<Transaction *> LibraryController::listOverdueForPatron(string patronID)
 {
     Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
     Array<Transaction *> overdue;
@@ -169,17 +185,29 @@ void LibraryController::listOverdueForPatron(string patronID)
         if (t && t->isOverdue())
             overdue.append(t);
     }
-    if (overdue.empty())
-    {
-        cout << "No overdue items for patron: " << patronID << "\n";
-        return;
-    }
-    tablePrint(overdue);
+
+    return overdue;
+}
+
+Array<Transaction *> LibraryController::listTransactionsForBook(string bookID)
+{
+    Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::BOOK_ID, bookID);
+    return txs;
 }
 
 Array<Transaction *> LibraryController::sortTransactionsByReturnDate(bool reverse)
 {
     return transactionManager.sortTransactions(TransactionSortKey::RETURN_DATE, reverse);
+}
+
+Array<Transaction *> LibraryController::sortTransactionsByDueDate(bool reverse)
+{
+    return transactionManager.sortTransactions(TransactionSortKey::DUE_DATE, reverse);
+}
+
+Array<Transaction *> LibraryController::sortTransactionsByBorrowDate(bool reverse)
+{
+    return transactionManager.sortTransactions(TransactionSortKey::BORROW_DATE, reverse);
 }
 
 /**
