@@ -14,7 +14,7 @@ The application follows a layered architecture with clear separation of concerns
 ┌─────────────────┐
 │   Console UI    │  ← User Interface Layer
 ├─────────────────┤
-│ Library Controller │  ← Business Logic Layer
+│Library Controller|  ← Business Logic Layer
 ├─────────────────┤
 │     Managers     │  ← Data Management Layer
 ├─────────────────┤
@@ -58,18 +58,22 @@ Central coordinator that:
 
 Generic template class for file I/O operations using serialize/deserialize.
 
-### Data Flow
-
-1. **Startup**: Main creates LibraryController → loads data from files via managers
-2. **User Interaction**: ConsoleInterface displays menus → calls LibraryController methods
-3. **Operations**: Controller delegates to appropriate manager → manager updates data structures
-4. **Persistence**: Managers use DataStore to save changes to text files
-5. **Shutdown**: Data automatically saved on exit
+### Data Flow Example: Borrowing a Book
+1.  **UI**: User selects "Borrow Book" and enters Patron ID and ISBN.
+2.  **Controller**: Calls `LoanService::borrowBook(patronID, isbn)`.
+3.  **LoanService**:
+    *   Asks `BookManager` to find the book (uses `HashTable` for O(1) lookup).
+    *   Asks `PatronManager` to find the patron.
+    *   Checks if the book is available and if the patron hasn't exceeded their limit.
+    *   Creates a `Transaction` object.
+4.  **Managers**: Update the book's status to "unavailable" and add the transaction to the list.
+5.  **DataStore**: Saves updated state to `data/books.txt`, `data/patrons.txt`, and `data/transactions.txt`.
+6.  **UI**: Displays "Success! Due date is [Date]."
 
 ### Data Structures Used
 
 -   **HashTable**: For O(1) lookups (books by ISBN, patrons by ID)
--   **Vector**: For ordered storage and iteration
+-   **Array**: For ordered storage and iteration
 -   **MergeSort**: For sorting books by various criteria
 -   **LinkedList, Queue, Stack**: Available for future extensions
 
