@@ -1,14 +1,18 @@
 #pragma once
+#include <cstddef>
+#include <stdexcept>
 
 using namespace std;
 
 template <typename T>
-class Array{
+class Array
+{
 public:
     size_t capacity, initialCapacity, length;
     T *items;
 
-    Array(size_t capacity = 1000){
+    Array(size_t capacity = 1000)
+    {
         this->length = 0;
         this->initialCapacity = capacity;
         this->capacity = capacity;
@@ -16,25 +20,30 @@ public:
     };
 
     // Copy Constructor (for deep copy)
-    Array(const Array &other) {
+    Array(const Array &other)
+    {
         this->length = other.length;
         this->initialCapacity = other.initialCapacity;
         this->capacity = other.capacity;
         this->items = new T[this->capacity];
-        for (size_t i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++)
+        {
             this->items[i] = other.items[i];
         }
     }
 
     // Copy Assignment Operator ( '=' operator overloading) // to make it work with out class objects
-    Array &operator=(const Array &other) {
-        if (this != &other) {
+    Array &operator=(const Array &other)
+    {
+        if (this != &other)
+        {
             delete[] items;
             this->length = other.length;
             this->initialCapacity = other.initialCapacity;
             this->capacity = other.capacity;
             this->items = new T[this->capacity];
-            for (size_t i = 0; i < length; i++) {
+            for (size_t i = 0; i < length; i++)
+            {
                 this->items[i] = other.items[i];
             }
         }
@@ -42,7 +51,8 @@ public:
     }
 
     // Move Constructor
-    Array(Array &&other) {
+    Array(Array &&other)
+    {
         this->length = other.length;
         this->initialCapacity = other.initialCapacity;
         this->capacity = other.capacity;
@@ -54,8 +64,10 @@ public:
     }
 
     // Move Assignment Operator
-    Array &operator=(Array &&other) {
-        if (this != &other) {
+    Array &operator=(Array &&other)
+    {
+        if (this != &other)
+        {
             delete[] items;
             this->length = other.length;
             this->initialCapacity = other.initialCapacity;
@@ -69,8 +81,10 @@ public:
         return *this;
     }
 
-    ~Array(){
-        if (items) {
+    ~Array()
+    {
+        if (items)
+        {
             delete[] items;
         }
     }
@@ -82,42 +96,46 @@ public:
         return items[index];
     }
 
-    T* begin(){
+    T *begin()
+    {
         return items;
     }
 
-    T* end(){
+    T *end()
+    {
         return items + length;
     }
 
-    T* back(){
-        if(length > 0)
+    T *back()
+    {
+        if (length > 0)
             return &items[length - 1];
         return nullptr;
     }
 
     void append(T item)
     {
-        if(full()) 
+        if (full())
             resize();
         items[length++] = item;
     }
 
     void pop()
     {
-        if(!empty())
+        if (!empty())
             length--;
     }
-    
+
     void insertAt(size_t index, T item)
     {
-        if(index != length) 
+        if (index != length)
             validateIndex(index);
-        if(full()) 
+        if (full())
             resize();
 
         append(item);
-        for(size_t i = length - 1; i > index; --i){
+        for (size_t i = length - 1; i > index; --i)
+        {
             auto temp = items[i];
             items[i] = items[i - 1];
             items[i - 1] = temp;
@@ -127,25 +145,25 @@ public:
     void removeAt(size_t index)
     {
         validateIndex(index);
-        for(size_t i = index; i < length - 1; i++)
+        for (size_t i = index; i < length - 1; i++)
             items[i] = items[i + 1];
         pop();
     }
 
-    size_t find(T &item)
+    int find(T &item)
     {
-        for(size_t i = 0; i < length; i++)
+        for (size_t i = 0; i < length; i++)
             if (items[i] == item)
-                return i;
+                return int(i);
         return -1;
     }
 
-    void remove(T item){
-        size_t index = find(item);
+    void remove(T &item)
+    {
+        int index = find(item);
         if (index != -1)
             removeAt(index);
     }
-
 
     // Helper functions
 
@@ -170,20 +188,22 @@ public:
         capacity = initialCapacity;
         delete[] items;
         items = new T[capacity];
-     }
+    }
 
-    void resize(){
+    void resize()
+    {
         capacity = capacity * 2;
         T *temp = new T[capacity];
-        for(size_t i = 0; i < length; i++)
+        for (size_t i = 0; i < length; i++)
             temp[i] = items[i];
         delete[] items;
         items = temp;
     }
 
-    void validateIndex(size_t index) const
+    void validateIndex(int index) const
     {
-        if (index >= length) {
+        if (index >= length)
+        {
             throw out_of_range("Index out of range");
         }
     }

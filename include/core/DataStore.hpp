@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "ui/UiHelpers.hpp"
 
 using namespace std;
 template <typename T>
@@ -20,7 +21,10 @@ public:
     {
         ofstream file(filename, ios::out | ios::trunc);
         if (!file.is_open())
+        {
+            cerr << "DataStore: failed to open file for writing: " << filename << endl;
             return false;
+        }
 
         for (auto &[key, item] : dataMap)
         {
@@ -43,10 +47,14 @@ public:
 
     bool loadData(HashTable<T> &dataMap)
     {
+
         dataMap.clear();
         ifstream file(filename, ios::in);
         if (!file.is_open())
+        {
+            cerr << "DataStore: failed to open file for reading: " << filename << endl;
             return false;
+        }
 
         string line;
         while (getline(file, line))
