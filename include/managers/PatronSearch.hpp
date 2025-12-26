@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <string>
 #include "dsa/Array.hpp"
+#include "utils/utils.hpp"
 
 using namespace std;
 
@@ -32,22 +33,27 @@ public:
 
     void insert(Patron &p)
     {
-        nameIndex[p.getName()].insert(p.getKey());
+        string name = toLower(p.getName());
+        nameIndex[name].insert(p.getKey());
     }
 
     void remove(Patron &p)
     {
-        string id = p.getKey(), name = p.getName();
-
-        auto it = nameIndex.find(name);
-        if (it != nameIndex.end())
+        string key = p.getKey(), name = toLower(p.getName());
+        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &key, string &value)
         {
-            it->second.erase(id);
-            if (it->second.empty())
+            auto it = index.find(value);
+            if (it != index.end())
             {
-                nameIndex.erase(it);
+                it->second.erase(key);
+                if (it->second.empty())
+                {
+                    index.erase(it);
+                }
             }
-        }
+        };
+
+        removeIndex(nameIndex, key, name);
     }
 
     // Search patrons by name

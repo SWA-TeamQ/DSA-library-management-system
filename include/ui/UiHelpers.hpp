@@ -16,8 +16,8 @@ using namespace std;
 
 void clearInput();
 void waitForEnter();
-string readString(string prompt, bool optional = false);
-int readInt(string prompt, bool optional = false);
+string readString(string prompt, bool optional = false, string fallback = "");
+int readInt(string prompt, bool optional = false, int fallback = 0);
 void clearScreen();
 void printDivider();
 void printHeader(string title);

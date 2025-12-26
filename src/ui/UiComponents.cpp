@@ -24,138 +24,49 @@ void Row(Array<string> values, bool borderTop, int width)
     cout << endl;
 }
 
-
-void BookForm(Book &book, Array<Field> schema, bool update)
-{
-    for (auto &field : schema)
-    {
-        string input;
-        int number = 0;
-        bool isRequired = field.required && !update;
-
-        string prompt = field.label + (field.required ? " *" : "") + ": ";
-        cout << field.label << (field.required ? " *" : "") << ": ";
-
-        if (field.type == FieldType::STRING)
-        {
-            input = readString(prompt, isRequired);
-        }
-        else if (field.type == FieldType::INTEGER)
-        {
-            number = readInt(prompt, isRequired);
-        }
-
-        if (field.key == "isbn")
-        {
-            book.setISBN(input);
-        }
-        else if (field.key == "title")
-        {
-            book.setTitle(input);
-        }
-        else if (field.key == "author")
-        {
-            book.setAuthor(input);
-        }
-        else if (field.key == "edition")
-        {
-            book.setEdition(input);
-        }
-        else if (field.key == "publicationYear")
-        {
-            book.setPublicationYear(number);
-        }
-        else if (field.key == "category")
-        {
-            book.setCategory(input);
-        }
-        else if (field.key == "totalQuantity")
-        {
-            book.setTotalQuantity(number);
-        }
-    }
-}
-
-void PatronForm(Patron &patron, Array<Field> schema, bool update)
+template <typename T>
+void Form(T &obj, Array<Field> schema, bool update)
 {
     for (auto &field : schema)
     {
         string input;
         int number;
-        bool isRequired = field.required && !update;
 
+        bool isRequired = field.required && !update; // if the field is required and we are not updating, then it is required
+
+        // this is the input prompt
         string prompt = field.label + (field.required ? " *" : "") + ": ";
-        cout << field.label << (field.required ? " *" : "") << ": ";
 
+        // if the field is type of string
         if (field.type == FieldType::STRING)
         {
-            if(update){
-                input = readString(prompt, isRequired, book)
+            if (update)
+            {
+                string fieldKey = obj.getField(field.key);
+                input = readString(prompt, isRequired, fieldKey);
             }
-            input = readString(prompt, isRequired);
+            else
+            {
+                input = readString(prompt);
+            }
         }
+        // if the field is type of integer
         else if (field.type == FieldType::INTEGER)
         {
-            number = readInt(prompt, isRequired);
+            if (update)
+            {
+                int fieldKey = stoi(obj.getField(field.key));
+                number = readInt(prompt, isRequired, fieldKey);
+            }
+            else
+            {
+                number = readInt(prompt);
+            }
+            // change the number into a string so that it will be compatible with the generic setter function
+            input = to_string(number);
         }
 
-        if (field.key == "patronID")
-        {
-            patron.setID(input);
-        }
-        else if (field.key == "name")
-        {
-            patron.setName(input);
-        }
-        else if (field.key == "contact")
-        {
-            patron.setContact(input);
-        }
-        else if (field.key == "membershipDate")
-        {
-            patron.setMembershipDate(input);
-        }
-    }
-}
-
-void TransactionForm(Transaction &transaction, Array<Field> schema, bool update)
-{
-    for (auto &field : schema)
-    {
-        string input;
-        int number = 0;
-        bool isRequired = field.required && !update;
-
-        string prompt = field.label + (field.required ? " *" : "") + ": ";
-        cout << field.label << (field.required ? " *" : "") << ": ";
-
-        if (field.type == FieldType::STRING)
-        {
-            input = readString(prompt, isRequired);
-        }
-        else if (field.type == FieldType::INTEGER)
-        {
-            number = readInt(prompt, isRequired);
-        }
-        if (field.key == "transactionID")
-        {
-            transaction.setId(input);
-        }
-        else if (field.key == "bookID")
-        {
-            transaction.setBookID(input);
-        }
-        else if (field.key == "patronID")
-        {
-            transaction.setPatronID(input);
-        }
-        else if (field.key == "borrowDate")
-        {
-            transaction.setBorrowDate(input);
-        }
-        else if (field.key == "dueDate")
-        {
-            transaction.setDueDate(input);
-        }
+        // sets the field of the object dynamically
+        obj.setField(field.key, input);
     }
 }

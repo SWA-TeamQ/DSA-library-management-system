@@ -33,7 +33,7 @@ string readString(string prompt, bool optional, string fallback)
     return input;
 }
 
-int readInt(const string &prompt, bool optional, int fallback)
+int readInt(const string prompt, bool optional, int fallback)
 {
     string input;
     int number = fallback;
