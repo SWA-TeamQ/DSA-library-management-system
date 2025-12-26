@@ -56,8 +56,8 @@ void TransactionMenu::show()
 void TransactionMenu::listTransactions()
 {
 	printHeader("List Transactions");
-	Array<Transaction *> transactions = controller.listAllTransactions();
-	tablePrint(transactions);
+	Array<Transaction *> txs = controller.listAllTransactions();
+	tablePrint(txs);
 	waitForEnter();
 }
 
@@ -65,7 +65,8 @@ void TransactionMenu::listTransactionsForPatron()
 {
 	printHeader("List Transactions For Patron");
 	string pid = readString("Patron ID: ");
-	controller.listTransactionsForPatron(pid);
+	Array<Transaction *> txs = controller.listTransactionsForPatron(pid);
+	tablePrint(txs);
 	waitForEnter();
 }
 
@@ -73,7 +74,8 @@ void TransactionMenu::listOverdueForPatron()
 {
 	printHeader("List Overdue For Patron");
 	string pid = readString("Patron ID: ");
-	controller.listOverdueForPatron(pid);
+	Array<Transaction *> txs = controller.listOverdueForPatron(pid);
+	tablePrint(txs);
 	waitForEnter();
 }
 
@@ -81,7 +83,8 @@ void TransactionMenu::listTransactionsForBook()
 {
 	printHeader("List Transactions For Book");
 	string bid = readString("Book ID: ");
-	controller.listTransactionsForBook(bid);
+	Array<Transaction *> txs = controller.listTransactionsForBook(bid);
+	tablePrint(txs);
 	waitForEnter();
 }
 
@@ -129,7 +132,7 @@ void TransactionMenu::sortTransactions()
 
 	bool reverse = false;
 
-	Array<Transaction *> transactions;
+	Array<Transaction *> txs;
 
 	switch (choice)
 	{
@@ -137,20 +140,20 @@ void TransactionMenu::sortTransactions()
 		return;
 	case 1:
 	{
-		transactions = controller.sortTransactionsByReturnDate(reverse);
-		tablePrint(transactions);
+		txs = controller.sortTransactionsByReturnDate(reverse);
+		tablePrint(txs);
 		break;
 	}
 	case 2:
 	{
-		transactions = controller.sortTransactionsByDueDate(reverse);
-		tablePrint(transactions);
+		txs = controller.sortTransactionsByDueDate(reverse);
+		tablePrint(txs);
 		break;
 	}
 	case 3:
 	{
-		transactions = controller.sortTransactionsByBorrowDate(reverse);
-		tablePrint(transactions);
+		txs = controller.sortTransactionsByBorrowDate(reverse);
+		tablePrint(txs);
 		break;
 	}
 	default:

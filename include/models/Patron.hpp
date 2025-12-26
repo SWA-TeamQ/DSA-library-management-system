@@ -23,9 +23,9 @@ private:
     string name;
     string contact;
     string membershipDate;
-    int activeBorrowCount;
-    int lifetimeBorrowCount;
-    bool borrowed;
+    int activeBorrowCount{0};
+    int lifetimeBorrowCount{0};
+    bool borrowed{false};
 
 public:
     Patron() = default;

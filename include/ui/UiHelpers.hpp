@@ -8,7 +8,6 @@
 #include "models/Book.hpp"
 #include "models/Patron.hpp"
 #include "models/Transaction.hpp"
-#include "ui/UiComponents.hpp"
 #include "ui/UiHelpers.hpp"
 #include "utils/utils.hpp"
 
@@ -23,13 +22,4 @@ void printDivider();
 void printHeader(string title);
 void printWelcomeBanner();
 
-void print(Book &book);
-void print(Patron &patron);
-void print(Transaction &transaction);
 
-void tablePrint(Array<Book> &books);
-void tablePrint(Array<Book *> &books);
-void tablePrint(Array<Patron> &patrons);
-void tablePrint(Array<Patron *> &patrons);
-void tablePrint(Array<Transaction> &transactions);
-void tablePrint(Array<Transaction *> &transactions);

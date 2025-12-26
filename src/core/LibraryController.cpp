@@ -153,7 +153,7 @@ bool LibraryController::addTransaction(Transaction &t)
     return transactionManager.addTransaction(t);
 }
 
-Transaction * LibraryController::findTransactionById(string txID)
+Transaction *LibraryController::findTransactionById(string txID)
 {
     return transactionManager.findTransaction(TransactionSearchKey::ID, txID);
 };
@@ -163,17 +163,9 @@ Array<Transaction *> LibraryController::listAllTransactions()
     return transactionManager.getAllTransactions();
 }
 
-
-
 Array<Transaction *> LibraryController::listTransactionsForPatron(string patronID)
 {
-    Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
-    if (txs.empty())
-    {
-        cout << "No transactions found for patron: " << patronID << "\n";
-        return;
-    }
-    tablePrint(txs);
+    return transactionManager.findTransactions(TransactionSearchKey::PATRON_ID, patronID);
 }
 
 Array<Transaction *> LibraryController::listOverdueForPatron(string patronID)
@@ -191,8 +183,7 @@ Array<Transaction *> LibraryController::listOverdueForPatron(string patronID)
 
 Array<Transaction *> LibraryController::listTransactionsForBook(string bookID)
 {
-    Array<Transaction *> txs = transactionManager.findTransactions(TransactionSearchKey::BOOK_ID, bookID);
-    return txs;
+    return transactionManager.findTransactions(TransactionSearchKey::BOOK_ID, bookID);
 }
 
 Array<Transaction *> LibraryController::sortTransactionsByReturnDate(bool reverse)

@@ -26,7 +26,7 @@ private:
     string patronID;
     string borrowDate;
     string dueDate;
-    string returnDate;
+    string returnDate{""};
     bool returned{false};
 
 public:

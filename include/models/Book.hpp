@@ -30,8 +30,8 @@ private:
     int publicationYear;
     string category;
     int totalQuantity;
-    int currentQuantity;
-    int borrowCount;
+    int currentQuantity{0};
+    int borrowCount{0};
 
 public:
     Book() = default;

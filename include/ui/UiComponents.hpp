@@ -13,6 +13,17 @@ using namespace std;
 
 void Row(Array<string> values, bool borderTop = false, int width = 15);
 
+void print(Book &book);
+void print(Patron &patron);
+void print(Transaction &transaction);
+
+void tablePrint(Array<Book> &books);
+void tablePrint(Array<Book *> &books);
+void tablePrint(Array<Patron> &patrons);
+void tablePrint(Array<Patron *> &patrons);
+void tablePrint(Array<Transaction> &transactions);
+void tablePrint(Array<Transaction *> &transactions);
+
 template <typename T>
 void Form(T &obj, Array<Field> schema, bool update)
 {
@@ -22,7 +33,7 @@ void Form(T &obj, Array<Field> schema, bool update)
         int number;
 
         bool isRequired = field.required && !update; // if the field is required and we are not updating, then it is required
-
+  
         // this is the input prompt
         string prompt = field.label + (field.required ? " *" : "") + ": ";
 
