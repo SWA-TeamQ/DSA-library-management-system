@@ -2,10 +2,12 @@
 #include <string>
 #include <iostream>
 #include "dsa/Array.hpp"
+#include "dsa/MergeSort.hpp"
 #include "models/Patron.hpp"
 #include "dsa/HashTable.hpp"
 #include "core/DataStore.hpp"
 #include "PatronSearch.hpp"
+#include "ui/Schemas.hpp"
 
 using namespace std;
 

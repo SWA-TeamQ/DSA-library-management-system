@@ -110,7 +110,7 @@ void PatronMenu::updatePatron()
 	cout << "Enter the Patron Id: \n";
 	string id = trim(readString("Enter Patron ID: "));
 	auto *patron = controller.findPatronById(id);
-	Patron newPatron;
+	Patron newPatron = *patron;
 
 	if (!patron)
 	{

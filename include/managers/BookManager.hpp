@@ -7,6 +7,7 @@
 #include "dsa/MergeSort.hpp"
 #include "core/DataStore.hpp"
 #include "BookSearch.hpp"
+#include "ui/Schemas.hpp"
 
 using namespace std;
 

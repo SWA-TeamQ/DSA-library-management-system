@@ -1,6 +1,4 @@
 #include "managers/PatronManager.hpp"
-#include <iostream>
-#include "dsa/MergeSort.hpp"
 
 using namespace std;
 
@@ -110,19 +108,22 @@ bool PatronManager::updatePatron(Patron &newPatron)
         return false;
     }
 
-    bool changed =
-        newPatron.getName() != oldPatron->getName() ||
-        newPatron.getContact() != oldPatron->getContact() ||
-        newPatron.getMembershipDate() != oldPatron->getMembershipDate();
+    bool changed = false;
+
+    Array<Field> PatronSchema = patronSchema();
+
+    for(auto &field : PatronSchema){
+        changed = newPatron.getField(field.key) != oldPatron->getField(field.key);
+    }
 
     if (!changed)
         return true;
 
     searchMap.remove(*oldPatron);
 
-    oldPatron->setName(newPatron.getName());
-    oldPatron->setContact(newPatron.getContact());
-    oldPatron->setMembershipDate(newPatron.getMembershipDate());
+    for(auto &field : PatronSchema){
+        oldPatron->setField(field.key, newPatron.getField(field.key));
+    }
 
     searchMap.insert(*oldPatron);
 

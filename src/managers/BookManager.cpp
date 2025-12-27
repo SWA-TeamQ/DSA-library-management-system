@@ -1,6 +1,4 @@
-#include <iostream>
 #include "managers/BookManager.hpp"
-#include "dsa/MergeSort.hpp"
 
 using namespace std;
 
@@ -143,12 +141,13 @@ bool BookManager::updateBook(Book &newBook)
     if (!oldBook)
         return false;
 
-    bool changed =
-        newBook.getTitle() != oldBook->getTitle() ||
-        newBook.getAuthor() != oldBook->getAuthor() ||
-        newBook.getEdition() != oldBook->getEdition() ||
-        newBook.getPublicationYear() != oldBook->getPublicationYear() ||
-        newBook.getCategory() != oldBook->getCategory();
+    bool changed = false;
+
+    Array<Field> BookSchema = bookSchema();
+    for (auto &field : BookSchema)
+    {
+        changed = newBook.getField(field.key) != oldBook->getField(field.key);
+    }
 
     if (!changed)
         return true;
@@ -156,11 +155,10 @@ bool BookManager::updateBook(Book &newBook)
     // Update search index (title, author, etc.)
     searchMap.remove(*oldBook);
 
-    oldBook->setTitle(newBook.getTitle());
-    oldBook->setAuthor(newBook.getAuthor());
-    oldBook->setEdition(newBook.getEdition());
-    oldBook->setPublicationYear(newBook.getPublicationYear());
-    oldBook->setCategory(newBook.getCategory());
+    for (auto &field : BookSchema)
+    {
+        oldBook->setField(field.key, newBook.getField(field.key));
+    }
 
     searchMap.insert(*oldBook);
 

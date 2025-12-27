@@ -118,7 +118,7 @@ void BookMenu::updateBook()
     cout << "Enter the ISBN of the book to update:\n";
     string isbn = readString("Enter ISBN: ");
     auto *book = controller.findBookById(isbn);
-    Book newBook;
+    Book newBook = *book;
 
     if (!book)
     {
