@@ -3,7 +3,7 @@
 Array<Field> bookSchema()
 {
     Array<Field> schema;
-    schema.append(Field{"isbn", "ISBN", FieldType::STRING, true});
+    schema.append(Field{"id", "ISBN", FieldType::STRING, true});
     schema.append(Field{"title", "Title", FieldType::STRING, true});
     schema.append(Field{"author", "Author", FieldType::STRING, true});
     schema.append(Field{"edition", "Edition", FieldType::STRING, true});
@@ -17,7 +17,7 @@ Array<Field> bookSchema()
 Array<Field> patronSchema()
 {
     Array<Field> schema;
-    schema.append(Field{"patronID", "ID", FieldType::STRING, true});
+    schema.append(Field{"id", "ID", FieldType::STRING, true});
     schema.append(Field{"name", "Name", FieldType::STRING, true});
     schema.append(Field{"contact", "Contact", FieldType::STRING, true});
     schema.append(Field{"membershipDate", "Membership Date (YYYY-MM-DD)", FieldType::STRING, true});
@@ -28,7 +28,7 @@ Array<Field> patronSchema()
 Array<Field> transactionSchema()
 {
     Array<Field> schema;
-    schema.append(Field{"transactionID", "ID", FieldType::STRING, true});
+    schema.append(Field{"id", "ID", FieldType::STRING, true});
     schema.append(Field{"bookID", "Book ID", FieldType::STRING, true});
     schema.append(Field{"patronID", "Patron ID", FieldType::STRING, true});
     schema.append(Field{"borrowDate", "Borrow Date (YYYY-MM-DD)", FieldType::STRING, true});

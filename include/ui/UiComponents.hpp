@@ -36,6 +36,11 @@ void Form(T &obj, Array<Field> schema, bool update)
 {
     for (auto &field : schema)
     {
+        if(update && field.key == "id") {
+            // skip id field during update
+            continue;
+        }
+        
         string input;
         int number;
 

@@ -32,7 +32,7 @@ void Book::deserialize(string line)
 
 string Book::getField(const string &key)
 {
-  if (key == "isbn") return isbn;
+  if (key == "id") return isbn;
   if (key == "title") return title;
   if (key == "author") return author;
   if (key == "edition") return edition;
@@ -48,7 +48,7 @@ bool Book::setField(const string &key, const string &value)
 {
   try
   {
-    if (key == "isbn") { isbn = value; return true; }
+    if (key == "id") { isbn = value; return true; }
     if (key == "title") { title = value; return true; }
     if (key == "author") { author = value; return true; }
     if (key == "edition") { edition = value; return true; }

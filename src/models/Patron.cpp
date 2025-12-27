@@ -48,7 +48,7 @@ static bool parseBool(const string &s)
 
 string Patron::getField(const string &key)
 {
-    if (key == "patronID") return patronID;
+    if (key == "id") return patronID;
     if (key == "name") return name;
     if (key == "contact") return contact;
     if (key == "membershipDate") return membershipDate;
@@ -62,7 +62,7 @@ bool Patron::setField(const string &key, const string &value)
 {
     try
     {
-        if (key == "patronID") { patronID = value; return true; }
+        if (key == "id") { patronID = value; return true; }
         if (key == "name") { name = value; return true; }
         if (key == "contact") { contact = value; return true; }
         if (key == "membershipDate") { membershipDate = value; return true; }
