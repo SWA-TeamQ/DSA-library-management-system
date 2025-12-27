@@ -29,6 +29,8 @@ private:
     void handleLoadData();
 
 public:
-    ConsoleInterface(LibraryController c) : controller(c) {}
+    ConsoleInterface(LibraryController c) : controller(c) {
+        printWelcomeBanner();
+    }
     void run();
 };

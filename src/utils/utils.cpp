@@ -53,14 +53,22 @@ int daysBetween(string from, string to)
     return static_cast<int>(diff / (24 * 60 * 60));
 }
 
+string truncate(string str, size_t width) {
+    if (str.length() > width) {
+        // Subtract 3 to make room for the "..."
+        return str.substr(0, width - 3) + "...";
+    }
+    return str;
+}
+
 string trim(string s)
 {
-    std::size_t start = 0;
-    while (start < s.size() && isspace(static_cast<unsigned char>(s[start])))
+    size_t start = 0;
+    while (start < s.size() && isspace(s[start]))
         ++start;
 
-    std::size_t end = s.size();
-    while (end > start && isspace(static_cast<unsigned char>(s[end - 1])))
+    size_t end = s.size();
+    while (end > start && isspace(s[end - 1]))
         --end;
 
     return s.substr(start, end - start);

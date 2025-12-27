@@ -4,10 +4,8 @@
   "description": "Convenience scripts to build and run the CMake project with a single command",
   "private": true,
   "scripts": {
-    "cmake:configure": "cmake -S . -B build",
-    "cmake:build": "cmake --build build",
-    "build" : "npm run cmake:configure && npm run cmake:build",
-    "run": "build\\\\lms.exe",
-    "dev": "npm run cmake:configure && npm run cmake:build && npm run run"
+    "build" : "build.sh",
+    "run": "lms.exe",
+    "dev": "npm run build && npm run run"
   }
 }

@@ -114,7 +114,7 @@ void printHeader(string title)
     printDivider();
     cout << "|  CATEGORY: " << title;
     // Pad with spaces to keep the border aligned
-    int padding = 46 - (int)title.length();
+    int padding = 48 - (int)title.length();
     for (int i = 0; i < padding; ++i)
         cout << " ";
     cout << "|\n";

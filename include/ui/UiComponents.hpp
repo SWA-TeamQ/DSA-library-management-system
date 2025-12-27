@@ -1,4 +1,8 @@
 #pragma once
+#define RESET   "\033[0m"
+#define GRAY    "\033[38;5;237m"  // Bright Black / Dark Gray
+#define WHITE   "\033[37m"  // Standard White
+
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -8,6 +12,9 @@
 #include "dsa/Array.hpp"
 #include "ui/Schemas.hpp"
 #include "ui/UiHelpers.hpp"
+#include "utils/utils.hpp"
+
+
 
 using namespace std;
 
