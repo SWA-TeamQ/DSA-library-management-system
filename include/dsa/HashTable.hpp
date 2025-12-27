@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include "dsa/Array.hpp"
 
 using namespace std;
@@ -10,7 +10,7 @@ template <typename T>
 class HashTable
 {
 private:
-    unordered_map<string, T> table;
+    map<string, T> table;
 
 public:
     HashTable() = default;
