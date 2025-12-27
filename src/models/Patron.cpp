@@ -37,6 +37,43 @@ void Patron::deserialize(string line)
         lifetimeBorrowCount = 0;
 }
 
+static bool parseBool(const string &s)
+{
+    if (s == "1") return true;
+    if (s == "0") return false;
+    string t = s;
+    for (auto &c : t) c = (char)tolower(c);
+    return (t == "true" || t == "yes" || t == "y");
+}
+
+string Patron::getField(const string &key)
+{
+    if (key == "patronID") return patronID;
+    if (key == "name") return name;
+    if (key == "contact") return contact;
+    if (key == "membershipDate") return membershipDate;
+    if (key == "activeBorrowCount") return to_string(activeBorrowCount);
+    if (key == "borrowCount") return to_string(lifetimeBorrowCount);
+    if (key == "borrowed") return borrowed ? string("1") : string("0");
+    return string();
+}
+
+bool Patron::setField(const string &key, const string &value)
+{
+    try
+    {
+        if (key == "patronID") { patronID = value; return true; }
+        if (key == "name") { name = value; return true; }
+        if (key == "contact") { contact = value; return true; }
+        if (key == "membershipDate") { membershipDate = value; return true; }
+        if (key == "activeBorrowCount") { activeBorrowCount = stoi(value); if (activeBorrowCount < 0) activeBorrowCount = 0; return true; }
+        if (key == "borrowCount") { lifetimeBorrowCount = stoi(value); if (lifetimeBorrowCount < 0) lifetimeBorrowCount = 0; return true; }
+        if (key == "borrowed") { borrowed = parseBool(value); return true; }
+    }
+    catch (...) { return false; }
+    return false;
+}
+
 Array<string> Patron::getFields() 
 {
     Array<string> fields;

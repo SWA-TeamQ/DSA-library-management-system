@@ -41,27 +41,22 @@ public:
 
     void remove(Transaction &t)
     {
-        string id = t.getKey(), bookId = t.getBookID(), patronId = t.getPatronID();
-
-        auto it = bookIdIndex.find(bookId);
-        if (it != bookIdIndex.end())
+        string key = t.getKey(), patronId = t.getPatronID(), bookId = t.getBookID();
+        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &key, string &value)
         {
-            it->second.erase(id);
-            if (it->second.empty())
+            auto it = index.find(value);
+            if (it != index.end())
             {
-                bookIdIndex.erase(it);
+                it->second.erase(key);
+                if (it->second.empty())
+                {
+                    index.erase(it);
+                }
             }
-        }
+        };
 
-        it = patronIdIndex.find(patronId);
-        if (it != patronIdIndex.end())
-        {
-            it->second.erase(id);
-            if (it->second.empty())
-            {
-                patronIdIndex.erase(it);
-            }
-        }
+        removeIndex(bookIdIndex, key, bookId);
+        removeIndex(patronIdIndex, key, patronId);
     }
 
     // Search transactions by bookId

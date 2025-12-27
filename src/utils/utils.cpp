@@ -66,72 +66,9 @@ string trim(string s)
     return s.substr(start, end - start);
 }
 
-// Escape/unescape functions for pipe-delimited persistence
-// Rules:
-//  - '\\' -> "\\\\"
-//  - '|'  -> "\\|"
-//  - '\n' -> "\\n"
-string escapeField(string s)
-{
-    string result;
-    result.reserve(s.size());
-    for (char c : s)
-    {
-        switch (c)
-        {
-        case '\\':
-            result += "\\\\";
-            break;
-        case '|':
-            result += "\\|";
-            break;
-        case '\n':
-            result += "\\n";
-            break;
-        default:
-            result += c;
-            break;
-        }
+string toLower(string s) {
+    for (char &c : s) {
+        c = tolower(c);
     }
-    return result;
-}
-
-string unescapeField(string s)
-{
-    string result;
-    result.reserve(s.size());
-    for (size_t i = 0; i < s.size(); ++i)
-    {
-        char c = s[i];
-        if (c == '\\' && i + 1 < s.size())
-        {
-            char n = s[i + 1];
-            if (n == '\\')
-            {
-                result += '\\';
-                ++i;
-            }
-            else if (n == '|')
-            {
-                result += '|';
-                ++i;
-            }
-            else if (n == 'n')
-            {
-                result += '\n';
-                ++i;
-            }
-            else
-            {
-                // unknown escape, keep both
-                result += n;
-                ++i;
-            }
-        }
-        else
-        {
-            result += c;
-        }
-    }
-    return result;
+    return s;
 }

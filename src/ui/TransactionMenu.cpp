@@ -1,4 +1,5 @@
 #include "ui/TransactionMenu.hpp"
+#include "ui/BorrowMenu.hpp"
 
 #include <iostream>
 
@@ -6,73 +7,163 @@ using namespace std;
 
 void TransactionMenu::show()
 {
-	bool running = true;
-	while (running)
+    bool running = true;
+    while (running)
+    {
+        printHeader("--- Transactions ---");
+        cout << "1. Borrow/Return menu\n"
+             << "2. View all transactions\n"
+             << "3. View patron transaction history\n"
+             << "4. View patron overdue items\n"
+             << "5. View book transaction history\n"
+             << "0. Back\n";
+
+        int choice = readInt("Choose: ");
+
+        switch (choice)
+        {
+        case 0:
+            running = false;
+            break;
+        case 1:
+        {
+            BorrowMenu menu(controller);
+            menu.show();
+            break;
+        }
+        case 2:
+        {
+            listTransactions();
+            break;
+        }
+        case 3:
+        {
+            listTransactionsForPatron();
+            break;
+        }
+        case 4:
+        {
+            listOverdueForPatron();
+            break;
+        }
+        case 5:
+        {
+            listTransactionsForBook();
+            break;
+        }
+        default:
+            cout << "Unknown choice.\n";
+            break;
+        }
+    }
+}
+
+void TransactionMenu::listTransactions()
+{
+	printHeader("List Transactions");
+	Array<Transaction *> txs = controller.listAllTransactions();
+	tablePrint(txs);
+	waitForEnter();
+}
+
+void TransactionMenu::listTransactionsForPatron()
+{
+	printHeader("List Transactions For Patron");
+	string pid = readString("Patron ID: ");
+	Array<Transaction *> txs = controller.listTransactionsForPatron(pid);
+	tablePrint(txs);
+	waitForEnter();
+}
+
+void TransactionMenu::listOverdueForPatron()
+{
+	printHeader("List Overdue For Patron");
+	string pid = readString("Patron ID: ");
+	Array<Transaction *> txs = controller.listOverdueForPatron(pid);
+	tablePrint(txs);
+	waitForEnter();
+}
+
+void TransactionMenu::listTransactionsForBook()
+{
+	printHeader("List Transactions For Book");
+	string bid = readString("Book ID: ");
+	Array<Transaction *> txs = controller.listTransactionsForBook(bid);
+	tablePrint(txs);
+	waitForEnter();
+}
+
+void TransactionMenu::searchTransactions()
+{
+	printHeader("Search Transactions");
+	cout << "1. By Transaction ID\n"
+		 << "0. Back\n";
+	int choice = readInt("Choose: ");
+
+	switch (choice)
 	{
-		printHeader("--- Transactions ---");
-		cout << "1. Borrow book\n"
-			 << "2. Return book\n"
-			 << "3. View all transactions\n"
-			 << "4. View patron transaction history\n"
-			 << "5. View patron overdue items\n"
-			 << "0. Back\n";
-
-		int choice;
-		cin >> choice;
-		cin.ignore(INT_MAX, '\n');
-
-		switch (choice)
-		{
-		case 1:
-		{
-			string pid = readString("Patron ID: ");
-			string isbn = readString("Book ISBN: ");
-			if (controller.borrowBook(pid, isbn))
-				cout << "Borrowed.\n";
-			else
-				cout << "Borrow failed.\n";
-			waitForEnter();
-			break;
-		}
-		case 2:
-		{
-			string pid = readString("Patron ID: ");
-			string isbn = readString("Book ISBN: ");
-			if (controller.returnBook(pid, isbn))
-				cout << "Returned.\n";
-			else
-				cout << "Return failed.\n";
-			waitForEnter();
-			break;
-		}
-		case 3:
-		{
-			Array<Transaction *> txs = controller.listAllTransactions();
-			tablePrint(txs);
-			break;
-		}
-			waitForEnter();
-			break;
-		case 4:
-		{
-			string pid = readString("Patron ID: ");
-			controller.listTransactionsForPatron(pid);
-			waitForEnter();
-			break;
-		}
-		case 5:
-		{
-			string pid = readString("Patron ID: ");
-			controller.listOverdueForPatron(pid);
-			waitForEnter();
-			break;
-		}
-		case 0:
-			running = false;
-			break;
-		default:
-			cout << "Unknown choice.\n";
-			break;
-		}
+	case 0:
+		return;
+	case 1:
+	{
+		string txID = readString("Enter Transaction ID: ");
+		auto *tx = controller.findTransactionById(txID);
+		if (tx)
+			print(*tx);
+		else
+			cout << "Transaction not found.\n";
+		break;
 	}
+	default:
+		cout << "Invalid choice.\n";
+		break;
+	}
+	waitForEnter();
+}
+
+void TransactionMenu::sortTransactions()
+{
+	printHeader("Sort Transactions");
+	cout << "1. By Return Date\n"
+		<< "2, By Due Date\n"
+		<< "3, By Borrow Date\n"
+
+		 << "0. Back\n";
+	int choice = readInt("Choose: ");
+
+	if(choice == 0){
+		return;
+	}
+
+	bool reverse = false;
+
+	Array<Transaction *> txs;
+
+	switch (choice)
+	{
+	case 0:
+		return;
+	case 1:
+	{
+		txs = controller.sortTransactionsByReturnDate(reverse);
+		tablePrint(txs);
+		break;
+	}
+	case 2:
+	{
+		txs = controller.sortTransactionsByDueDate(reverse);
+		tablePrint(txs);
+		break;
+	}
+	case 3:
+	{
+		txs = controller.sortTransactionsByBorrowDate(reverse);
+		tablePrint(txs);
+		break;
+	}
+	default:
+		cout << "Invalid choice.\n";
+		break;
+	}
+	waitForEnter();
 }

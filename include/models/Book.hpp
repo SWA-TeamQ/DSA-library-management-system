@@ -23,38 +23,37 @@ enum class BookSortKey
 class Book
 {
 private:
+    string isbn;
     string title;
     string author;
-    string isbn;
     string edition;
     int publicationYear;
     string category;
     int totalQuantity;
-    int currentQuantity;
-    int borrowCount;
+    int currentQuantity{0};
+    int borrowCount{0};
 
 public:
     Book() = default;
 
-    Book(string title,
-         string author,
-         string isbn,
-         string edition,
-         int publicationYear,
-         string category = "General",
-         int totalQuantity = 1,
-         int currentQuantity = 1,
-         int borrowCount = 0) : title(title),
-                                author(author),
-                                isbn(isbn),
-                                edition(edition),
-                                publicationYear(publicationYear),
-                                category(category),
-                                totalQuantity(totalQuantity),
-                                currentQuantity(currentQuantity),
-                                borrowCount(borrowCount)
-
-    {};
+    Book(
+        string isbn,
+        string title,
+        string author,
+        string edition,
+        int publicationYear,
+        string category = "General",
+        int totalQuantity = 1) : isbn(move(isbn)),
+                                 title(move(title)),
+                                 author(move(author)),
+                                 edition(move(edition)),
+                                 publicationYear(publicationYear),
+                                 category(move(category)),
+                                 totalQuantity(totalQuantity),
+                                 currentQuantity(totalQuantity),
+                                 borrowCount(0)
+    {
+    }
 
     // for generic lookup
     string &getKey() { return isbn; }
@@ -75,7 +74,7 @@ public:
     void setEdition(string e) { this->edition = e; }
     void setPublicationYear(int p) { this->publicationYear = p; }
     void setCategory(string c) { this->category = c; }
-    void setTotalQuantity(int t) { this->totalQuantity = t; }
+    void setTotalQuantity(int t) { this->totalQuantity = t; this->currentQuantity = t;}
     void incrementCurrentQuantity()
     {
         if (currentQuantity < totalQuantity)
@@ -87,12 +86,18 @@ public:
             this->currentQuantity--;
     }
 
-    bool isAllReturned() { return currentQuantity == totalQuantity; }
+    bool isAllReturned() { return this->currentQuantity == this->totalQuantity; }
     void setBorrowCount(int b) { this->borrowCount = b; }
     void incrementBorrowCount() { this->borrowCount++; }
 
     string serialize();
     void deserialize(string line);
+
+    // Key-based access helpers (string keys per schema: isbn, title, ...)
+    // Returns value stringified; empty string if key unknown.
+    string getField(const string &key);
+    // Sets field from string; parses integers when needed. Returns true if key handled.
+    bool setField(const string &key, const string &value);
 
     Array<string> getFields();
     Array<string> getValues();

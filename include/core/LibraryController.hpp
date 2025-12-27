@@ -9,6 +9,7 @@
 #include "managers/TransactionManager.hpp"
 #include "managers/PatronManager.hpp"
 #include "core/LoanService.hpp"
+#include "ui/UiHelpers.hpp"
 
 using namespace std;
 
@@ -77,10 +78,14 @@ public:
 
     // Transaction operations
     bool addTransaction(Transaction &t);
+    Transaction *findTransactionById(string txID);
     Array<Transaction *> listAllTransactions();
-    void listTransactionsForPatron(string patronID);
-    void listOverdueForPatron(string patronID);
+    Array<Transaction *> listTransactionsForPatron(string patronID);
+    Array<Transaction *> listOverdueForPatron(string patronID);
+    Array<Transaction *> listTransactionsForBook(string bookID);
     Array<Transaction *> sortTransactionsByReturnDate(bool reverse = false);
+    Array<Transaction *> sortTransactionsByDueDate(bool reverse = false);
+    Array<Transaction *> sortTransactionsByBorrowDate(bool reverse = false);
 
     // Borrow/Return operations
     bool borrowBook(string patronID, string isbn);

@@ -54,22 +54,6 @@ void PatronMenu::listPatrons()
 	waitForEnter();
 }
 
-void PatronMenu::addPatron()
-{
-	printHeader(" Add Patron ");
-	Patron newPatron;
-	newPatron.setID(readString("ID: "));
-	newPatron.setName(readString("Name: "));
-	newPatron.setContact(readString("Contact: "));
-	newPatron.setMembershipDate(readString("Membership date: "));
-
-	if (controller.addPatron(newPatron))
-		cout << "Patron added.\n";
-	else
-		cout << "ID exists.\n";
-	waitForEnter();
-}
-
 void PatronMenu::removePatron()
 {
 	printHeader("Remove Patron");
@@ -107,25 +91,46 @@ void PatronMenu::removePatron()
 	waitForEnter();
 }
 
+void PatronMenu::addPatron()
+{
+	printHeader("Add Patron");
+	Patron newPatron;
+	Form<Patron>(newPatron, patronSchema(), false);
+
+	if (controller.addPatron(newPatron))
+		cout << "Patron added.\n";
+	else
+		cout << "ID exists.\n";
+	waitForEnter();
+}
+
 void PatronMenu::updatePatron()
 {
 	printHeader("Update Patron");
 	cout << "Enter the Patron Id: \n";
 	string id = trim(readString("Enter Patron ID: "));
 	auto *patron = controller.findPatronById(id);
-	if (patron)
+	if (!patron)
 	{
-		cout << "Current details:\n";
-		print(*patron);
-		cout << "Enter new details:\n";
-		patron->setName(trim(readString("Name: ")));
-		patron->setContact(trim(readString("Contact: ")));
-		patron->setMembershipDate(trim(readString("Membership date: ")));
-		controller.updatePatron(*patron);
+		cout << "Patron not found.\n";
+		waitForEnter();
+		return;
+	}
+
+	// show previous patron details if the patron is found
+	cout << "Current details:\n";
+	print(*patron);
+
+	Form(*patron, patronSchema(), true); // show the patron update form
+
+	if (controller.updatePatron(*patron))
+	{
 		cout << "Patron updated.\n";
 	}
 	else
-		cout << "Patron not found.\n";
+	{
+		cerr << "Error occured during update" << endl;
+	}
 
 	waitForEnter();
 }
@@ -138,6 +143,7 @@ void PatronMenu::searchPatrons()
 		 << "3. By Id(multiple)\n"
 		 << "4. By Name(multiple)\n"
 		 << "0. Back\n";
+		 
 	int choice = readInt("Choose: ");
 	switch (choice)
 	{
