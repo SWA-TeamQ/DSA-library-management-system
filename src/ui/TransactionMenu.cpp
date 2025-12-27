@@ -1,4 +1,5 @@
 #include "ui/TransactionMenu.hpp"
+#include "ui/BorrowMenu.hpp"
 
 #include <iostream>
 
@@ -6,51 +7,55 @@ using namespace std;
 
 void TransactionMenu::show()
 {
-	bool running = true;
-	while (running)
-	{
-		printHeader("--- Transactions ---");
-		cout << "1. View all transactions\n"
-			 << "2. View patron transaction history\n"
-			 << "3. View patron overdue items\n"
-			 << "4. View book transaction history\n"
-			 << "0. Back\n";
+    bool running = true;
+    while (running)
+    {
+        printHeader("--- Transactions ---");
+        cout << "1. Borrow/Return menu\n"
+             << "2. View all transactions\n"
+             << "3. View patron transaction history\n"
+             << "4. View patron overdue items\n"
+             << "5. View book transaction history\n"
+             << "0. Back\n";
 
-		int choice = readInt("Choose: ");
+        int choice = readInt("Choose: ");
 
-		switch (choice)
-		{
-		case 0:
-			running = false;
-			break;
-
-		case 1:
-		{
-			listTransactions();
-			break;
-		}
-		case 2:
-		{
-			listTransactionsForPatron();
-			break;
-		}
-		case 3:
-		{
-			listOverdueForPatron();
-			break;
-		}
-
-		case 4:
-		{
-			listTransactionsForBook();
-			break;
-		}
-
-		default:
-			cout << "Unknown choice.\n";
-			break;
-		}
-	}
+        switch (choice)
+        {
+        case 0:
+            running = false;
+            break;
+        case 1:
+        {
+            BorrowMenu menu(controller);
+            menu.show();
+            break;
+        }
+        case 2:
+        {
+            listTransactions();
+            break;
+        }
+        case 3:
+        {
+            listTransactionsForPatron();
+            break;
+        }
+        case 4:
+        {
+            listOverdueForPatron();
+            break;
+        }
+        case 5:
+        {
+            listTransactionsForBook();
+            break;
+        }
+        default:
+            cout << "Unknown choice.\n";
+            break;
+        }
+    }
 }
 
 void TransactionMenu::listTransactions()
