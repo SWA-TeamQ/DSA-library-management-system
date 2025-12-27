@@ -42,18 +42,6 @@ public:
     void remove(Transaction &t)
     {
         string key = t.getKey(), patronId = t.getPatronID(), bookId = t.getBookID();
-        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &key, string &value)
-        {
-            auto it = index.find(value);
-            if (it != index.end())
-            {
-                it->second.erase(key);
-                if (it->second.empty())
-                {
-                    index.erase(it);
-                }
-            }
-        };
 
         removeIndex(bookIdIndex, key, bookId);
         removeIndex(patronIdIndex, key, patronId);
@@ -62,34 +50,16 @@ public:
     // Search transactions by bookId
     Array<string> findByBookId(string bookId)
     {
-        auto it = bookIdIndex.find(bookId);
-        if (it != bookIdIndex.end())
-        {
-            auto setIt = it->second;
-            Array<string> ids;
-            for (auto &key : setIt)
-            {
-                ids.append(key);
-            }
-            return ids;
-        }
-        return {};
+        Array<string> result;
+        findIds(bookIdIndex, bookId, result);
+        return result;
     }
 
     // Search transactions by patronId
     Array<string> findByPatronId(string patronId)
     {
-        auto it = patronIdIndex.find(patronId);
-        if (it != patronIdIndex.end())
-        {
-            auto setIt = it->second;
-            Array<string> ids;
-            for (auto &key : setIt)
-            {
-                ids.append(key);
-            }
-            return ids;
-        }
-        return {};
+        Array<string> result;
+        findIds(patronIdIndex, patronId, result);
+        return result;
     }
 };
