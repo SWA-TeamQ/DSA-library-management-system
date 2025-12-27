@@ -9,15 +9,16 @@ void clearInput()
 void waitForEnter()
 {
     cout << "Press Enter to continue...";
-    if(cin.peek() != '\n'){
+    if (cin.peek() != '\n')
+    {
         clearInput();
     }
     cin.get();
 }
 
-string readString(string prompt, bool optional)
+string readString(string prompt, bool optional, string fallback)
 {
-    string input;
+    string input = fallback;
     do
     {
         cout << prompt;
@@ -32,28 +33,46 @@ string readString(string prompt, bool optional)
     return input;
 }
 
-int readInt(string prompt)
+int readInt(const string prompt, bool optional, int fallback)
 {
-    int input;
-    bool valid = true;
+    string input;
+    int number = fallback;
+    bool valid;
+
     do
     {
         valid = true;
         cout << prompt;
-        cin >> input;
-        if (cin.fail())
+
+        getline(cin, input);
+
+        if (input.empty())
         {
-            cout << "Invalid input. Please enter a valid integer." << endl;
-            clearInput();
-            valid = false;
+            if (!optional)
+            {
+                cout << "This field is required" << endl;
+                valid = false;
+            }
+            else
+            {
+                return number;
+            }
         }
         else
         {
-            clearInput();
-            return input;
+            try
+            {
+                number = stoi(input);
+            }
+            catch (...)
+            {
+                cout << "Invalid number. Try again." << endl;
+                valid = false;
+            }
         }
-    } while (valid);
-    return input;
+    } while (!valid);
+
+    return number;
 }
 
 void clearScreen()
@@ -95,141 +114,9 @@ void printHeader(string title)
     printDivider();
     cout << "|  CATEGORY: " << title;
     // Pad with spaces to keep the border aligned
-        int padding = 46 - (int)title.length();
+    int padding = 46 - (int)title.length();
     for (int i = 0; i < padding; ++i)
         cout << " ";
     cout << "|\n";
     printDivider();
-}
-
-/**
- * print (overloaded) - to print the details of the object
- * tablePrint (overloaded) - to print the list of objects in a table view
- */
-
-void print(Book &book)
-{
-    auto fields = book.getFields();
-    auto values = book.getValues();
-
-    cout << endl;
-    for (size_t i = 0; i < fields.size(); i++)
-    {
-        cout << '\t' << fields[i] << ": " << values[i] << endl;
-    }
-    cout << endl;
-}
-
-void print(Patron &patron)
-{
-    auto fields = patron.getFields();
-    auto values = patron.getValues();
-
-    cout << endl;
-    for (size_t i = 0; i < fields.size(); i++)
-    {
-        cout << '\t' << fields[i] << ": " << values[i] << endl;
-    }
-    cout << endl;
-}
-
-void print(Transaction &transaction)
-{
-    auto fields = transaction.getFields();
-    auto values = transaction.getValues();
-
-    cout << endl;
-    for (size_t i = 0; i < fields.size(); i++)
-    {
-        cout << '\t' << fields[i] << ": " << values[i] << endl;
-    }
-    cout << endl;
-}
-
-void tablePrint(Array<Book> &books)
-{
-    Book temp = Book();
-    // table header
-    Array<string> fields = temp.getFields();
-    Row(fields, true); // true for the top border
-
-    // table rows
-    for (auto &book : books)
-    {
-        Row(book.getValues());
-    }
-}
-
-void tablePrint(Array<Book *> &books)
-{
-    Book temp = Book();
-    // table header
-    Array<string> fields = temp.getFields();
-    Row(fields, true); // true for the top border
-
-    // table rows
-    for (auto *book : books)
-    {
-        Row((*book).getValues());
-    }
-}
-
-void tablePrint(Array<Patron> &patrons)
-{
-    Patron temp = Patron();
-
-    // table header
-    Array<string> fields = temp.getFields();
-    Row(fields, true); // true for the top border
-
-    // table rows
-    for (auto &patron : patrons)
-    {
-        Row(patron.getValues());
-    }
-}
-
-void tablePrint(Array<Patron *> &patrons)
-{
-    Patron temp = Patron();
-
-    // table header
-    Array<string> fields = temp.getFields();
-    Row(fields, true); // true for the top border
-
-    // table rows
-    for (auto *patron : patrons)
-    {
-        Row((*patron).getValues());
-    }
-}
-
-void tablePrint(Array<Transaction> &transactions)
-{
-    Transaction temp = Transaction();
-
-    // table header
-    Array<string> fields = temp.getFields();
-    Row(fields, true); // true for the top border
-
-    // table rows
-    for (auto &transaction : transactions)
-    {
-        Row(transaction.getValues());
-    }
-}
-
-void tablePrint(Array<Transaction *> &transactions)
-{
-    Transaction temp = Transaction();
-
-    // table header
-    Array<string> fields = temp.getFields();
-    Row(fields, true); // true for the top border
-
-    // table rows
-    for (auto *transaction : transactions)
-    {
-        Row((*transaction).getValues());
-    }
 }

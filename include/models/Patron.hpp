@@ -33,18 +33,14 @@ public:
     Patron(string patronID,
            string name,
            string contact,
-           string membershipDate,
-           int lifetimeBorrowCount = 0,
-           int activeBorrowCount = 0,
-           bool borrowed = false)
+           string membershipDate) : patronID(move(patronID)),
+                                    name(move(name)),
+                                    contact(move(contact)),
+                                    membershipDate(move(membershipDate)),
+                                    activeBorrowCount(0),
+                                    lifetimeBorrowCount(0),
+                                    borrowed(false)
     {
-        this->patronID = patronID;
-        this->name = name;
-        this->contact = contact;
-        this->membershipDate = membershipDate;
-        this->activeBorrowCount = activeBorrowCount;
-        this->lifetimeBorrowCount = lifetimeBorrowCount;
-        this->borrowed = borrowed;
     }
 
     // for generic lookup
@@ -79,6 +75,11 @@ public:
 
     string serialize();
     void deserialize(string line);
+
+    // Key-based access helpers (keys: patronID, name, contact, membershipDate,
+    // activeBorrowCount, borrowCount, borrowed)
+    string getField(const string &key);
+    bool setField(const string &key, const string &value);
 
     Array<string> getFields();
     Array<string> getValues();

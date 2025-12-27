@@ -26,7 +26,7 @@ private:
     string patronID;
     string borrowDate;
     string dueDate;
-    string returnDate;
+    string returnDate{""};
     bool returned{false};
 
 public:
@@ -36,15 +36,13 @@ public:
                 string bookID,
                 string patronID,
                 string borrowDate,
-                string dueDate,
-                string returnDate,
-                bool returned = false) : transactionID(transactionID),
-                                         bookID(bookID),
-                                         patronID(patronID),
-                                         borrowDate(borrowDate),
-                                         dueDate(dueDate),
-                                         returnDate(returnDate),
-                                         returned(returned)
+                string dueDate) : transactionID(move(transactionID)),
+                                  bookID(move(bookID)),
+                                  patronID(move(patronID)),
+                                  borrowDate(move(borrowDate)),
+                                  dueDate(move(dueDate)),
+                                  returnDate(""),
+                                  returned(false)
     {
     }
 
@@ -73,6 +71,11 @@ public:
 
     string serialize();
     void deserialize(string line);
+
+    // Key-based access helpers (keys: transactionID, bookID, patronID,
+    // borrowDate, dueDate, returnDate, returned)
+    string getField(const string &key);
+    bool setField(const string &key, const string &value);
 
     Array<string> getFields();
     Array<string> getValues();

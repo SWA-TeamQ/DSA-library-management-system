@@ -30,7 +30,39 @@ void Book::deserialize(string line)
   borrowCount = stoi(field);
 }
 
-Array<string> Book::getFields() 
+string Book::getField(const string &key)
+{
+  if (key == "isbn") return isbn;
+  if (key == "title") return title;
+  if (key == "author") return author;
+  if (key == "edition") return edition;
+  if (key == "publicationYear") return to_string(publicationYear);
+  if (key == "category") return category;
+  if (key == "totalQuantity") return to_string(totalQuantity);
+  if (key == "currentQuantity") return to_string(currentQuantity);
+  if (key == "borrowCount") return to_string(borrowCount);
+  return string();
+}
+
+bool Book::setField(const string &key, const string &value)
+{
+  try
+  {
+    if (key == "isbn") { isbn = value; return true; }
+    if (key == "title") { title = value; return true; }
+    if (key == "author") { author = value; return true; }
+    if (key == "edition") { edition = value; return true; }
+    if (key == "publicationYear") { publicationYear = stoi(value); return true; }
+    if (key == "category") { category = value; return true; }
+    if (key == "totalQuantity") { totalQuantity = stoi(value); currentQuantity = totalQuantity; return true; }
+    if (key == "currentQuantity") { currentQuantity = stoi(value); if (currentQuantity > totalQuantity) currentQuantity = totalQuantity; return true; }
+    if (key == "borrowCount") { borrowCount = stoi(value); return true; }
+  }
+  catch (...) { return false; }
+  return false;
+}
+
+Array<string> Book::getFields()
 {
   Array<string> fields;
   fields.append("Title");

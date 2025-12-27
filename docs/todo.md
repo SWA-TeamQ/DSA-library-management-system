@@ -1,35 +1,20 @@
-# Project TODOs (Delegated)
+# Project TODOs: Logical Inconsistencies and Data Integrity Issues
 
-## Member 1 — Lead & UI Glue
-- [ ] Integrate BookMenu: route ConsoleInterface book options to [src/ui/BookMenu.cpp](src/ui/BookMenu.cpp) and remove placeholder handlers in [src/ui/ConsoleInterface.cpp](src/ui/ConsoleInterface.cpp).
-- [ ] Unify input handling: use one readLine/readInt helper to avoid `cin`/`getline` mix; centralize in [include/ui/UiHelpers.hpp](include/ui/UiHelpers.hpp) and apply across menus.
-- [ ] Wire load/save lifecycle: call controller.load() on startup and controller.save() on exit in [src/main.cpp](src/main.cpp) and ConsoleInterface exit paths.
+This document outlines identified logical inconsistencies and data integrity issues within the project. These are not syntax errors but rather functional or data-related flaws that need to be addressed to ensure the application's robustness and correctness.
 
-## Member 2 — Book Management
-- [ ] Fix add-book result: make [src/core/LibraryController.cpp](src/core/LibraryController.cpp) return the real BookManager::addBook result so duplicate ISBNs are surfaced to UI.
-- [ ] Add book update flow (title/author/category/edition/year/availability) and menu entry; reuse controller.updateBook.
-- [ ] Guard removals: ensure BookManager remove blocks active loans (via LoanService/TransactionManager) and rebuild indices/persistence; surface messaging in UI.
+## UI/Menu Inconsistencies
 
-## Member 3 — Patron Management
-- [ ] Implement patron search by name/ID and contact update; expose via ConsoleInterface.
-- [ ] Safe removal: block deletion when patron has active loans (TransactionManager/LoanService), with clear UI feedback.
-- [ ] Improve listing output to a formatted table (name/contact/borrowed flag/borrowCount).
+*   **Missing Required Fields Prompting**: Several UI menus (e.g., for adding/editing books, patrons, or transactions) do not consistently prompt the user to enter all required fields for the respective components. This leads to incomplete data being potentially entered or operations failing unexpectedly.
+    *   **Specific areas to investigate**: Book creation/update forms, Patron registration/update forms, Transaction processing.
 
-## Member 4 — Borrow/Return & History
-- [ ] Add borrow rules: max active loans per patron, block overdue users, compute due dates (e.g., +14 days) in [src/core/LoanService.cpp](src/core/LoanService.cpp).
-- [ ] Enhance returns: compute overdue status/fines via Transaction::calculateFine; update Transaction model and UI messaging.
-- [ ] Implement transaction history/overdue views per patron in ConsoleInterface using TransactionManager.
+## Data Integrity Issues
 
-## Member 5 — Utilities
-- [ ] Add date/validation helpers in [src/utils/utils.cpp](src/utils/utils.cpp) for current date, day difference, numeric input guards, and ISBN/name validation; update headers.
-- [ ] Provide unique ID generator for transactions/patrons to replace time-based IDs in LoanService.
+*   **Inconsistent State Saving**: Following updates to data (e.g., after modifying book details, patron information, or transaction status), the application does not always ensure that the entire dataset is saved to its persistent storage (e.g., `.txt` files). This can lead to data loss or inconsistencies between the in-memory state and the stored state.
+    *   **Specific scenario to investigate**: Ensure that after updating book information, all book records are properly serialized and saved to `data/books.txt`. Similar checks are needed for patrons and transactions.
+*   **Data Validation Gaps**: While some input validation might exist, there may be logical gaps where invalid data can be entered, leading to corrupt states or unexpected behavior.
+    *   **Example**: Ensure that ISBNs, dates, or numerical IDs are validated for format and logical correctness before being accepted and saved.
 
-## Member 6 — Persistence
-- [ ] Finalize data file locations (e.g., data/) and update DataStore paths in managers/controllers.
-- [ ] Harden save/load flows in ConsoleInterface; ensure DataStore creates missing files and reports failures.
-- [ ] Verify borrow/return state persists across runs (books availability, patron borrowed flag, transactions).
+## Backend/Logic Interactions
 
-## Cross-Cutting / Quality
-- [ ] Fix const-ref mismatch in [include/core/LoanService.hpp](include/core/LoanService.hpp) vs implementation to keep member refs non-const.
-- [ ] Add a smoke-test checklist (or minimal automated tests) covering add/list/search books, register patron, borrow/return with limits, save/load.
-- [ ] Update [README.md](README.md) with menu shortcuts, data file locations, and feature status once items land.
+*   **UI-Backend Synchronization**: There might be instances where the UI presents options or states that are not fully synchronized with the backend's current data state, leading to user confusion or incorrect actions.
+    *   **Example**: A book might appear available in the UI but is marked as unavailable in the backend due to a failed save operation.

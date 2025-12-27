@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
+#include "utils/utils.hpp"
 
 using namespace std;
 
@@ -36,19 +37,22 @@ public:
 
     void insert(Book &b)
     {
-        titleIndex[b.getTitle()].insert(b.getKey());
-        authorIndex[b.getAuthor()].insert(b.getKey());
-        categoryIndex[b.getCategory()].insert(b.getKey());
+        string title = toLower(b.getTitle()), author = toLower(b.getAuthor()), category = toLower(b.getCategory());
+
+        titleIndex[title].insert(b.getKey());
+        authorIndex[author].insert(b.getKey());
+        categoryIndex[category].insert(b.getKey());
     }
 
     void remove(Book &b)
     {
-        string key = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
-        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string value)
+        string key = b.getKey(), title = toLower(b.getTitle()), author = toLower(b.getAuthor()), category = toLower(b.getCategory());
+        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &key, string &value)
         {
             auto it = index.find(value);
             if (it != index.end())
             {
+                it->second.erase(key);
                 if (it->second.empty())
                 {
                     index.erase(it);
@@ -56,9 +60,9 @@ public:
             }
         };
 
-        removeIndex(titleIndex, b.getTitle());
-        removeIndex(authorIndex, b.getAuthor());
-        removeIndex(categoryIndex, b.getCategory());
+        removeIndex(titleIndex, key, title);
+        removeIndex(authorIndex, key, author);
+        removeIndex(categoryIndex, key, category);
     }
 
     Array<string> findByTitle(string title)
