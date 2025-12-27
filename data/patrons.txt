@@ -1,4 +1,10 @@
-P001|Alice Johnson|alice@example.com|2020-05-10|1|1|6
-P002|Bob Smith|bob@example.com|2019-08-22|0|0|1
-P003|Carol Williams|carol@example.com|2021-01-15|1|1|2
-P004|David Lee|david@example.com|2024-12-01|1|1|1
+P001|Alice Johnson|alice@example.com|2020-05-10|2|5|6
+P002|Bob Smith|bob@example.com|2019-08-22|0|5|1
+P003|Carol Williams|carol@example.com|2021-01-15|1|5|2
+P004|David Lee|david@example.com|2024-12-01|1|5|1
+P005|Eve Adams|eve@example.com|2025-01-10|0|5|0
+P006|Frank Wright|frank@example.com|2025-02-15|0|5|0
+P007|Grace Hopper|grace@example.com|2025-03-01|0|5|0
+P008|Henry Ford|henry@example.com|2025-03-20|0|5|0
+P009|Isabel Archer|isabel@example.com|2025-04-05|0|5|0
+P010|Jack Reacher|jack@example.com|2025-05-12|0|5|0
