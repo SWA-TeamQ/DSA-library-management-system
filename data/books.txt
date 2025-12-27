@@ -1,1 +1,49 @@
-abebe beso bela|abel mekonen|234kj2l34|3rd|2025|love|1000|1000|0
+ISBN0055|Materials Science and Engineering|Callister|10th|2018|Mechanical|5|3|8
+ISBN0053|Dynamics of Machinery|Norton|6th|2019|Mechanical|3|0|5
+ISBN0049|Linear Algebra and Its Applications|Gilbert Strang|5th|2016|Math|7|4|11
+ISBN0046|Introduction to the Theory of Computation|Michael Sipser|3rd|2012|Theory|3|2|4
+ISBN0045|Programming Pearls|Jon Bentley|2nd|1999|Programming|4|4|2
+ISBN0051|Mechanical Engineering Design|Shigley|11th|2019|Mechanical|4|1|6
+ISBN0044|Automate the Boring Stuff with Python|Al Sweigart|2nd|2019|Programming|15|12|25
+ISBN0042|Digital Signal Processing|Proakis, Manolakis|4th|2006|DSP|4|1|6
+ISBN0041|Computer Architecture: A Quantitative Approach|Hennessy, Patterson|6th|2017|Hardware|3|2|5
+ISBN0040|Clean Architecture|Robert C. Martin|1st|2017|Software|5|3|7
+ISBN0039|Working Effectively with Legacy Code|Michael Feathers|1st|2004|Software|4|4|3
+ISBN0038|Domain-Driven Design|Eric Evans|1st|2003|Software|2|0|6
+ISBN0052|Engineering Mechanics: Statics|Hibbeler|14th|2015|Mechanical|6|4|10
+ISBN0037|The Lean Startup|Eric Ries|1st|2011|Management|8|5|12
+ISBN0035|Deep Learning|Ian Goodfellow|1st|2016|AI|4|2|5
+ISBN0015|The Mythical Man-Month|Fred Brooks|2nd|1995|Software|3|3|2
+ISBN0050|Thomas' Calculus|Weir, Hass|14th|2018|Math|5|2|9
+ISBN0008|The Pragmatic Programmer|Andrew Hunt|20th|2019|Software|4|2|8
+ISBN0012|Artificial Intelligence: A Modern Approach|Russell, Norvig|4th|2020|AI|8|5|15
+ISBN0047|Discrete Mathematics and Its Applications|Kenneth Rosen|8th|2018|Math|6|3|10
+ISBN0023|Feedback Control of Dynamic Systems|Franklin, Powell|8th|2018|Mechatronics|4|1|5
+ISBN0018|Test Driven Development|Kent Beck|1st|2002|Software|3|2|4
+ISBN0016|Refactoring|Martin Fowler|2nd|2018|Software|4|1|7
+ISBN0009|Structure and Interpretation of Computer Programs|Abelson, Sussman|2nd|1996|Programming|2|2|5
+ISBN0013|Computer Networking|Kurose, Ross|7th|2016|Networking|4|4|6
+ISBN0054|Fundamentals of Thermodynamics|Borgnakke, Sonntag|10th|2019|Mechanical|4|2|7
+ISBN0007|Code Complete|Steve McConnell|2nd|2004|Software|5|5|0
+ISBN0025|Robot Modeling and Control|Spong, Hutchinson, Vidyasagar|1st|2005|Robotics|2|0|3
+ISBN0043|Signals and Systems|Oppenheim, Willsky|2nd|1996|DSP|5|0|8
+ISBN0034|Hands-On Machine Learning|Aurelien Geron|2nd|2019|AI|6|3|8
+ISBN0014|Database System Concepts|Silberschatz, Korth, Sudarshan|7th|2019|Databases|5|2|9
+ISBN0017|Head First Design Patterns|Freeman, Robson|2nd|2020|Software|6|6|0
+ISBN0011|Compilers: Principles, Techniques, and Tools|Aho, Lam, Sethi, Ullman|2nd|2006|Compilers|3|0|4
+ISBN0027|Digital Design|M. Morris Mano|6th|2017|Electronics|4|2|7
+ISBN0019|Continuous Delivery|Humble, Farley|1st|2010|DevOps|4|4|5
+ISBN0036|Pattern Recognition and Machine Learning|Christopher Bishop|1st|2006|AI|3|1|4
+ISBN0010|Modern Operating Systems|Andrew Tanenbaum|4th|2014|OS|6|3|12
+ISBN0020|The Phoenix Project|Gene Kim|1st|2013|DevOps|5|0|10
+ISBN0021|Introduction to Electrodynamics|David Griffiths|4th|2017|Physics|3|3|6
+ISBN0028|Practical Electronics for Inventors|Paul Scherz|4th|2016|Electronics|10|8|20
+ISBN0048|Calculus|James Stewart|8th|2015|Math|10|5|20
+ISBN0022|Control Systems Engineering|Norman Nise|7th|2015|Mechatronics|5|2|8
+ISBN0024|Mechatronics: Electronic Control Systems|W. Bolton|6th|2015|Mechatronics|6|4|12
+ISBN0030|The C Programming Language|Kernighan, Ritchie|2nd|1988|Programming|7|7|0
+ISBN0029|Embedded Systems: A Contemporary Design Tool|James Peckol|2nd|2019|Embedded|3|1|4
+ISBN0031|Effective C++|Scott Meyers|3rd|2005|Programming|5|2|6
+ISBN0006|The Art of Computer Programming|Donald Knuth|1st|1968|Algorithms|3|1|10
+ISBN0032|C++ Primer|Lippman, Lajoie|5th|2012|Programming|4|4|9
+ISBN0033|Python Crash Course|Eric Matthes|2nd|2019|Programming|12|10|15

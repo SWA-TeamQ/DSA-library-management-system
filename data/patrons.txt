@@ -1,1 +1,4 @@
-abel|abel|2348|2005-11-02|0|0|0
+P001|Alice Johnson|alice@example.com|2020-05-10|1|1|6
+P002|Bob Smith|bob@example.com|2019-08-22|0|0|1
+P003|Carol Williams|carol@example.com|2021-01-15|1|1|2
+P004|David Lee|david@example.com|2024-12-01|1|1|1
