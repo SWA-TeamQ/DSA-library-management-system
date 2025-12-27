@@ -149,8 +149,9 @@ bool BookManager::updateBook(Book &newBook)
         newBook.getEdition() != oldBook->getEdition() ||
         newBook.getPublicationYear() != oldBook->getPublicationYear() ||
         newBook.getCategory() != oldBook->getCategory();
+
     if (!changed)
-        return false;
+        return true;
 
     // Update search index (title, author, etc.)
     searchMap.remove(*oldBook);
@@ -163,9 +164,7 @@ bool BookManager::updateBook(Book &newBook)
 
     searchMap.insert(*oldBook);
 
-    saveBooks(); // persist once
-
-    return true;
+    return saveBooks(); // persist once
 }
 
 Array<Book *> BookManager::sortBooks(BookSortKey key, bool reverse)

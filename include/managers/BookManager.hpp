@@ -25,22 +25,22 @@ public:
     }
 
     // Data operations
-    void loadBooks()
+    bool loadBooks()
     {
         bookTable.clear();
         searchMap.clear();
 
         if (!bookStore.loadData(bookTable))
         {
-            cout << "Warning: unable to load books from file" << endl;
-            return;
+            return false;
         }
         buildSearchMap();
+        return true;
     }
 
-    void saveBooks()
+    bool saveBooks()
     {
-        bookStore.saveData(bookTable);
+        return bookStore.saveData(bookTable);
     }
 
     // title -> id, author -> id

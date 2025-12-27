@@ -118,6 +118,7 @@ void BookMenu::updateBook()
     cout << "Enter the ISBN of the book to update:\n";
     string isbn = readString("Enter ISBN: ");
     auto *book = controller.findBookById(isbn);
+    Book newBook;
 
     if (!book)
     {
@@ -130,9 +131,9 @@ void BookMenu::updateBook()
     cout << "Current details:\n";
     print(*book);
 
-    Form(*book, bookSchema(), true); // show the book update form
+    Form(newBook, bookSchema(), true); // show the book update form
 
-    if (controller.updateBook(*book))
+    if (controller.updateBook(newBook))
     {
         cout << "Book updated.\n";
     }

@@ -55,26 +55,16 @@ public:
 
     Array<string> findByTitle(string title)
     {
-        Array<string> result;
-        findIds(titleIndex, title, result);
-        return result;
+        return findIds(titleIndex, title);
     }
 
     Array<string> findByAuthor(string author)
     {
-        Array<string> result;
-
-        findIds(authorIndex, author, result);
-
-        return result;
+        return findIds(authorIndex, author);
     }
 
     Array<string> findByCategory(string category)
     {
-        Array<string> result;
-
-        findIds(categoryIndex, category, result);
-
-        return result;
+        return findIds(categoryIndex, category);
     }
 };

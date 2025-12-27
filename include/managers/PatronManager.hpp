@@ -22,25 +22,22 @@ public:
         loadPatrons();
     }
 
-    void loadPatrons()
+    bool loadPatrons()
     {
         patronTable.clear();
         searchMap.clear();
 
         if (!patronStore.loadData(patronTable))
         {
-            cout << "Warning: Failed to load patrons from file\n";
-            return;
+            return false;
         }
         buildSearchMap();
+        return true;
     }
 
-    void savePatrons()
+    bool savePatrons()
     {
-        if (!patronStore.saveData(patronTable))
-        {
-            cout << "Warning: Failed to save patrons to file\n";
-        }
+        return patronStore.saveData(patronTable);
     }
 
     void buildSearchMap()
@@ -49,10 +46,10 @@ public:
     }
 
     bool addPatron(Patron &p);
+    bool updatePatron(Patron &p);
     bool removePatron(PatronSearchKey key, string value);
     Patron *findPatron(PatronSearchKey key, string value);
     Array<Patron *> findPatrons(PatronSearchKey key, string value);
     Array<Patron *> sortPatrons(PatronSortKey key, bool reverse = false);
-    bool updatePatron(Patron &p);
     Array<Patron *> getAllPatrons();
 };

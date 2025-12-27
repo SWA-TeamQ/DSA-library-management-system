@@ -45,6 +45,7 @@ add_executable(lms
     src/ui/UiHelpers.cpp
     src/ui/UiComponents.cpp
     src/ui/Schemas.cpp
+    src/ui/BorrrowMenu.cpp
 )
 
 # Ensure target-level properties also point to project root (per-config)

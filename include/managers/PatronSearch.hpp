@@ -47,8 +47,6 @@ public:
     // Search patrons by name
     Array<string> findByName(string name)
     {
-        Array<string> result;
-        findIds(nameIndex, name, result);
-        return result;
+        return findIds(nameIndex, name);
     }
 };

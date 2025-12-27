@@ -50,16 +50,12 @@ public:
     // Search transactions by bookId
     Array<string> findByBookId(string bookId)
     {
-        Array<string> result;
-        findIds(bookIdIndex, bookId, result);
-        return result;
+        return findIds(bookIdIndex, bookId);
     }
 
     // Search transactions by patronId
     Array<string> findByPatronId(string patronId)
     {
-        Array<string> result;
-        findIds(patronIdIndex, patronId, result);
-        return result;
+        return findIds(patronIdIndex, patronId);
     }
 };

@@ -22,25 +22,23 @@ public:
         loadTransactions();
     }
 
-    void loadTransactions()
+    bool loadTransactions()
     {
         transactionTable.clear();
         searchMap.clear();
 
         if (!transactionStore.loadData(transactionTable))
         {
-            cout << "Warning: Failed to load transactions from file\n";
-            return;
+            return false;
         }
         buildSearchMap();
+        return true;
     }
 
-    void saveTransactions()
+    bool saveTransactions()
     {
-        if (!transactionStore.saveData(transactionTable))
-        {
-            cout << "Warning: Failed to save transactions to file\n";
-        }
+        return transactionStore.saveData(transactionTable);
+        
     }
 
     void buildSearchMap()

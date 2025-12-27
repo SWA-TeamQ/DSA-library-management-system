@@ -110,26 +110,23 @@ bool PatronManager::updatePatron(Patron &newPatron)
         return false;
     }
 
-    bool changed = false;
-
-    if (newPatron.getName() != oldPatron->getName() ||
+    bool changed =
+        newPatron.getName() != oldPatron->getName() ||
         newPatron.getContact() != oldPatron->getContact() ||
-        newPatron.getMembershipDate() != oldPatron->getMembershipDate())
-    {
-        searchMap.remove(*oldPatron);
-        oldPatron->setName(newPatron.getName());
-        oldPatron->setContact(newPatron.getContact());
-        oldPatron->setMembershipDate(newPatron.getMembershipDate());
-        searchMap.insert(*oldPatron);
-        changed = true;
-    }
+        newPatron.getMembershipDate() != oldPatron->getMembershipDate();
 
-    if (changed)
-    {
-        savePatrons();
-    }
+    if (!changed)
+        return true;
 
-    return changed;
+    searchMap.remove(*oldPatron);
+
+    oldPatron->setName(newPatron.getName());
+    oldPatron->setContact(newPatron.getContact());
+    oldPatron->setMembershipDate(newPatron.getMembershipDate());
+
+    searchMap.insert(*oldPatron);
+
+    return savePatrons();
 }
 
 Array<Patron *> PatronManager::sortPatrons(PatronSortKey key, bool reverse)

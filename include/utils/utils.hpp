@@ -23,10 +23,11 @@ string trim(string str);
 string truncate(string str, size_t width);
 string toLower(string s);
 
-
-inline auto findIds = [](unordered_map<string, unordered_set<string>> &index, string &key, Array<string> &result)
+inline auto findIds = [](unordered_map<string, unordered_set<string>> &index, string &key)
 {
+    Array<string> result;
     key = toLower(key); // this is the map key
+    
     auto it = index.find(key);
 
     if (it != index.end())
@@ -36,6 +37,7 @@ inline auto findIds = [](unordered_map<string, unordered_set<string>> &index, st
             result.append(id);
         }
     }
+    return result;
 };
 
 inline auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &id, string &key)
