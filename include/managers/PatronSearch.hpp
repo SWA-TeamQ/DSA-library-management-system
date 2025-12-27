@@ -39,19 +39,7 @@ public:
 
     void remove(Patron &p)
     {
-        string key = p.getKey(), name = toLower(p.getName());
-        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &key, string &value)
-        {
-            auto it = index.find(value);
-            if (it != index.end())
-            {
-                it->second.erase(key);
-                if (it->second.empty())
-                {
-                    index.erase(it);
-                }
-            }
-        };
+        string key = p.getKey(), name = p.getName();
 
         removeIndex(nameIndex, key, name);
     }
@@ -59,17 +47,6 @@ public:
     // Search patrons by name
     Array<string> findByName(string name)
     {
-        auto it = nameIndex.find(name);
-        if (it != nameIndex.end())
-        {
-            auto setIt = it->second;
-            Array<string> ids;
-            for (auto &key : setIt)
-            {
-                ids.append(key);
-            }
-            return ids;
-        }
-        return {};
+        return findIds(nameIndex, name);
     }
 };

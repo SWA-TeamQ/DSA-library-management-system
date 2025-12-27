@@ -110,6 +110,8 @@ void PatronMenu::updatePatron()
 	cout << "Enter the Patron Id: \n";
 	string id = trim(readString("Enter Patron ID: "));
 	auto *patron = controller.findPatronById(id);
+	Patron newPatron = *patron;
+
 	if (!patron)
 	{
 		cout << "Patron not found.\n";
@@ -121,9 +123,9 @@ void PatronMenu::updatePatron()
 	cout << "Current details:\n";
 	print(*patron);
 
-	Form(*patron, patronSchema(), true); // show the patron update form
+	Form(newPatron, patronSchema(), true); // show the patron update form
 
-	if (controller.updatePatron(*patron))
+	if (controller.updatePatron(newPatron))
 	{
 		cout << "Patron updated.\n";
 	}

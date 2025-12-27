@@ -36,21 +36,32 @@ void Form(T &obj, Array<Field> schema, bool update)
 {
     for (auto &field : schema)
     {
+        if(update && field.key == "id") {
+            // skip id field during update
+            continue;
+        }
+
         string input;
         int number;
+        string prompt;
 
-        bool isRequired = field.required && !update; // if the field is required and we are not updating, then it is required
+        bool isOptional = !field.required || update; // if the field is required and we are not updating, then it is required
   
         // this is the input prompt
-        string prompt = field.label + (field.required ? " *" : "") + ": ";
+        if(update){
+            prompt = field.label + " [default=" + obj.getField(field.key) + "]: ";
+        }
+        else{
+            prompt = field.label + (field.required ? " *" : "") + ": ";
+        }
 
         // if the field is type of string
         if (field.type == FieldType::STRING)
         {
             if (update)
             {
-                string fieldKey = obj.getField(field.key);
-                input = readString(prompt, isRequired, fieldKey);
+                string fallbackValue = obj.getField(field.key);
+                input = readString(prompt, isOptional, fallbackValue);
             }
             else
             {
@@ -62,8 +73,8 @@ void Form(T &obj, Array<Field> schema, bool update)
         {
             if (update)
             {
-                int fieldKey = stoi(obj.getField(field.key));
-                number = readInt(prompt, isRequired, fieldKey);
+                int fallbackValue = stoi(obj.getField(field.key));
+                number = readInt(prompt, isOptional, fallbackValue);
             }
             else
             {

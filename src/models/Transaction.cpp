@@ -61,7 +61,7 @@ bool parseBoolTx(const string &s)
 
 string Transaction::getField(const string &key)
 {
-    if (key == "transactionID") return transactionID;
+    if (key == "id") return transactionID;
     if (key == "bookID") return bookID;
     if (key == "patronID") return patronID;
     if (key == "borrowDate") return borrowDate;
@@ -73,7 +73,7 @@ string Transaction::getField(const string &key)
 
 bool Transaction::setField(const string &key, const string &value)
 {
-    if (key == "transactionID") { transactionID = value; return true; }
+    if (key == "id") { transactionID = value; return true; }
     if (key == "bookID") { bookID = value; return true; }
     if (key == "patronID") { patronID = value; return true; }
     if (key == "borrowDate") { borrowDate = value; return true; }

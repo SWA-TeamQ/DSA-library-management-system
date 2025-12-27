@@ -46,19 +46,7 @@ public:
 
     void remove(Book &b)
     {
-        string key = b.getKey(), title = toLower(b.getTitle()), author = toLower(b.getAuthor()), category = toLower(b.getCategory());
-        auto removeIndex = [](unordered_map<string, unordered_set<string>> &index, string &key, string &value)
-        {
-            auto it = index.find(value);
-            if (it != index.end())
-            {
-                it->second.erase(key);
-                if (it->second.empty())
-                {
-                    index.erase(it);
-                }
-            }
-        };
+        string key = b.getKey(), title = b.getTitle(), author = b.getAuthor(), category = b.getCategory();
 
         removeIndex(titleIndex, key, title);
         removeIndex(authorIndex, key, author);
@@ -67,34 +55,16 @@ public:
 
     Array<string> findByTitle(string title)
     {
-        Array<string> result;
-        auto ids = titleIndex.at(title);
-        for (auto &id : ids)
-        {
-            result.append(id);
-        }
-        return result;
+        return findIds(titleIndex, title);
     }
 
     Array<string> findByAuthor(string author)
     {
-        Array<string> result;
-        auto ids = authorIndex.at(author);
-        for (auto &id : ids)
-        {
-            result.append(id);
-        }
-        return result;
+        return findIds(authorIndex, author);
     }
 
     Array<string> findByCategory(string category)
     {
-        Array<string> result;
-        auto ids = categoryIndex.at(category);
-        for (auto &id : ids)
-        {
-            result.append(id);
-        }
-        return result;
+        return findIds(categoryIndex, category);
     }
 };
