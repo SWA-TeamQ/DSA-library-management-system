@@ -14,7 +14,7 @@ private:
 public:
     DataStore(string filename)
     {
-        this->filename = filename;
+        this->filename = "data/" + filename;
     }
 
     bool saveData(HashTable<T> &dataMap)

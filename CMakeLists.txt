@@ -1,6 +1,19 @@
 cmake_minimum_required(VERSION 3.15)
 project(LibraryManagementSystem VERSION 0.1.0 LANGUAGES CXX)
 
+# Emit build artifacts (executables/libraries/archives) directly into the project root
+# so the produced .exe is placed in the repository root folder.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# Per-config outputs for multi-config generators (Visual Studio / MSVC)
+foreach(OUTPUTCONFIG IN ITEMS Debug Release RelWithDebInfo MinSizeRel)
+    string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER} ${CMAKE_SOURCE_DIR})
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER} ${CMAKE_SOURCE_DIR})
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER} ${CMAKE_SOURCE_DIR})
+endforeach()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -34,3 +47,13 @@ add_executable(lms
     src/ui/Schemas.cpp
 )
 
+# Ensure target-level properties also point to project root (per-config)
+set_target_properties(lms PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_SOURCE_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_SOURCE_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_SOURCE_DIR}
+)
